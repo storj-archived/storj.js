@@ -1,0 +1,21 @@
+{
+  "name": "Storj.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {},
+  "scripts": {
+    "start": "node index.js",
+    "build": "grunt concat; grunt closure-compiler",
+    "watch": "grunt watch"
+  },
+  "author": "Chris Pollard",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.14.0",
+    "grunt": "^1.0.1",
+    "grunt-closure-compiler": "0.0.21",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}

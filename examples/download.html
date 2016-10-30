@@ -1,0 +1,16 @@
+<html>
+<head>
+  <title>Storj Download Example</title>
+</head>
+<body>
+<script type="text/javascript" src="/build/Storj.js"></script>
+<script>
+
+var client = new Storj.BridgeClient();
+client.createToken('44b8cd1c0107b5edb69bac5b', 'PULL', function(err, token){
+  console.log(err, token);
+});
+
+</script>
+</body>
+</html>
