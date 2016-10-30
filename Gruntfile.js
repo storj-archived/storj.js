@@ -13,12 +13,12 @@ module.exports = function( grunt ) {
     pkg: grunt.file.readJSON('package.json'),
     'closure-compiler': {
       'Storj': {
-        closurePath: '.',
+        closurePath: './compiler',
         noreport: true,
         js: files,
         jsOutputFile: 'build/Storj.min.js',
         options: {
-          externs: './compiler/externs.txt',
+          externs: './compiler/build/externs.txt',
           language_in: 'ECMASCRIPT5_STRICT',
           warning_level: 'VERBOSE'
         }
@@ -34,7 +34,7 @@ module.exports = function( grunt ) {
     watch: {
       scripts: {
         files: ['lib/*.js'],
-        tasks: ['browserify:*', 'concat:*']
+        tasks: ['concat:*']
       }
     },
     browserify: {

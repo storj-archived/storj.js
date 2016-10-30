@@ -12,10 +12,7 @@ var options = {
   file: 'ISSUE_TEMPLATE.md'
 };
 
-var client = new Storj.BridgeClient();
-var downloader = new Storj.Downloader(options);
-
-downloader.load(function(err, data) {
+var downloader = new Storj.Downloader(options, function(err, data) {
   console.log(err, data);
 });
 

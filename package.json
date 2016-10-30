@@ -6,7 +6,7 @@
   "directories": {},
   "scripts": {
     "start": "node index.js",
-    "build": "grunt concat; grunt closure-compiler",
+    "build": "grunt browserify; grunt concat; grunt closure-compiler",
     "watch": "grunt watch"
   },
   "author": "Chris Pollard",

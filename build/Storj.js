@@ -437,7 +437,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":21,"inherits":17,"stream":44,"string_decoder":45}],7:[function(require,module,exports){
+},{"buffer":21,"inherits":17,"stream":45,"string_decoder":46}],7:[function(require,module,exports){
 (function (Buffer){
 /*
 CryptoJS v3.1.2
@@ -1529,7 +1529,7 @@ module.exports = function createHmac(alg, key) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":21,"create-hash/browser":3,"inherits":17,"stream":44}],17:[function(require,module,exports){
+},{"buffer":21,"create-hash/browser":3,"inherits":17,"stream":45}],17:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1626,7 +1626,7 @@ exports.pbkdf2Sync = function (password, salt, iterations, keylen, digest) {
 }
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./precondition":19,"_process":27,"buffer":21,"create-hmac":16}],19:[function(require,module,exports){
+},{"./precondition":19,"_process":28,"buffer":21,"create-hmac":16}],19:[function(require,module,exports){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 module.exports = function (iterations, keylen) {
   if (typeof iterations !== 'number') {
@@ -3955,6 +3955,8 @@ function isUndefined(arg) {
 }
 
 },{}],26:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"dup":17}],27:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -3977,7 +3979,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4159,10 +4161,10 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":29}],29:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":30}],30:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -4238,7 +4240,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":31,"./_stream_writable":33,"core-util-is":36,"inherits":46,"process-nextick-args":38}],30:[function(require,module,exports){
+},{"./_stream_readable":32,"./_stream_writable":34,"core-util-is":37,"inherits":26,"process-nextick-args":39}],31:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -4265,7 +4267,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":32,"core-util-is":36,"inherits":46}],31:[function(require,module,exports){
+},{"./_stream_transform":33,"core-util-is":37,"inherits":26}],32:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5205,7 +5207,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":29,"./internal/streams/BufferList":34,"_process":27,"buffer":21,"buffer-shims":35,"core-util-is":36,"events":25,"inherits":46,"isarray":37,"process-nextick-args":38,"string_decoder/":45,"util":20}],32:[function(require,module,exports){
+},{"./_stream_duplex":30,"./internal/streams/BufferList":35,"_process":28,"buffer":21,"buffer-shims":36,"core-util-is":37,"events":25,"inherits":26,"isarray":38,"process-nextick-args":39,"string_decoder/":46,"util":20}],33:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -5386,7 +5388,7 @@ function done(stream, er) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":29,"core-util-is":36,"inherits":46}],33:[function(require,module,exports){
+},{"./_stream_duplex":30,"core-util-is":37,"inherits":26}],34:[function(require,module,exports){
 (function (process){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
@@ -5915,7 +5917,7 @@ function CorkedRequest(state) {
   };
 }
 }).call(this,require('_process'))
-},{"./_stream_duplex":29,"_process":27,"buffer":21,"buffer-shims":35,"core-util-is":36,"events":25,"inherits":46,"process-nextick-args":38,"util-deprecate":39}],34:[function(require,module,exports){
+},{"./_stream_duplex":30,"_process":28,"buffer":21,"buffer-shims":36,"core-util-is":37,"events":25,"inherits":26,"process-nextick-args":39,"util-deprecate":40}],35:[function(require,module,exports){
 'use strict';
 
 var Buffer = require('buffer').Buffer;
@@ -5980,7 +5982,7 @@ BufferList.prototype.concat = function (n) {
   }
   return ret;
 };
-},{"buffer":21,"buffer-shims":35}],35:[function(require,module,exports){
+},{"buffer":21,"buffer-shims":36}],36:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -6092,7 +6094,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"buffer":21}],36:[function(require,module,exports){
+},{"buffer":21}],37:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6203,9 +6205,9 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../../../insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":26}],37:[function(require,module,exports){
+},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":27}],38:[function(require,module,exports){
 arguments[4][24][0].apply(exports,arguments)
-},{"dup":24}],38:[function(require,module,exports){
+},{"dup":24}],39:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -6252,7 +6254,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":27}],39:[function(require,module,exports){
+},{"_process":28}],40:[function(require,module,exports){
 (function (global){
 
 /**
@@ -6323,10 +6325,10 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":30}],41:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":31}],42:[function(require,module,exports){
 (function (process){
 var Stream = (function (){
   try {
@@ -6346,13 +6348,13 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/_stream_duplex.js":29,"./lib/_stream_passthrough.js":30,"./lib/_stream_readable.js":31,"./lib/_stream_transform.js":32,"./lib/_stream_writable.js":33,"_process":27}],42:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":30,"./lib/_stream_passthrough.js":31,"./lib/_stream_readable.js":32,"./lib/_stream_transform.js":33,"./lib/_stream_writable.js":34,"_process":28}],43:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":32}],43:[function(require,module,exports){
+},{"./lib/_stream_transform.js":33}],44:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":33}],44:[function(require,module,exports){
+},{"./lib/_stream_writable.js":34}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6481,7 +6483,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":25,"inherits":46,"readable-stream/duplex.js":28,"readable-stream/passthrough.js":40,"readable-stream/readable.js":41,"readable-stream/transform.js":42,"readable-stream/writable.js":43}],45:[function(require,module,exports){
+},{"events":25,"inherits":26,"readable-stream/duplex.js":29,"readable-stream/passthrough.js":41,"readable-stream/readable.js":42,"readable-stream/transform.js":43,"readable-stream/writable.js":44}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6704,9 +6706,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":21}],46:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}]},{},[1]);
+},{"buffer":21}]},{},[1]);
 
 Storj.Utils = {};
 
@@ -6792,18 +6792,22 @@ Storj.BridgeClient = function(){
   };
 
 };
-Storj.Downloader = function(options){
+Storj.Downloader = function(options, callback){
   var utils = Storj.Utils;
 
   this.bucketId = utils.calculateBucketId(options.user, options.bucket);
   this.fileId = utils.calculateFileId(this.bucketId, options.file);
+
+  this.client = new Storj.BridgeClient();
+
+  this.load(callback);
 
 };
 
 Storj.Downloader.prototype.load = function(callback){
   var self = this;
 
-  client.createToken(self.bucketId, 'PULL', function(err, token){
+  self.client.createToken(self.bucketId, 'PULL', function(err, token){
     callback(err, token);
   });
 
