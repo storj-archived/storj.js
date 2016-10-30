@@ -1,11 +1,12 @@
 module.exports = function( grunt ) {
 
   var files = [
-    "lib/Storj.js",
-    "lib/Config.js",
-    "lib/Utils.js",
-    "lib/BridgeClient.js",
-    "lib/Downloader.js"
+    'lib/Storj.js',
+    'lib/Config.js',
+    'lib/Exports.js',
+    'lib/Utils.js',
+    'lib/BridgeClient.js',
+    'lib/Downloader.js'
   ];
 
   grunt.initConfig({
@@ -26,21 +27,27 @@ module.exports = function( grunt ) {
     concat: {
       'Storj': {
         files: {
-          "build/Storj.js": files,
+          'build/Storj.js': files,
         }
       }
     },
     watch: {
       scripts: {
-        files: [ "lib/*.js" ],
-        tasks: [ "concat:*" ]
+        files: ['lib/*.js'],
+        tasks: ['browserify:*', 'concat:*']
+      }
+    },
+    browserify: {
+      'Storj': {
+        src: ['exports/index.js'],
+        dest: 'lib/Exports.js'
       }
     }
   });
 
-  grunt.loadNpmTasks( "grunt-closure-compiler" );
-  grunt.loadNpmTasks( "grunt-contrib-concat" );
-  grunt.loadNpmTasks( "grunt-contrib-watch" );
-  grunt.registerTask( 'default', [ 'concat', 'closure-compiler' ] );
-
+  grunt.loadNpmTasks('grunt-closure-compiler');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.registerTask('default', [ 'concat', 'closure-compiler' ]);
 };

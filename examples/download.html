@@ -6,9 +6,17 @@
 <script type="text/javascript" src="/build/Storj.js"></script>
 <script>
 
+var options = {
+  user: 'cvmp94@gmail.com',
+  bucket: 'New Bucket',
+  file: 'ISSUE_TEMPLATE.md'
+};
+
 var client = new Storj.BridgeClient();
-client.createToken('44b8cd1c0107b5edb69bac5b', 'PULL', function(err, token){
-  console.log(err, token);
+var downloader = new Storj.Downloader(options);
+
+downloader.load(function(err, data) {
+  console.log(err, data);
 });
 
 </script>
