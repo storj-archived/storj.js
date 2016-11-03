@@ -7,15 +7,21 @@
 <script>
 
 var options = {
-  user: 'cvmp94@gmail.com',
-  bucket: 'New Bucket',
-  file: 'ISSUE_TEMPLATE.md'
+  user: 'chris@storj.io',
+  bucket: 'PublicBucket',
+  file: 'storj-logo.jpg'
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {
-  console.log(err, data);
+  var blob = new Blob([data], {type: "image/png"});
+  var fileReader = new FileReader();
+  fileReader.onload = function(e){
+    var img = new Image();
+    img.src = e.target.result;
+    document.body.appendChild(img);
+  };
+  fileReader.readAsDataURL(blob);
 });
-
 </script>
 </body>
 </html>

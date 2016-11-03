@@ -3,6 +3,7 @@ module.exports = function( grunt ) {
   var files = [
     'lib/Storj.js',
     'lib/Config.js',
+    'lib/Socket.js',
     'lib/Exports.js',
     'lib/Utils.js',
     'lib/BridgeClient.js',

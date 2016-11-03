@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "pbkdf2": "^3.0.9",
+    "browserify-cipher": "^1.0.0",
+    "buffer": "^5.0.0",
+    "ripemd160": "^2.0.1",
     "sha256": "^0.2.0"
   },
   "devDependencies": {},
