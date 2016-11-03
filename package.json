@@ -1,7 +1,7 @@
 {
   "name": "Storj.js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.0",
+  "description": "Storj browser library",
   "main": "index.js",
   "directories": {},
   "scripts": {
@@ -10,7 +10,7 @@
     "watch": "grunt watch"
   },
   "author": "Chris Pollard",
-  "license": "MIT",
+  "license": "LGPL",
   "devDependencies": {
     "express": "^4.14.0",
     "grunt": "^1.0.1",

@@ -1,7 +1,7 @@
 {
-  "name": "exports",
-  "version": "1.0.0",
-  "description": "",
+  "name": "storj-exports",
+  "version": "0.0.0",
+  "description": "Modules exported with browserify for storj.js",
   "main": "index.js",
   "dependencies": {
     "browserify-cipher": "^1.0.0",
@@ -13,6 +13,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Chris Pollard",
+  "license": "LGPL"
 }
