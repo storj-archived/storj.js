@@ -8482,9 +8482,9 @@ Storj.Utils.sha512 = function(input, encoding) {
   return new Storj.Exports.createHash('sha512').update(input, encoding).digest('hex');
 };
 
-Storj.Utils.rmd160sha256 = function(input) {
+Storj.Utils.rmd160sha256 = function(input, encoding) {
   return Storj.Utils.rmd160(
-    Storj.Utils.sha256(input), 'hex'
+    Storj.Utils.sha256(input, encoding), 'hex'
   );
 };
 
@@ -8492,13 +8492,13 @@ Storj.Utils.pbkdf2Sync = Storj.Exports.pbkdf2Sync;
 
 Storj.Utils.calculateBucketId = function(user, bucketName) {
   var rmd160sha256 = Storj.Utils.rmd160sha256;
-  var hash = rmd160sha256(user + bucketName);
+  var hash = rmd160sha256(user + bucketName, 'utf-8');
   return hash.substring(0, 24);
 };
 
 Storj.Utils.calculateFileId = function(bucket, fileName) {
   var rmd160sha256 = Storj.Utils.rmd160sha256;
-  var hash = rmd160sha256(bucket + fileName);
+  var hash = rmd160sha256(bucket + fileName, 'utf-8');
   return hash.substring(0, 24);
 };
 
@@ -8511,7 +8511,7 @@ Storj.Utils.calculateFileIdByName = function(user, bucketName, fileName) {
 Storj.Utils.createDecryptor = function(bucketKey, fileId) {
   var utils = Storj.Utils;
   var exports = Storj.Exports;
-  var fileKey = utils.sha512(bucketKey + fileId);
+  var fileKey = utils.sha512(bucketKey + fileId).toString('hex').substring(0, 64);
 
   var hashedKey = utils.sha256(fileKey);
   var hashedSalt = utils.rmd160(fileId);
