@@ -1,6 +1,6 @@
 var Storj = {};
 Storj.Config = {
-  bridge: 'https://api.storj.io'
+  bridge: 'https://api.staging.storj.io'
 };
 /**
   * options.url
@@ -8058,19 +8058,6 @@ Storj.Utils.createDecryptor = function(bucketKey, fileId) {
   );
 };
 
-Storj.Utils.decryptBlob = function(blob, decipher, callback) {
-  var exports = Storj.Exports;
-
-  var fileReader = new FileReader();
-  fileReader.onload = function() {
-    var encrypted = this.result;
-    var buffer = exports.Buffer(encrypted, 'binary');
-    decipher.write(buffer);
-    callback(null, decipher.read());
-  };
-  fileReader.readAsBinaryString(blob);
-};
-
 /**
   * options.method
   * options.url
@@ -8273,5 +8260,21 @@ Storj.Downloader.prototype._decrypt = function(){
   var fileId = self.fileId;
 
   var decipher = utils.createDecryptor(bucketKey, fileId);
-  utils.decryptBlob(encryptedBlob, decipher, self.callback);
+  self._decryptBlob(encryptedBlob, decipher);
+};
+
+Storj.Downloader.prototype._decryptBlob = function(blob, decipher) {
+  var exports = Storj.Exports;
+
+  var fileReader = new FileReader();
+  fileReader.onload = function() {
+    var encrypted = this.result;
+    var buffer = exports.Buffer(encrypted, 'binary');
+    var chunkSize = 50000;
+    for(var i = 0; i < buffer.length; i += chunkSize){
+      decipher.write(buffer.slice(i, i + chunkSize));
+    }
+    self.callback(null, decipher.read());
+  };
+  fileReader.readAsBinaryString(blob);
 };
