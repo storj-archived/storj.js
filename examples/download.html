@@ -9,11 +9,12 @@
 var options = {
   user: 'chris@storj.io',
   bucket: 'PublicBucket',
-  file: 'background.png'
+  file: 'INSTALL.md'
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {
   var blob = new Blob([data], {type: "image/png"});
+  console.log(data.toString('utf-8'));
   var fileReader = new FileReader();
   fileReader.onload = function(e){
     var img = new Image();
