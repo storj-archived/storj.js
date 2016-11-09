@@ -8739,14 +8739,14 @@ Storj.Downloader.prototype._decryptBlob = function(blob, decipher) {
     var decrypted = [];
     var buffer = exports.Buffer(encrypted, 'binary');
 
-    decipher.on('readable', () => {
+    decipher.on('readable', function(){
       var data = decipher.read();
       if (data) {
         decrypted.push(data);
       }
     });
 
-    decipher.on('end', () => {
+    decipher.on('end', function(){
       self.callback(null, new Blob(decrypted));
     });
 
