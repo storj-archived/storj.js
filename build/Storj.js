@@ -8632,6 +8632,7 @@ Storj.Downloader = function(options, callback){
 };
 
 Storj.Downloader.prototype._createToken = function(){
+  console.log('create token');
   var self = this;
   var client = self.client;
 
@@ -8642,6 +8643,7 @@ Storj.Downloader.prototype._createToken = function(){
 };
 
 Storj.Downloader.prototype._getNextSlice = function(token){
+  console.log('getNextSlice');
   var self = this;
   var client = self.client;
 
@@ -8663,6 +8665,7 @@ Storj.Downloader.prototype._getNextSlice = function(token){
 };
 
 Storj.Downloader.prototype._resolvePointers = function(pointers){
+  console.log('resolve pointers');
   var self = this;
   var numPointers = pointers.length;
   var completedPointers = 0;
@@ -8699,6 +8702,7 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
       onData: function(msg){
         blobs.push(msg.data);
         currentSize += msg.data.size;
+        console.log('msg', currentSize / totalSize);
         if( currentSize == totalSize ){
           socket.close();
           self.fileData[index] = blobs;
