@@ -3,17 +3,17 @@
   <title>Storj Download Example</title>
 </head>
 <body>
-<script type="text/javascript" src="/build/Storj.js"></script>
+<script type="text/javascript" src="/build/Storj.min.js"></script>
 <script>
 
 var options = {
   user: 'chris@storj.io',
   bucket: 'PublicBucket',
-  file: 'image.png'
+  file: 'storj-logo.jpg'
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {
-  var blob = new Blob([data], {type: "image/png"});
+  var blob = new Blob([data], {type: "image/jpg"});
   var url = URL.createObjectURL(blob);
   var img = new Image();
   img.src = url;

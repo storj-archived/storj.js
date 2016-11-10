@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>Storj Download Example</title>
+</head>
+<body>
+<script type="text/javascript" src="/build/Storj.min.js"></script>
+<script>
+
+var options = {
+  user: 'chris@storj.io',
+  bucket: 'PublicBucket',
+  file: 'image.png'
+};
+
+var downloader = new Storj.Downloader(options, function(err, data) {
+  var blob = new Blob([data], {type: "image/png"});
+  var url = URL.createObjectURL(blob);
+  var img = new Image();
+  img.src = url;
+  document.body.appendChild(img);
+});
+</script>
+</body>
+</html>
