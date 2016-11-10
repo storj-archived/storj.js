@@ -1,0 +1,25 @@
+<html>
+<head>
+  <title>Storj Download Example</title>
+</head>
+<body>
+<script type="text/javascript" src="/build/Storj.min.js"></script>
+<script>
+
+var options = {
+  user: 'chris@storj.io',
+  bucket: 'PublicBucket',
+  file: 'video_10MB.webm'
+};
+
+var downloader = new Storj.Downloader(options, function(err, data) {
+  var blob = new Blob([data], {type: "video/webm"});
+  var url = URL.createObjectURL(blob);
+  var video = document.createElement('video');
+  video.src = url;
+  video.controls = true;
+  document.body.appendChild(video);
+});
+</script>
+</body>
+</html>
