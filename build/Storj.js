@@ -8617,17 +8617,27 @@ Storj.BridgeClient = function(){
 
 };
 Storj.Downloader = function(options, callback){
+  var self = this;
   var utils = Storj.Utils;
 
-  this.bucketId = utils.calculateBucketId(options.user, options.bucket);
-  this.fileId = utils.calculateFileId(this.bucketId, options.file);
+  if (options.bucketId) {
+    self.bucketId = options.bucketId;
+  } else {
+    self.bucketId = utils.calculateBucketId(options.user, options.bucket);
+  }
 
-  this.client = new Storj.BridgeClient();
-  this.callback = callback;
-  this._createToken();
-  this.skip = 0;
-  this.limit = 6;
-  this.fileData = [];
+  if (options.fileId) {
+    self.fileId = options.fileId;
+  } else {
+    self.fileId = utils.calculateFileId(this.bucketId, options.file);
+  }
+
+  self.client = new Storj.BridgeClient();
+  self.callback = callback;
+  self._createToken();
+  self.skip = 0;
+  self.limit = 6;
+  self.fileData = [];
 
 };
 
