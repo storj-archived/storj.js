@@ -8792,12 +8792,12 @@ Storj.Stream = function(options, callback){
 
   self.skip = 0;
   self.fileData = [];
-  self.video = options.video;
+  self.element = options.element;
   self.codec = options.codec
   self.segmentCount = 0;
 
   var mediaSource = new MediaSource();
-  self.video.src = URL.createObjectURL(mediaSource);
+  self.element.src = URL.createObjectURL(mediaSource);
 
   var dataQueue = [];
 
@@ -8820,8 +8820,8 @@ Storj.Stream = function(options, callback){
     sourceBuffer.addEventListener('updateend', function () {
       self.segmentCount += 1;
       handleNextSegment();
-      if (self.video.paused && self.segmentCount == 1){
-        self.video.play();
+      if (self.element.paused && self.segmentCount == 1){
+        self.element.play();
       }
     });
 

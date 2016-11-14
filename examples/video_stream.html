@@ -3,7 +3,7 @@
   <title>Storj Download Example</title>
 </head>
 <body>
-<script type="text/javascript" src="/build/Storj.js"></script>
+<script type="text/javascript" src="../build/Storj.js"></script>
 <script>
 
 Storj.Config.bridge = 'https://api.staging.storj.io';
@@ -15,7 +15,7 @@ document.body.appendChild(video);
 var options = {
   bucketId: '64b2616b96eb26700d20de07',
   file: 'video.webm',
-  video: video,
+  element: video,
   codec: 'video/webm; codecs="vorbis,vp8"'
 };
 
