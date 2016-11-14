@@ -6,6 +6,8 @@ Extremely early version of the browser library for Storj.io.
   * Add file streaming
 
 ### To do:
+  * Add concurrent downloads for streaming
+  * Properly handle errors and issue retries
   * Solve mixed content errors on https pages
   * Use supplied mimetype of file and create DOM element
   * Automatically replace special browser storj tags with equivalent elements
