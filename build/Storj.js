@@ -8839,6 +8839,7 @@ Storj.Stream.prototype._createDecipher = function(){
 
   decipher.on('readable', function(){
     var data = decipher.read();
+    if( !data || data.length == 0 ) return;
     self.callback(null, data);
   });
 
@@ -8878,9 +8879,8 @@ Storj.Stream.prototype._getNextSlice = function(token){
   self.skip += 1;
 
   client.getFilePointers(options, function(err, pointers){
-    console.log(err, pointers);
     if(err || pointers.length == 0){
-      return self.decipher.end();
+      return;
     }
     self._resolvePointer(pointers[0]);
   });
@@ -8894,6 +8894,7 @@ Storj.Stream.prototype._resolvePointer = function(pointer, index){
   var farmer = pointer.farmer;
   var currentSize = 0;
   var totalSize = pointer.size;
+  var done = false;
   var options = {
     url: 'ws://' + farmer.address + ':' + farmer.port,
     onOpen: function(){
@@ -8916,8 +8917,10 @@ Storj.Stream.prototype._resolvePointer = function(pointer, index){
           self.decipher.write(buffer.slice(i, i + chunkSize));
         }
 
-        if( currentSize == totalSize ){
+        if( currentSize == totalSize && !done ){
           socket.close();
+          done = true;
+          console.log('done');
           self._createToken();
         }
       }
