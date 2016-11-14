@@ -19,6 +19,8 @@ var downloader = new Storj.Downloader(options, function(err, data) {
   var video = document.createElement('video');
   video.src = url;
   video.controls = true;
+  video.style.width = '720px';
+  video.play();
   document.body.appendChild(video);
 });
 </script>
