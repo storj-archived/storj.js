@@ -6,9 +6,11 @@
 <script type="text/javascript" src="/build/Storj.js"></script>
 <script>
 
+Storj.Config.bridge = 'https://api.staging.storj.io'
+
 var options = {
-  bucketId: '06918c554b558334e8a1a3c9',
-  file: 'video_10MB.webm'
+  bucketId: '64b2616b96eb26700d20de07',
+  file: 'Storj.webm'
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {

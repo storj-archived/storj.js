@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>Storj Download Example</title>
+</head>
+<body>
+<script type="text/javascript" src="/build/Storj.js"></script>
+<script>
+
+Storj.Config.bridge = 'https://api.staging.storj.io';
+
+var video = document.createElement('video');
+video.controls = true;
+document.body.appendChild(video);
+
+var options = {
+  bucketId: '64b2616b96eb26700d20de07',
+  file: 'video.webm',
+  video: video,
+  codec: 'video/webm; codecs="vorbis,vp8"'
+};
+
+var streamer = new Storj.Stream(options);
+
+</script>
+</body>
+</html>

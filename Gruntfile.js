@@ -7,7 +7,8 @@ module.exports = function( grunt ) {
     'lib/Exports.js',
     'lib/Utils.js',
     'lib/BridgeClient.js',
-    'lib/Downloader.js'
+    'lib/Downloader.js',
+    'lib/Stream.js'
   ];
 
   grunt.initConfig({
