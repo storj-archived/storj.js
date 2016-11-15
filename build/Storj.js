@@ -8805,11 +8805,21 @@ Storj.Stream = function(options, callback){
     var sourceBuffer = mediaSource.addSourceBuffer(self.codec);
     sourceBuffer.mode = 'sequence';
 
+    var waiting = false;
     var handleNextSegment = function(){
       if( sourceBuffer.updating ) return;
       if( dataQueue.length === 0 ) return;
+      if( waiting ) return;
       var next = dataQueue.shift();
-      sourceBuffer.appendBuffer(next);
+      try {
+        sourceBuffer.appendBuffer(next);
+        waiting = false;
+      } catch (err) {
+        // handle QuotaExceeded error this way
+        dataQueue.unshift(next);
+        waiting = true;
+        setTimeout( handleNextSegment, 1000 );
+      }
     };
 
     self.callback = function(err, data) {
