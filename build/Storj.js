@@ -8792,7 +8792,6 @@ Storj.Downloader.prototype._decryptBlob = function(blob, callback) {
     var encrypted = this.result;
     var decrypted = [];
     var buffer = exports.Buffer(encrypted, 'binary');
-
     var chunkSize = 50000;
     for(var i = 0; i < buffer.length; i += chunkSize){
       decipher.write(buffer.slice(i, i + chunkSize));
@@ -8809,6 +8808,7 @@ Storj.Stream = function(options, callback){
 
   self.element = options.element;
   self.codec = options.codec
+  self.segmentCount = 0;
 
   var mediaSource = new MediaSource();
   self.element.src = URL.createObjectURL(mediaSource);
