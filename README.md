@@ -19,7 +19,7 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   
   ```
   storj add-bucket PublicBucket
-  storj make-public PublicBucket true
+  storj make-public PublicBucket --pull
   ```
   
   4. Upload a small image file
