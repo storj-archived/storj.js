@@ -8757,17 +8757,15 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
         }));
       },
       onData: function(msg){
-        if( index == 0 ){
-          self._decryptBlob(msg.data);
-        }
         blobs.push(msg.data);
         currentSize += msg.data.size;
         console.log('shard: ', index, (100 * currentSize / totalSize) + '%');
+        if( index == 0 ){
+          var cb = currentSize == totalSize ? _finishDecryption : null;
+          self._decryptBlob(msg.data, cb);
+        }
         if( currentSize == totalSize ){
           socket.close();
-          if( index == 0 ){
-            _finishDecryption();
-          }
           self.fileData[index] = blobs;
           _finishPointer();
         }

@@ -66,9 +66,6 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
 ### To do:
   * Perform decryption in separate thread or in way that doesn't freeze interface
   * Add progress indication for files and streams
-  * Get seek to working for audio/video streams
-    * Requires out of order decryption
-    * This should be possible with aes-256-ctr
   * Properly handle errors and issue X retries per shard
     * Add failed pointers to exclude list
   * Use supplied mimetype of file and create DOM element
@@ -76,6 +73,12 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   * Automatically replace special browser storj tags with equivalent elements
   * **Solve mixed content errors on https pages (important!)**
     * WebRTC or "Let's Encrypt"
+
+### Wishlist:
+  * Figure out efficient distributed streaming method
+    * Requires out of order decryption
+  * Get seek to working for audio/video streams
+    * Requires out of order decryption + more meta data
 
 ### Examples:
   * [Text](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/text.html)
