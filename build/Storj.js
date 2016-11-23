@@ -8775,7 +8775,9 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
     if( decryptionIndex == 0 ) return;
     var nextBlob = self.fileData[ decryptionIndex ];
     if( nextBlob ){
-      self._decryptBlob( new Blob( nextBlob ) );
+      for( var i = 0; i < nextBlob.length; i++ ){
+        self._decryptBlob( nextBlob[i] );
+      }
       decryptionIndex += 1;
       _checkDecryption();
     }
@@ -8808,12 +8810,12 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
           operation: 'PULL'
         }));
       },
-      onData: function(msg){
-        blobs.push(msg.data);
+      onData: function( msg ){
+        blobs.push( msg.data );
         currentSize += msg.data.size;
         console.log('shard: ', index, (100 * currentSize / totalSize) + '%');
         if( index == 0 ){
-          self._decryptBlob(msg.data);
+          self._decryptBlob( msg.data );
         }
         if( currentSize == totalSize ){
           if( index == 0 ){ decryptionIndex += 1; }
@@ -8832,8 +8834,7 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
 };
 
 Storj.Downloader.prototype._decryptBlob = function(blob) {
-  var self = this;
-  self.worker.postMessage(blob);
+  this.worker.postMessage(blob);
 };
 Storj.Stream = function(options, callback){
   var self = this;
