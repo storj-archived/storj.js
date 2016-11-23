@@ -3,12 +3,13 @@
   <title>Storj Download Example</title>
 </head>
 <body>
-<script type="text/javascript" src="../build/Storj.js"></script>
+<script id="Storj" type="text/javascript" src="../build/Storj.js"></script>
 <script>
 
 var options = {
   bucketId: 'ab5517b0232f29778a1d36e0',
-  file: 'storj-logo.jpg'
+  file: 'storj-logo.jpg',
+  size: 59477
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {

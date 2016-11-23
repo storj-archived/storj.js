@@ -8524,6 +8524,11 @@ Storj.Utils.createDecryptor = function(bucketKey, fileId) {
   );
 };
 
+Storj.Utils.getScriptPath = function() {
+  return document.querySelector('#Storj').src;
+};
+
+
 /**
   * options.method
   * options.url
@@ -8579,12 +8584,12 @@ Storj.BridgeClient = function(){
   var config = Storj.Config;
   var utils = Storj.Utils;
 
-  self.createToken = function(bucket, operation, callback){
+  self.createToken = function(bucket, operation, file, callback){
     utils.request({
       method: 'POST',
       url: config.bridge + '/buckets/' + bucket + '/tokens',
       responseType: 'json',
-      data: JSON.stringify({ operation: operation }),
+      data: JSON.stringify({ operation: operation, file: file }),
     }, callback);
   };
 
@@ -8639,7 +8644,60 @@ Storj.Downloader = function(options, callback){
   self.skip = 0;
   self.limit = null;
   self.fileData = [];
+  self.options = options;
   self._createToken();
+};
+
+Storj.Downloader.Worker = function(){
+  var workerString = function(){
+
+    var decipher;
+
+    var _init = function( url, bucketKey, fileId ){
+      console.log('_init');
+      importScripts( url );
+      decipher = Storj.Utils.createDecryptor( bucketKey, fileId );
+
+      decipher.on('readable', function(){
+        var data = decipher.read();
+        if( data ){
+          postMessage(data);
+        }
+      });
+    };
+
+    var _decrypt = function( blob ){
+      var fileReader = new FileReader();
+      fileReader.onload = function() {
+        var encrypted = this.result;
+        var decrypted = [];
+        var buffer = Storj.Exports.Buffer(encrypted, 'binary');
+        var chunkSize = 50000;
+        for(var i = 0; i < buffer.length; i += chunkSize){
+          decipher.write(buffer.slice(i, i + chunkSize));
+        }
+      };
+      fileReader.readAsBinaryString(blob);
+    };
+
+    var _end = function(){
+      console.log('_end');
+      decipher.end();
+    };
+
+    self.onmessage = function( event ){
+      var obj = event.data;
+      if( obj.type === 'init' ){
+        _init( obj.url, obj.bucketKey, obj.fileId );
+      } else if( obj.type === 'end' ){
+        _end();
+      } else {
+        _decrypt( event.data );
+      }
+    }
+  }.toString();
+  var len = workerString.length;
+  return workerString.substring( 'function(){'.length + 1, len - 1 );
 };
 
 Storj.Downloader.prototype._createToken = function(){
@@ -8647,7 +8705,7 @@ Storj.Downloader.prototype._createToken = function(){
   var self = this;
   var client = self.client;
 
-  client.createToken(self.bucketId, 'PULL', function(err, token){
+  client.createToken(self.bucketId, 'PULL', self.fileId, function(err, token){
     self.token = token;
     self._createDecipher();
   });
@@ -8657,23 +8715,31 @@ Storj.Downloader.prototype._createDecipher = function(){
   var self = this;
   var utils = Storj.Utils;
 
+  var decrypted = [];
+  var currentSize = 0;
+  var fileSize = self.token.size ? self.token.size : self.options.size;
+
+  var workerBlob = new Blob([Storj.Downloader.Worker()], {type: 'application/javascript'});
+  self.worker = new Worker( URL.createObjectURL( workerBlob ) );
+  self.worker.onmessage = function( event ){
+    currentSize += event.data.length;
+    console.log(currentSize);
+    self.stream( null, event.data );
+    decrypted.push( event.data );
+    if( currentSize == fileSize ){
+      self.callback( null, new Blob( decrypted ) );
+      self.worker.postMessage({ type: 'end' });
+    }
+  };
+
   var bucketKey = self.token.encryptionKey;
   var fileId = self.fileId;
 
-  self.decipher = utils.createDecryptor(bucketKey, fileId);
-
-  var decrypted = [];
-
-  self.decipher.on('readable', function(){
-    var data = self.decipher.read();
-    if (data) {
-      self.stream(null, data);
-      decrypted.push(data);
-    }
-  });
-
-  self.decipher.on('end', function(){
-    self.callback(null, new Blob(decrypted));
+  self.worker.postMessage({
+    type: 'init',
+    url: utils.getScriptPath(),
+    bucketKey: bucketKey,
+    fileId: fileId
   });
 
   self._getPointers();
@@ -8707,30 +8773,19 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
   var completedPointers = 0;
   var decryptionIndex = 0;
 
-  var _finishDecryption = function(){
-    decryptionIndex += 1;
-    if( numPointers == decryptionIndex ){
-      self.decipher.end();
-    }
-  }
-
-  var decrypting = false;
   var _checkDecryption = function(){
     console.log('checkDecryption', decryptionIndex);
     if( decryptionIndex == 0 ) return;
-    if( decrypting ) return;
     var nextBlob = self.fileData[ decryptionIndex ];
     if( nextBlob ){
-      decrypting = true;
-      self._decryptBlob( new Blob( nextBlob ), function(){
-        decrypting = false;
-        _finishDecryption();
-        _checkDecryption();
-      });
+      self._decryptBlob( new Blob( nextBlob ) );
+      decryptionIndex += 1;
+      _checkDecryption();
     }
   };
 
   var _finishPointer = function(){
+    console.log('_finishPointer')
     completedPointers += 1;
     _checkDecryption();
     if( completedPointers < numPointers ){
@@ -8761,10 +8816,10 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
         currentSize += msg.data.size;
         console.log('shard: ', index, (100 * currentSize / totalSize) + '%');
         if( index == 0 ){
-          var cb = currentSize == totalSize ? _finishDecryption : null;
-          self._decryptBlob(msg.data, cb);
+          self._decryptBlob(msg.data);
         }
         if( currentSize == totalSize ){
+          if( index == 0 ){ decryptionIndex += 1; }
           socket.close();
           self.fileData[index] = blobs;
           _finishPointer();
@@ -8779,24 +8834,9 @@ Storj.Downloader.prototype._resolvePointers = function(pointers){
   }
 };
 
-Storj.Downloader.prototype._decryptBlob = function(blob, callback) {
+Storj.Downloader.prototype._decryptBlob = function(blob) {
   var self = this;
-  var exports = Storj.Exports;
-  var decipher = self.decipher;
-  callback = callback ? callback : function(){};
-
-  var fileReader = new FileReader();
-  fileReader.onload = function() {
-    var encrypted = this.result;
-    var decrypted = [];
-    var buffer = exports.Buffer(encrypted, 'binary');
-    var chunkSize = 50000;
-    for(var i = 0; i < buffer.length; i += chunkSize){
-      decipher.write(buffer.slice(i, i + chunkSize));
-    }
-    callback();
-  };
-  fileReader.readAsBinaryString(blob);
+  self.worker.postMessage(blob);
 };
 Storj.Stream = function(options, callback){
   var self = this;
