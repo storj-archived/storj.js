@@ -8711,6 +8711,9 @@ Storj.Downloader.prototype._createToken = function(){
   var client = self.client;
 
   client.createToken(self.bucketId, 'PULL', self.fileId, function(err, token){
+    if( err ){
+      return self.callback( 'Could not download token' );
+    }
     self.token = token;
     self._createDecipher();
   });
@@ -8891,7 +8894,7 @@ Storj.Stream = function(options, callback){
       handleNextSegment();
     };
 
-    var Downloader = new Storj.Downloader(options, function(){});
+    var Downloader = new Storj.Downloader( options, callback );
 
   });
 };

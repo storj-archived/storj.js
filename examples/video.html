@@ -25,7 +25,9 @@ var options = {
   onProgress: onProgress
 };
 
-var downloader = new Storj.Downloader(options, function(err, data) {
+var downloader = new Storj.Downloader( options, function( err, data ){
+  if( err ){ return console.log(err); }
+
   var blob = new Blob([data], {type: "video/webm"});
   var url = URL.createObjectURL(blob);
   var video = document.createElement('video');

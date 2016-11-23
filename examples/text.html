@@ -12,7 +12,9 @@ var options = {
   size: 2214
 };
 
-var downloader = new Storj.Downloader(options, function(err, blob) {
+var downloader = new Storj.Downloader(options, function( err, blob ){
+  if( err ){ return console.log(err); }
+
   var reader = new FileReader();
   reader.onloadend = function(){
     var pre = document.createElement('pre');

@@ -17,7 +17,9 @@ var options = {
   codec: 'audio/webm;codecs="vorbis"'
 };
 
-var streamer = new Storj.Stream(options);
+var streamer = new Storj.Stream(options, function( err ){
+  if( err ){ return console.log(err); }
+});
 
 </script>
 </body>
