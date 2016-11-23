@@ -8641,6 +8641,7 @@ Storj.Downloader = function(options, callback){
   self.client = new Storj.BridgeClient();
   self.callback = callback;
   self.stream = options.stream ? options.stream : function(){};
+  self.onProgress = options.onProgress ? options.onProgress : function(){};
   self.skip = 0;
   self.limit = null;
   self.fileData = [];
@@ -8721,6 +8722,7 @@ Storj.Downloader.prototype._createDecipher = function(){
   self.worker = new Worker( URL.createObjectURL( workerBlob ) );
   self.worker.onmessage = function( event ){
     currentSize += event.data.length;
+    self.onProgress( currentSize / fileSize );
     self.stream( null, event.data );
     decrypted.push( event.data );
     if( currentSize == fileSize ){

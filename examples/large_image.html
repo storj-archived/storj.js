@@ -4,12 +4,25 @@
 </head>
 <body>
 <script id="Storj" type="text/javascript" src="../build/Storj.js"></script>
+<div id="loader" style="width:500px;height:500px;">
+  <div style="width:400px;height:20px;left:50px;top:240px;border-radius:5px;border:2px solid black;position:absolute;">
+    <div id="progress" style="width:0%;height:100%;background:#3498db"></div>
+  </div>
+</div>
 <script>
+
+var loader = document.getElementById('loader');
+var progress = document.getElementById('progress');
+
+var onProgress = function( update ){
+  progress.style.width = ( update * 100 ) + '%';
+};
 
 var options = {
   bucketId: 'ab5517b0232f29778a1d36e0',
   file: 'image.png',
-  size: 1002747
+  size: 1002747,
+  onProgress: onProgress
 };
 
 var downloader = new Storj.Downloader(options, function(err, data) {
@@ -17,7 +30,10 @@ var downloader = new Storj.Downloader(options, function(err, data) {
   var url = URL.createObjectURL(blob);
   var img = new Image();
   img.src = url;
-  document.body.appendChild(img);
+  img.style.width = '500px';
+  img.style.height = '500px';
+  document.body.removeChild( loader );
+  document.body.appendChild( img );
 });
 </script>
 </body>
