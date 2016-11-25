@@ -66,15 +66,14 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   * Add progress indication for files and streams
 
 ### To do:
-  * Properly handle errors and issue X retries per shard
-    * Add failed pointers to exclude list
-  * Use supplied mimetype of file and create DOM element
-    * Requires [this pull request](https://github.com/Storj/bridge/pull/288) to be merged
-  * Use file size from token
-    * Also requires [this pull request](https://github.com/Storj/bridge/pull/288) to be merged
-  * Automatically replace special browser storj tags with equivalent elements
   * **Solve mixed content errors on https pages (important!)**
     * WebRTC or "Let's Encrypt"
+  * Automatically replace special browser storj tags with equivalent elements
+  * Use supplied file size, requires PR deployment
+  * Use supplied mimetype of file and create DOM element
+    * Requires [this pull request](https://github.com/Storj/bridge/pull/288) to be merged
+  * Properly handle errors and issue X retries per shard
+    * Add failed pointers to exclude list
 
 ### Wishlist:
   * Figure out efficient distributed streaming method
