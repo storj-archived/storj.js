@@ -7,7 +7,10 @@
   "scripts": {
     "build": "browserify lib/*.js -o storj.js",
     "pretest": "jshint lib/*.js",
-    "test": "true"
+    "test": "tape test/**/*.js && testling"
+  },
+  "testling": {
+    "files": ["lib/*.js", "test/**/*.js"]
   },
   "author": "Chris Pollard",
   "contributors": [
@@ -19,7 +22,9 @@
   "license": "LGPL",
   "devDependencies": {
     "browserify": "^13.1.1",
-    "jshint": "^2.9.4"
+    "jshint": "^2.9.4",
+    "tape": "^4.6.3",
+    "testling": "^1.7.1"
   },
   "dependencies": {}
 }
