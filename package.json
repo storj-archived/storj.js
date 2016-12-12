@@ -5,21 +5,21 @@
   "main": "index.js",
   "directories": {},
   "scripts": {
-    "start": "node index.js",
-    "build": "grunt browserify; grunt concat; grunt closure-compiler",
-    "watch": "grunt watch"
+    "build": "browserify lib/*.js -o storj.js",
+    "pretest": "jshint lib/*.js",
+    "test": "true"
   },
   "author": "Chris Pollard",
+  "contributors": [
+    {
+      "name": "retrohacker",
+      "url": "https://github.com/retrohacker"
+    }
+  ],
   "license": "LGPL",
   "devDependencies": {
-    "express": "^4.14.0",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-closure-compiler": "0.0.21",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0"
+    "browserify": "^13.1.1",
+    "jshint": "^2.9.4"
   },
-  "dependencies": {
-    "storj-lib": "^5.1.2"
-  }
+  "dependencies": {}
 }
