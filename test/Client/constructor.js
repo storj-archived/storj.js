@@ -6,10 +6,8 @@ var EventEmitter = require('events').EventEmitter;
 
 test('Constructor creates Client', function (t) {
   var client = new Client();
-
   t.ok(client instanceof Client, 'Should be a client');
   t.ok(client instanceof EventEmitter, 'Should be an EventEmitter');
-
   t.end();
 });
 
