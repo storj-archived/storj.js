@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Storj Core Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script src="scripts/highlight.min.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="styles/site.storj.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" style="background-image:url(img/logo.svg)"  href="index.html">Storj Core</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client.html">storjjs/client</a></li><li><a href="module-storjjs_file.html">storjjs/file</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client-Client.html">storjjs/client~Client</a></li><li><a href="module-storjjs_file-File.html">storjjs/file~File</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Client.html#event:error">Client#event:error</a></li><li><a href="Client.html#event:file">Client#event:file</a></li><li><a href="File.html#event:done">File#event:done</a></li><li><a href="File.html#event:error">File#event:error</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-4">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>Storj.js</h1><p>Extremely early version of the browser library for <a href="https://storj.io/">Storj.io</a>.</p>
+<h3>Use:</h3><ol>
+<li><p>Install <a href="https://github.com/Storj/core-cli">core-cli</a></p>
+<pre class="prettyprint source"><code>npm install storj-cli --global
+storj login</code></pre></li>
+<li><p>Generate a deterministic seed</p>
+<pre class="prettyprint source"><code>storj generate-seed</code></pre></li>
+<li><p>Create a new bucket and make it public for downloads</p>
+<pre class="prettyprint source"><code>storj add-bucket PublicBucket
+storj make-public PublicBucket --pull</code></pre></li>
+<li><p>Upload a small image file</p>
+<pre class="prettyprint source"><code>storj upload-file PublicBucket test.png</code></pre></li>
+<li><p>Download the file in a browser</p>
+<pre class="prettyprint source lang-html"><code>&lt;html>
+&lt;head>
+&lt;title>Storj Download Example&lt;/title>
+&lt;/head>
+&lt;body>
+&lt;script type=&quot;text/javascript&quot; src=&quot;../build/Storj.js&quot;>&lt;/script>
+&lt;script>
+
+var options = {
+ bucketId: '&lt;bucket-id>', // || user: &lt;email>, bucket: &lt;bucket-name>
+ file: 'test.png'
+};
+var downloader = new Storj.Downloader(options, function(err, data) {
+ var blob = new Blob([data], {type: &quot;image/jpg&quot;});
+ var url = URL.createObjectURL(blob);
+ var img = new Image();
+ img.src = url;
+ document.body.appendChild(img);
+});
+
+&lt;/script>
+&lt;/body>
+&lt;/html></code></pre></li>
+</ol>
+<h3>Completed:</h3><ul>
+<li>Download files in public buckets</li>
+<li>Initial version of audio and video streaming</li>
+<li>Create documentation for creating public buckets</li>
+<li>Refacto Stream.js to use Download.js logic</li>
+<li>Add concurrent downloads for streaming</li>
+<li>Perform decryption in separate thread or in way that doesn't freeze interface</li>
+<li>Add progress indication for files and streams</li>
+</ul>
+<h3>To do:</h3><ul>
+<li><strong>Solve mixed content errors on https pages (important!)</strong><ul>
+<li>WebRTC or &quot;Let's Encrypt&quot;</li>
+</ul>
+</li>
+<li>Automatically replace special browser storj tags with equivalent elements</li>
+<li>Use supplied file size, requires PR deployment</li>
+<li>Use supplied mimetype of file and create DOM element<ul>
+<li>Requires <a href="https://github.com/Storj/bridge/pull/288">this pull request</a> to be merged</li>
+</ul>
+</li>
+<li>Properly handle errors and issue X retries per shard<ul>
+<li>Add failed pointers to exclude list</li>
+</ul>
+</li>
+</ul>
+<h3>Wishlist:</h3><ul>
+<li>Figure out efficient distributed streaming method<ul>
+<li>Requires out of order decryption</li>
+</ul>
+</li>
+<li>Get seek to working for audio/video streams<ul>
+<li>Requires out of order decryption + more meta data</li>
+</ul>
+</li>
+</ul>
+<h3>Examples:</h3><ul>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/text.html">Text</a></li>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/small_image.html">Small Image</a></li>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/large_image.html">Large Image</a></li>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/video.html">Video</a></li>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/audio_stream.html">Audio Streaming</a></li>
+<li><a href="http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/video_stream.html">Video Streaming</a></li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2016 Storj Labs
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	$('pre').each(function(i, block) {
+		hljs.highlightBlock(block);
+	});
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

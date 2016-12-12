@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Storj Core Source: File.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script src="scripts/highlight.min.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="styles/site.storj.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" style="background-image:url(img/logo.svg)"  href="index.html">Storj Core</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client.html">storjjs/client</a></li><li><a href="module-storjjs_file.html">storjjs/file</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client-Client.html">storjjs/client~Client</a></li><li><a href="module-storjjs_file-File.html">storjjs/file~File</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Client.html#event:error">Client#event:error</a></li><li><a href="Client.html#event:file">Client#event:file</a></li><li><a href="File.html#event:done">File#event:done</a></li><li><a href="File.html#event:error">File#event:error</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-4">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: File.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript ">/**
+ * @module storjjs/file
+ * @license LGPL-3.0
+ */
+'use strict';
+
+// File will emit events
+var EventEmitter = require('events').EventEmitter;
+
+// We use util to make File extend EventEmitter
+var util = require('util');
+
+/**
+ * Creates a new instance of a file
+ * @constructor
+ * @prop {String} bucketId - The bucket id that the file lives in on the Br
+ * @prop {Number} length - File length in bytes
+ * @prop {Number} timeRemaining - Approximate time remaining until download
+ * completes, measured in milliseconds
+ * @prop {Number} received - Total bytes downloaded from peers, including
+ * invalid data
+ * @prop {Number} downloaded - Total verified bytes received from peers. A
+ * verified byte is a byte belonging to a shard that has been verified to be
+ * correct
+ * @prop {Number} downloadSpeed - File download speed, in bytes/sec
+ * @prop {Number} progress - File download progress, from 0 to 1
+ * @prop {Number} numPeers - Total number of farmers we are actively connected
+ * to
+ * @implements {EventEmitter}
+ */
+function File() {
+  /* TODO */
+}
+
+// Make File extend the EventEmitter class
+util.inherits(File, EventEmitter);
+
+/**
+ * Emitted when the file has finished downloading and is ready to use
+ * @event File#done
+ */
+
+/**
+ * Emitted when the file encounters an unrecoverable error, if a listener is
+ * not registered for this event it will propogate up to client.
+ * @event File#error
+ * @type {error}
+ */
+
+/**
+ * Get the contents of the file as a Buffer
+ * @param {File~getBufferCallback} cb
+ */
+File.prototype.getBuffer = function getBuffer() {
+  /* TODO */
+};
+
+/**
+ * @callback File~getBufferCallback
+ * @param {Error} error
+ * @param {Buffer} buffer
+ */
+
+/**
+ * Show the file in a browser by appending it to the DOM. This is a powerful
+ * function that handles many file types like video (.mp4, .webm, .m4v, etc.),
+ * audio (.m4a, .mp3, .wav, etc.), images (.jpg, .gif, .png, etc.), and other
+ * file formats (.pdf, .md, .txt, etc.).
+ *
+ * This call is safe to call on a file that has not finished downloading yet,
+ * it will wait until the file is fully available before rendering.
+ *
+ * `rootElem` is a container element (CSS selector or reference to DOM node)
+ * that the content will be shown in. A new DOM node will be created for the
+ * content and appended to `rootElem`.
+ *
+ * If provided, callback will be called once the file is visible to the user.
+ * @param {File~appendToCallback} cb
+ */
+File.prototype.appendTo = function appendTo() {
+  /* TODO */
+};
+
+/**
+ * @callback File~appendToCallback
+ * @param {Error} error
+ * @param {HTMLElement} element - The new DOM node that is displaying the
+ * content
+ */
+
+/**
+ * Like file.appendTo but renders directly into the given element
+ * @param {File~renderToCallback} cb
+ */
+File.prototype.renderTo = function renderTo() {
+  /* TODO */
+};
+
+/**
+ * @callback File~renderToCallback
+ * @param {Error} error
+ * @param {HTMLElement element - The new DOM node that is displaying the
+ * content
+ */
+
+/**
+ * Get a W3C Blob object which contains the file data
+ * @param {File~getBlobCallback} cb
+ */
+File.prototype.getBlob = function getBlob() {
+  /* TODO */
+};
+
+/**
+ * @callback File~getBlobCallback
+ * @param {Error} error
+ * @param {Blob} blob
+ */
+
+/**
+ * Get a url which can be used in the browser to refer to the file
+ * @param {File~getBlobUrl} cb
+ */
+File.prototype.getBlobUrl = function getBlobUrl() {
+  /* TODO */
+};
+
+/**
+ * @callback File~getBlobCallback
+ * @param {Error} error
+ * @param {String} url
+ */
+
+// Export the File class
+module.exports = File;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2016 Storj Labs
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	$('pre').each(function(i, block) {
+		hljs.highlightBlock(block);
+	});
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "opts": {
+    "template": "node_modules/ink-docstrap/template"
+  },
+  "templates": {
+    "systemName": "Storj Core",
+    "copyright":  "Copyright 2016 Storj Labs",
+    "includeDate": false,
+    "navType": "vertical",
+    "logoFile": "img/logo.svg",
+    "theme": "storj",
+    "linenums": false,
+    "collapseSymbols": false,
+    "inverseNav": false,
+    "outputSourceFiles": true,
+    "outputSourcePath": true,
+    "dateFormat": "",
+    "sort": "longname",
+    "syntaxTheme": "default"
+  }
+}

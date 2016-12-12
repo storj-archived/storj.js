@@ -7,10 +7,14 @@
   "scripts": {
     "build": "browserify lib/*.js -o storj.js",
     "pretest": "jshint lib/*.js",
-    "test": "tape test/**/*.js && testling"
+    "test": "tape test/**/*.js && testling",
+    "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc"
   },
   "testling": {
-    "files": ["lib/*.js", "test/**/*.js"]
+    "files": [
+      "lib/*.js",
+      "test/**/*.js"
+    ]
   },
   "author": "Chris Pollard",
   "contributors": [
@@ -22,9 +26,12 @@
   "license": "LGPL",
   "devDependencies": {
     "browserify": "^13.1.1",
+    "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
     "tape": "^4.6.3",
     "testling": "^1.7.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "ink-docstrap": "bookchin/docstrap"
+  }
 }
