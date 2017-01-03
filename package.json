@@ -5,8 +5,8 @@
   "main": "index.js",
   "directories": {},
   "scripts": {
-    "build": "browserify lib/*.js -o storj.js",
-    "pretest": "jshint lib/*.js",
+    "build": "browserify lib/*.js > storj.es6.js # && babel storj.es6.js > storj.es5.js",
+    "pretest": "jshint lib/*.js && browserify lib/*.js test/**/*.js -o test.js",
     "test": "tape test/**/*.js && testling",
     "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc"
   },
@@ -25,13 +25,15 @@
   ],
   "license": "LGPL",
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "browserify": "^13.1.1",
+    "ink-docstrap": "bookchin/docstrap",
     "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
     "tape": "^4.6.3",
     "testling": "^1.7.1"
   },
   "dependencies": {
-    "ink-docstrap": "bookchin/docstrap"
+    "storj-lib": "retrohacker/core"
   }
 }
