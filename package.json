@@ -6,8 +6,8 @@
   "directories": {},
   "scripts": {
     "build": "browserify lib/*.js > storj.es6.js # && babel storj.es6.js > storj.es5.js",
-    "pretest": "jshint lib/*.js && browserify lib/*.js test/**/*.js -o test.js",
-    "test": "tape test/**/*.js && testling",
+    "pretest": "jshint lib/*.js #&& browserify lib/*.js test/**/*.js -o test.js",
+    "test": "nyc --reporter=text --reporter=html tape test/**/*.js #&& testling",
     "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc"
   },
   "testling": {
@@ -30,6 +30,8 @@
     "ink-docstrap": "bookchin/docstrap",
     "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
+    "nyc": "^10.0.0",
+    "proxyquire": "^1.7.10",
     "tape": "^4.6.3",
     "testling": "^1.7.1"
   },
