@@ -36,6 +36,11 @@
     "testling": "^1.7.1"
   },
   "dependencies": {
-    "storj-lib": "retrohacker/core"
+    "chunk-store-stream": "^2.0.2",
+    "memory-chunk-store": "^1.2.0",
+    "render-media": "^2.9.1",
+    "storj-lib": "retrohacker/core",
+    "stream-to-blob": "^1.0.0",
+    "stream-to-blob-url": "^2.1.0"
   }
 }

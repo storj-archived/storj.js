@@ -122,6 +122,10 @@ test('resolveFileFromPointers invoked on file creation', function(t) {
   });
 
   var file = new File(mockBucket, mockFile);
+
+  // Prevent assembling the file
+  file._initStore = function (){}
+
   var muxer = 'foo';
 
   file._bridgeClient = {
@@ -157,6 +161,34 @@ test('resolveFileFromPointers emits error', function(t) {
   }
   file.on('error', function (e) {
     t.equal(e, error, 'Error passed through');
+    t.end();
+  })
+})
+
+test('fetchFile emits ready', function(t) {
+  var File = proxyquire('../../lib/File', {
+    request: {
+      post: function (opt, cb) {
+        setImmediate(cb);
+      },
+      get: function (opt, cb) {
+        setImmediate(cb);
+      }
+    }
+  });
+
+  var file = new File(mockBucket, mockFile);
+  // Keep initStore from triggering
+  file._initStore = function () {};
+  var error = new Error('foo');
+  file._bridgeClient = {
+      resolveFileFromPointers: function(p, o, c) {
+        c();
+      }
+  }
+
+  file.on('ready', function () {
+    t.pass('Emitted!');
     t.end();
   })
 })
