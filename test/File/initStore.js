@@ -3,7 +3,14 @@ var proxyquire = require('proxyquire');
 var stream = require('stream');
 
 test('initStore loads data', function(t) {
-  var File = proxyquire('../../lib/File.js', {});
+  var keyIV = function () {}
+  keyIV.getDeterministicKey = function () {}
+  var File = proxyquire('../../lib/File.js', {
+    'storj-lib/lib/crypto-tools/decrypt-stream.js': function () {
+      return new stream.PassThrough();
+    },
+    'storj-lib/lib/crypto-tools/deterministic-key-iv.js': keyIV
+  });
   var buffer = new Buffer('foobar');
   var fakeFile = {};
   fakeFile._muxer = new stream.Duplex();
