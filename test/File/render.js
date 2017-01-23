@@ -1,3 +1,4 @@
+'use strict';
 var test = require('tape');
 var proxyquire = require('proxyquire');
 
@@ -17,7 +18,7 @@ test('getExtension works', function (t) {
 test('appendTo calls out to render', function (t) {
   var elem = 'foo';
   var File = proxyquire('../../lib/File.js', {
-    "render-media": {
+    'render-media': {
       append: function(file, root, cb) {
         t.equal(file.name, 'file.pdf', 'Correct extension used');
         t.equal(root, elem, 'root-element passed through');
@@ -44,7 +45,7 @@ test('appendTo calls out to render', function (t) {
 test('renderTo calls out to render', function (t) {
   var elem = 'foo';
   var File = proxyquire('../../lib/File.js', {
-    "render-media": {
+    'render-media': {
       render: function(file, root, cb) {
         t.equal(file.name, 'file.pdf', 'Correct extension used');
         t.equal(root, elem, 'root-element passed through');
@@ -71,8 +72,8 @@ test('renderTo calls out to render', function (t) {
 test('appendTo handles error', function (t) {
   var elem = 'foo';
   var File = proxyquire('../../lib/File.js', {
-    "render-media": {
-      append: function(file, root, cb) {
+    'render-media': {
+      append: function() {
         t.fail('Should not be called');
       }
     }
@@ -95,8 +96,8 @@ test('appendTo handles error', function (t) {
 test('renderTo handles error', function (t) {
   var elem = 'foo';
   var File = proxyquire('../../lib/File.js', {
-    "render-media": {
-      render: function(file, root, cb) {
+    'render-media': {
+      render: function() {
         t.fail('Should not be called');
       }
     }

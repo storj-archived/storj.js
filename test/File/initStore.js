@@ -1,3 +1,4 @@
+'use strict';
 var test = require('tape');
 var proxyquire = require('proxyquire');
 var stream = require('stream');
@@ -41,7 +42,7 @@ test('initStore loads data', function(t) {
 
 test('getBlobUrl', function(t) {
   var File = proxyquire('../../lib/File.js', {
-    "stream-to-blob-url": function() {
+    'stream-to-blob-url': function() {
       t.pass('invoked!');
       t.end();
     }
@@ -59,7 +60,7 @@ test('getBlobUrl', function(t) {
 
 test('getBlob', function(t) {
   var File = proxyquire('../../lib/File.js', {
-    "stream-to-blob": function() {
+    'stream-to-blob': function() {
       t.pass('invoked!');
       t.end();
     }
@@ -69,6 +70,6 @@ test('getBlob', function(t) {
   fakeFile._store = new require('memory-chunk-store')(buffer.length);
   fakeFile._store.put(0, buffer, function (e) {
     t.error(e, 'Inserted buffer');
-    File.prototype.getBlob.call(fakeFile, function(e, url) {});
+    File.prototype.getBlob.call(fakeFile, function() {});
   });
 });

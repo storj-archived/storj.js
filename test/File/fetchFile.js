@@ -15,7 +15,7 @@ test('createFileToken requests token from bridge', function (t) {
   var url = `${bridge}/buckets/${mockBucket}/tokens`;
   var File = proxyquire('../../lib/File', {
     request: {
-      post: function (opt, cb) {
+      post: function (opt) {
         t.equal(opt.url, url, 'Requested correct url');
         t.equal(opt.body.file, mockFile, 'Requested correct file');
         t.end();
@@ -23,7 +23,7 @@ test('createFileToken requests token from bridge', function (t) {
     }
   });
 
-  var file = new File(mockBucket, mockFile, { bridge: bridge });
+  return new File(mockBucket, mockFile, { bridge: bridge });
 });
 
 test('_fetchFile emits error when createFileToken fails', function(t) {
@@ -53,7 +53,7 @@ test('getFilePointers invoked on File creation', function(t) {
       post: function (opt, cb) {
         setImmediate(cb, null, null, { token: token });
       },
-      get: function (opt, cb) {
+      get: function (opt) {
         t.equal(opt.url.split('?')[0], url, 'Proper url invoked');
         t.equal(opt.headers['x-token'], token, 'Token passed through');
         t.end();
@@ -61,7 +61,7 @@ test('getFilePointers invoked on File creation', function(t) {
     }
   });
 
-  var file = new File(mockBucket, mockFile, { bridge: bridge });
+  return new File(mockBucket, mockFile, { bridge: bridge });
 })
 
 test('getFilePointers emits error', function(t) {
@@ -129,14 +129,14 @@ test('resolveFileFromPointers invoked on file creation', function(t) {
   var muxer = 'foo';
 
   file._bridgeClient = {
-      resolveFileFromPointers: function(p, o, c) {
-        t.pass('Inoked!');
-        setImmediate(function() {
-          t.equal(file._muxer, muxer, 'Muxer assigned to file');
-          t.end();
-        })
-        c(null, muxer);
-      }
+    resolveFileFromPointers: function(p, o, c) {
+      t.pass('Inoked!');
+      setImmediate(function() {
+        t.equal(file._muxer, muxer, 'Muxer assigned to file');
+        t.end();
+      })
+      c(null, muxer);
+    }
   }
 })
 
@@ -155,9 +155,9 @@ test('resolveFileFromPointers emits error', function(t) {
   var file = new File(mockBucket, mockFile);
   var error = new Error('foo');
   file._bridgeClient = {
-      resolveFileFromPointers: function(p, o, c) {
-        c(error);
-      }
+    resolveFileFromPointers: function(p, o, c) {
+      c(error);
+    }
   }
   file.on('error', function (e) {
     t.equal(e, error, 'Error passed through');
@@ -180,11 +180,10 @@ test('fetchFile emits ready', function(t) {
   var file = new File(mockBucket, mockFile);
   // Keep initStore from triggering
   file._initStore = function () {};
-  var error = new Error('foo');
   file._bridgeClient = {
-      resolveFileFromPointers: function(p, o, c) {
-        c();
-      }
+    resolveFileFromPointers: function(p, o, c) {
+      c();
+    }
   }
 
   file.on('ready', function () {

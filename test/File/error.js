@@ -42,7 +42,7 @@ test('Error emits on File object', function(t) {
     t.end();
   })
 
-  c.on('error', function(e) {
+  c.on('error', function() {
     t.fail('Error should not be passed through to client');
   });
 
@@ -56,7 +56,6 @@ test('File throws when fails to emit', function(t) {
     }
   });
 
-  var c = new Client();
   var file = new File(mockBucket, mockFile);
   var error = new Error('foobar');
 
