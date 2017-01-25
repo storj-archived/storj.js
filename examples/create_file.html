@@ -39,7 +39,10 @@
           var opts = {
             body: stream
           }
-          storj.createFile(bucketId, files, opts);
+          storj.createFile(bucketId, files, opts, (err, res) => {
+            console.log(err)
+            console.log(res)
+          });
         },
         onDropText: function (text, pos) {
           createFile(bucketId, text)
