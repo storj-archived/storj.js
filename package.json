@@ -36,7 +36,6 @@
     "testling": "^1.7.1"
   },
   "dependencies": {
-    "chunk-store-stream": "^2.0.2",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
     "memory-blob-store": "^1.0.0",
