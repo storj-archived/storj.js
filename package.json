@@ -39,6 +39,7 @@
     "chunk-store-stream": "^2.0.2",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
+    "memory-blob-store": "^1.0.0",
     "memory-chunk-store": "^1.2.0",
     "render-media": "^2.9.1",
     "storj-lib": "retrohacker/core#68752abc5398bcf465d4ab0776329d65644ad2f2",
