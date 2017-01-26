@@ -3,11 +3,11 @@
     <title>Storj upload example</title>
     <style>
       .box {
-        border: dotted 1px black; 
+        border: dotted 1px black;
         height: 400px;
         background-color: powderblue;
         width: 400px;
-        margin: 0 auto; 
+        margin: 0 auto;
       }
       .drag {
         border: 5px solid red;
@@ -19,9 +19,9 @@
     <br/>
     <br/>
     <div class="box"></div>
-    <script src="./dragdrop.min.js"></script>
-    <script src="./storj.es6.js"></script>
-    <script src="./bundle.js"></script>
+    <script src="dragdrop.min.js"></script>
+    <script src="storj.es6.js"></script>
+    <script src="bundle.js"></script>
     <script>
       var bucketId = 'bucketId'
       var shard = 'shard'
@@ -29,7 +29,7 @@
       var options = {
         bridge: 'http://localhost:8080'
       }
-      
+
       var storj = new Storj(options)
 
       window.remove = DragDrop('.box', {
