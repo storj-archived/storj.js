@@ -9,6 +9,7 @@ var Client = new Storj();
 test('it should instantiate a Storj object', function(t) {
   t.true(Client, 'Client exists');
   t.true(Client instanceof Storj, 'Client is an instance of Storj');
+  // TODO: More thorough testing needed of initial object setup
 });
 
 test('it should create a file', function(t) {
@@ -24,19 +25,26 @@ test('it should create a file', function(t) {
 
 test('it should get a list of files in a bucket', function(t) {
   var bucketId = 1234;
-  var fileName = 'fileName.jpg';
-
-  Client.getFiles(bucketId, fileName, function(files) {
-    console.log(files);
+  Client.getFiles(bucketId, function(err, files) {
+    t.error(err, 'Get files failed');
     t.true(files);
+  })
+});
+
+test('it should get a file', function(t) {
+  var bucketId = 1234;
+  var fileName = 'fileName.jpg';
+  Client.getFile(bucketId, fileName, function(err, file){
+    t.true(file);
     t.error(err, 'Get file failed');
   });
 });
 
-test('it should get a file', function(t) {
-
-});
-
 test('it should delete a file', function(t) {
-
+  var bucketId = 1234;
+  var fileId = 1234;
+  Client.deleteFile(bucketId, fileId, function(err, file) {
+    t.pass(file);
+    t.error(err, 'Delete file failed');
+  })
 });
