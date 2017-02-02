@@ -2,22 +2,30 @@
 
 In its current state, Storj.js uploads are a bit confusing and are under a few assumptions that need to be addressed by the developer using Storj.js
 
-This will server as a guide for developers wishing to create applications with storj.js
+This will serve as a guide for developers wishing to create applications with storj.js
 
 ## Requirements
 
 - Browserify or webpack
-- nginx (needed to server the html for feross drag-drop)
+- nginx (needed to server the html for Feross drag-drop)
 - storj.es6.js (this a bundle of storj.js used to access storj)
-- bundle.js (this is a bundle of file_stream.js to get a file stream from the browser)
-- dragdrop.js (this is a bundle of feross drag-drop)
+- stream_bundle.js (this is a bundle of file_stream.js to get a file stream from the browser)
+- dragdrop_bundle.js (this is a bundle of drag-drop)
 - create_file.html (the html serving storj.js and the other bundles)
 
 ## Install
 
+Until the PR is landed, we will be working with isomorphic-bridge-client branch
+
 ```
 git clone https://github.com/Storj/storj.js
+git clone https://github.com/retrohacker/core/tree/isomorphic-bridge-client
+cd core
+npm i
+npm link
+cd ..
 cd storj.js
+npm link storj-lib
 npm i
 npm run build
 ```
@@ -26,19 +34,17 @@ After creating the browserified bundle of storj.js. You can drop it in any of th
 
 ## Start web server
 
-Since this example is using feross drag-drop. We need use a web server to indicate to the browser that we not intending to drop the file to the file system. 
+Since this example is using Feross drag-drop. We need to use a web server to indicate to the browser that we are not intending to drop the file to the file system. 
 
 Any web server will work. Just server storj.js/examples/uploads/ as the root directory and use create_file.html as your entry point index.html.
 
 ## Create a pubilc bucket
 
-Create a public bucket with the storj-cli and place the name in the bucketId variable in create_file.html
-
-This will be used by the api 
+Create a public bucket (or private if not serving downloads to the browser) with the storj-cli and place the ID in the bucketId variable in create_file.html. This can be used by the api to server your downloads in the browser if public.
 
 ## Input bridge url and auth credentials
 
-Currently we need to auth with the bridge server to request file shard frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj intigration for instructions on how to run a test storj netowork. 
+Currently we need to auth with the bridge server to request file shard frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj integration for instructions on how to run a test storj netowork. 
 
 Provide your email and password to the create_file.html basicAuth object.
 
