@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <h1>Drag a file into this box to upload it to Storj</h1>
+    <h1>Drag a file into the box to upload it to Storj</h1>
     <br/>
     <br/>
     <div class="box"></div>
@@ -24,11 +24,14 @@
     <script src="bundle.js"></script>
     <script>
       var bucketId = '77845a36aadcb966fc76d5da'
-      //var bucketId = '57e1dcd15f5177472393ba9e'
       var shard = '603d9480ab2e9b66705f3896'
 
       var options = {
-        bridge: 'http://localhost:8080'
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
       }
       
       var storj = new Storj(options)
@@ -39,9 +42,12 @@
           var opts = {
             body: stream
           }
+
           storj.createFile(bucketId, files, opts, (err, res) => {
-            console.log(err)
-            console.log(res)
+            if (err) {
+              alert('File failed to upload' + err);
+            }
+            alert('File finished uploading! ' + JSON.stringify(res))
           });
         },
         onDropText: function (text, pos) {
