@@ -11,7 +11,7 @@ Our only current working example for downloading a file in browser is pdf docume
 ## Install
 
 ```
-git clone https://github.com/Storj/storj.js
+git clone https://github.com/Storj/storj.js/tree/api
 cd storj.js
 npm i
 npm run build

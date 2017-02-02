@@ -15,10 +15,10 @@ This will serve as a guide for developers wishing to create applications with st
 
 ## Install
 
-Until the PR is landed, we will be working with isomorphic-bridge-client branch
+Until the PR is landed, we will be working with isomorphic-bridge-client branch on core and the api branch on storj.js
 
 ```
-git clone https://github.com/Storj/storj.js
+git clone https://github.com/Storj/storj.js/tree/api
 git clone https://github.com/retrohacker/core/tree/isomorphic-bridge-client
 cd core
 npm i
