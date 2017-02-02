@@ -40,10 +40,56 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
     <script>
       var bucket = '<bucket-id>';
       var config = { bridge: 'http://127.0.0.1:8080' };
-      var pdf = new storj.File(bucket, '<file-id>',config)
+      var pdf = new File(bucket, '<file-id>',config)
         .on('done', function () { pdf.renderTo('#pdf'); });
-      var video = new storj.File(bucket, '<file-id>', config)
+      var video = new File(bucket, '<file-id>', config)
         .on('done', function () { video.appendTo('body'); });
+    </script>
+    </body>
+  </html>
+  ```
+
+  Extra Credit: Upload a file in a browser
+
+  ```html
+  <html>
+    <head>
+    <title>Storj Upload Example</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="storj.es6.js"></script>
+    <script>
+      var bucketId = '77845a36aadcb966fc76d5da'
+      var shard = '603d9480ab2e9b66705f3896'
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+      }
+      
+      var storj = new Storj(options)
+
+      window.remove = DragDrop('.box', {
+        onDrop: function (files, pos) {
+          var stream = window.getFileStream(files);
+          var opts = {
+            body: stream
+          }
+
+          storj.createFile(bucketId, files, opts, (err, res) => {
+            if (err) {
+              alert('File failed to upload' + err);
+            }
+            alert('File finished uploading! ' + JSON.stringify(res))
+          });
+        },
+        onDropText: function (text, pos) {
+          storj.createFile(bucketId, text)
+        }
+      })
     </script>
     </body>
   </html>
