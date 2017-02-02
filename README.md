@@ -38,11 +38,11 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   <body>
     <script type="text/javascript" src="storj.es6.js"></script>
     <script>
-      var bucket = '51ffcf13d349e2b199550bcc';
+      var bucket = '<bucket-id>';
       var config = { bridge: 'http://127.0.0.1:8080' };
-      var pdf = new storj.File(bucket, 'db259e03219fa449c6a277b7',config)
+      var pdf = new storj.File(bucket, '<file-id>',config)
         .on('done', function () { pdf.renderTo('#pdf'); });
-      var video = new storj.File(bucket, 'e92547cc0c74f588a20b80a0', config)
+      var video = new storj.File(bucket, '<file-id>', config)
         .on('done', function () { video.appendTo('body'); });
     </script>
     </body>
@@ -53,7 +53,7 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   * Download files in public buckets
   * Initial version of audio and video streaming
   * Create documentation for creating public buckets
-  * Refacto Stream.js to use Download.js logic
+  * Refactor Stream.js to use Download.js logic
   * Add concurrent downloads for streaming
   * Perform decryption in separate thread or in way that doesn't freeze interface
   * Add progress indication for files and streams
