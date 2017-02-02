@@ -36,21 +36,60 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
     <title>Storj Download Example</title>
   </head>
   <body>
-    <script type="text/javascript" src="../build/Storj.js"></script>
+    <script type="text/javascript" src="storj.es6.js"></script>
     <script>
+      var bucket = '<bucket-id>';
+      var config = { bridge: 'http://127.0.0.1:8080' };
+      var pdf = new File(bucket, '<file-id>',config)
+        .on('done', function () { pdf.renderTo('#pdf'); });
+      var video = new File(bucket, '<file-id>', config)
+        .on('done', function () { video.appendTo('body'); });
+    </script>
+    </body>
+  </html>
+  ```
 
-    var options = {
-      bucketId: '<bucket-id>', // || user: <email>, bucket: <bucket-name>
-      file: 'test.png'
-    };
-    var downloader = new Storj.Downloader(options, function(err, data) {
-      var blob = new Blob([data], {type: "image/jpg"});
-      var url = URL.createObjectURL(blob);
-      var img = new Image();
-      img.src = url;
-      document.body.appendChild(img);
-    });
+  Extra Credit: Upload a file in a browser
 
+  ```html
+  <html>
+    <head>
+    <title>Storj Upload Example</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="storj.es6.js"></script>
+    <script>
+      var bucketId = '77845a36aadcb966fc76d5da'
+      var shard = '603d9480ab2e9b66705f3896'
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+      }
+      
+      var storj = new Storj(options)
+
+      window.remove = DragDrop('.box', {
+        onDrop: function (files, pos) {
+          var stream = window.getFileStream(files);
+          var opts = {
+            body: stream
+          }
+
+          storj.createFile(bucketId, files, opts, (err, res) => {
+            if (err) {
+              alert('File failed to upload' + err);
+            }
+            alert('File finished uploading! ' + JSON.stringify(res))
+          });
+        },
+        onDropText: function (text, pos) {
+          storj.createFile(bucketId, text)
+        }
+      })
     </script>
     </body>
   </html>
@@ -60,7 +99,7 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   * Download files in public buckets
   * Initial version of audio and video streaming
   * Create documentation for creating public buckets
-  * Refacto Stream.js to use Download.js logic
+  * Refactor Stream.js to use Download.js logic
   * Add concurrent downloads for streaming
   * Perform decryption in separate thread or in way that doesn't freeze interface
   * Add progress indication for files and streams
@@ -81,10 +120,7 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   * Get seek to working for audio/video streams
     * Requires out of order decryption + more meta data
 
-### Examples:
-  * [Text](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/text.html)
-  * [Small Image](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/small_image.html)
-  * [Large Image](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/large_image.html)
-  * [Video](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/video.html)
-  * [Audio Streaming](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/audio_stream.html)
-  * [Video Streaming](http://htmlpreview.github.io/?https://github.com/cpollard1001/storj.js/blob/master/examples/video_stream.html)
+### Examples: WIP
+  * [Upload](https://github.com/Storj/storj.js/blob/api/examples/upload/INSTRUCTIONS.md)
+  * [Download](https://github.com/Storj/storj.js/blob/api/examples/download/INSTRUCTIONS.md)
+
