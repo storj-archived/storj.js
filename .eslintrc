@@ -65,6 +65,7 @@
         "ignoreComments": true
       }
     ],
-    "no-multi-str": 2
+    "no-multi-str": 2,
+    "no-trailing-spaces": 2
   }
 }

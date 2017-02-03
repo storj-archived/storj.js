@@ -2,3 +2,4 @@ jsdoc/**/*.js
 jsdoc/*.js
 node_modules/**/*.js
 storj.*.js
+examples/

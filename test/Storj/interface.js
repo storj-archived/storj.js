@@ -2,7 +2,6 @@
 
 // var stream = require('stream');
 var test = require('tape');
-var assert = require('assert');
 var Storj = require('../../lib/Storj.js');
 var Client = new Storj();
 
