@@ -1,0 +1,45 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Storj Download Example</title>
+</head>
+<body>
+  <script type="text/javascript" src="storj.es6.js"></script>
+  <script>
+    var bucketId = '77845a36aadcb966fc76d5da'
+    var shard = '928418cfdb494862e9625e6c'
+    
+    // tme download
+    var d = new Date()
+    var start = d.getTime()
+
+    var options = {
+      bridge: 'http://localhost:8080'
+    }
+
+    var file = storj.File(bucketId, shard, options)
+
+    file.on('ready', () => {
+      console.log('Finished downloading file!')
+    })
+
+    file.on('error', (err) => {
+      console.log(err)
+    })
+
+    file.on('done', () => {
+      console.log('file finished decrypting')
+      file.getBuffer((err, buf) => {
+        console.log('got buffer from mem store')
+      })
+      file.renderTo('iframe', (err, res) => {
+        var e = new Date()
+        var end = e.getTime()
+        console.log(end - start)
+      })
+    })
+  </script>
+  <iframe></iframe>
+  </body>
+</html>

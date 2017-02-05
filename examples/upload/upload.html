@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Storj upload example</title>
+    <script src="drag-drop/stream_bundle.js"></script>
+    <script src="storj.es6.js"></script>
+  </head>
+  <body>
+    <h1>Storj Browser Upload Example</h1>
+    <input type="file" id="input" onchange="handleFiles(this.files)">
+    <script>
+      var bucketId = '77845a36aadcb966fc76d5da';
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+      };
+      
+      var storj = new Storj(options)
+
+      var handleFiles = function(files) {
+        var rs = window.getFileStream(files);
+        options.body = rs;
+        storj.createFile(bucketId, files[0].name, options, (err, res) => {
+          if (err) {
+            alert('File failed to upload' + err);
+          }
+          alert('File finished uploading! ' + JSON.stringify(res))
+        });
+      };
+    </script>
+  </body>
+</html>

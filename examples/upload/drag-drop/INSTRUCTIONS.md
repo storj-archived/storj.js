@@ -1,13 +1,11 @@
 # Storj.js Upload Example
 
-In its current state, Storj.js uploads are a bit confusing and are under a few assumptions that need to be addressed by the developer using Storj.js
-
-This will serve as a guide for developers wishing to create applications with storj.js
+This will serve as an example for developers wishing to create applications with storj.js
 
 ## Requirements
 
 - Browserify or webpack
-- nginx (needed to server the html for Feross drag-drop)
+- nginx (needed to server the html for Feross drag-drop, use html uploader for no server)
 - storj.es6.js (this a bundle of storj.js used to access storj)
 - stream_bundle.js (this is a bundle of file_stream.js to get a file stream from the browser)
 - dragdrop_bundle.js (this is a bundle of drag-drop)
