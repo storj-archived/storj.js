@@ -1,5 +1,6 @@
-jsdoc/**/*.js
-jsdoc/*.js
-node_modules/**/*.js
+jsdoc/
+jsdoc/
 storj.*.js
 examples/
+node_modules/
+coverage/
