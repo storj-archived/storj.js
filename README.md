@@ -12,7 +12,10 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   - [API](#api)
       - [Bucket API](#bucket-api)
         - [Create Bucket](#createbucket)
+        - [Get Bucket](#getbucket)
+        - [Get Buckets](#getbuckets)
         - [Delete Bucket](#deletebucket)
+        - [Make Public Bucket](#makepublic)
       - [File API](#file-api)
         - [Create File](#createfile)
         - [Get File](#getfile)
@@ -77,6 +80,7 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   var storj = new Storj(options);
 </script>
 ```
+---
 
 ## API
 
@@ -87,6 +91,27 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
 ```
 
 storj.createBucket()
+```
+
+#### getBucket
+
+```
+
+storj.getBucket()
+```
+
+#### getBuckets
+
+```
+
+storj.getBuckets()
+```
+
+#### makePublic
+
+```
+
+storj.makePublic()
 ```
 
 #### deleteBucket
@@ -182,13 +207,20 @@ Response: callback
 
 #### getBuffer
 
+---
 ### Render API
 
 #### getBlobUrl
 
+---
+
 #### getBlob
 
+---
+
 #### renderTo
+
+---
 
 ### Tutorials and Examples
 
@@ -274,10 +306,6 @@ Response: callback
 ### To do:
   * **Solve mixed content errors on https pages (important!)**
     * WebRTC or "Let's Encrypt"
-  * Automatically replace special browser storj tags with equivalent elements
-  * Use supplied file size, requires PR deployment
-  * Use supplied mimetype of file and create DOM element
-    * Requires [this pull request](https://github.com/Storj/bridge/pull/288) to be merged
   * Properly handle errors and issue X retries per shard
     * Add failed pointers to exclude list
 
