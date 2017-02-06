@@ -18,15 +18,14 @@
         }
       };
       
-      var storj = new Storj(options)
-      console.log(storj)
+      var storj = new Storj(options);
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
         storj.createFile(bucketId, files[0].name, rs, (err, res) => {
           if (err) {
             alert('File failed to upload' + err);
           }
-          alert('File finished uploading! ' + JSON.stringify(res))
+          alert('File finished uploading! ' + JSON.stringify(res));
         });
       };
     </script>
