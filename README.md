@@ -41,7 +41,7 @@ This project is available through [npm](https://www.npmjs.com/). To install:
 
 To include this project programmatically:
 
-```
+```javascript
 var Storj = require('storj-js');
 
 var options = {
@@ -88,35 +88,35 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
 
 #### createBucket
 
-```
+```javascript
 
 storj.createBucket()
 ```
 
 #### getBucket
 
-```
+```javascript
 
 storj.getBucket()
 ```
 
 #### getBuckets
 
-```
+```javascript
 
 storj.getBuckets()
 ```
 
 #### makePublic
 
-```
+```javascript
 
 storj.makePublic()
 ```
 
 #### deleteBucket
 
-```
+```javascript
 storj.deleteBucket()
 ```
 ---
@@ -133,7 +133,7 @@ Params:
   - stream (readable): A readable stream of the file contents
   - callback (function): (err, res)
 
-```
+```javascript
 storj.createFile(bucketId, fileName, stream, function(err, res) {
   // if res then file uploaded
 })
@@ -154,7 +154,7 @@ Params:
   - fileId (string): The id of the file to be uploaded
   - callback (function): (err, res)
 
-```
+```javascript
 storj.getFile(bucketId, fileId, function(err, stream) {
   // get a stream of data
 })
@@ -172,7 +172,7 @@ Params:
   - bucketId (string): The id of the bucket to be uploaded to
   - callback (function): (err, res)
 
-```
+```javascript
 storj.createFileToken(bucketId, function(err, token) {
   // Get file token
 })
@@ -193,7 +193,7 @@ Params:
   - fileId (string): The id of the file to be uploaded
   - callback (function): (err, res)
 
-```
+```javascript
 storj.getFilePointers(bucketId, fileId, function(err, pointers){
   // get file pointers
 })
