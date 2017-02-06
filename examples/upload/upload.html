@@ -19,11 +19,10 @@
       };
       
       var storj = new Storj(options)
-
+      console.log(storj)
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
-        options.body = rs;
-        storj.createFile(bucketId, files[0].name, options, (err, res) => {
+        storj.createFile(bucketId, files[0].name, rs, (err, res) => {
           if (err) {
             alert('File failed to upload' + err);
           }
