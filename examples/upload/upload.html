@@ -13,19 +13,17 @@
       var options = {
         bridge: 'http://localhost:8080',
         basicAuth: {
-          email: 'email',
-          password: 'pass'
+          email: 'ginneversource@gmail.com',
+          password: 'bushido420'
         }
       };
       
       var storj = new Storj(options);
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
-        storj.createFile(bucketId, files[0].name, rs, (err, res) => {
-          if (err) {
-            alert('File failed to upload' + err);
-          }
-          alert('File finished uploading! ' + JSON.stringify(res));
+        storj.createFile(bucketId, files[0].name, rs, (file) => {
+          //alert('File finished uploading! ' + JSON.stringify(res));
+          console.log(file);
         });
       };
     </script>
