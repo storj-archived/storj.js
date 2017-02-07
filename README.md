@@ -1,5 +1,7 @@
 # Storj.js
-Extremely early version of the browser library for [Storj.io](https://storj.io/).
+Extremely early version of the browser library for [Storj.io](https://storj.io/). This library currently exposes [storj core bridge-client](https://github.com/Storj/core/tree/master/lib/bridge-client) to the browser. 
+
+A [discussion](https://github.com/Storj/storj.js/issues/2) has started about moving the bridge-client and requests to bridge out of core and into storj.js api and documentation.
 
 ## Table of Contents
 
@@ -10,22 +12,21 @@ Extremely early version of the browser library for [Storj.io](https://storj.io/)
   - [Use in the browser with browserify](#use-in-the-browser-with-browserify)
   - [Tutorials and Examples](#tutorials-and-examples)
   - [API](#api)
-      - [Bucket API](#bucket-api)
+      - [File API](#file-api)
+        - [Get Blob](#getblob)
+        - [Get Blob URL](#getbloburl)
+        - [Render to DOM](#renderto)
+      - [Core API](#core-api)
         - [Create Bucket](#createbucket)
         - [Get Bucket](#getbucket)
         - [Get Buckets](#getbuckets)
         - [Delete Bucket](#deletebucket)
         - [Make Public Bucket](#makepublic)
-      - [File API](#file-api)
         - [Create File](#createfile)
         - [Get File](#getfile)
         - [Create File Token](#createfileToken)
         - [Get File Pointers](#getfilepointers)
         - [Get File Buffer](#getbuffer)
-      - [Render API](#render-api)
-        - [Get Blob](#getblob)
-        - [Get Blob URL](#getbloburl)
-        - [Render to DOM](#renderto)
 - [Packages](#packages)
 
 ## Install
@@ -84,7 +85,29 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
 
 ## API
 
-### Bucket API
+Storj.js extends the node implementation [API](https://storj.io/api.html) with a wrapper for the browser. It also creates a new API called `File` that has browser specific utilites such as events for full upload and downloads and web workers. 
+
+## File API
+
+---
+
+#### getBuffer
+
+---
+
+#### getBlobUrl
+
+---
+
+#### getBlob
+
+---
+
+#### renderTo
+
+---
+
+### Core API
 
 #### createBucket
 
@@ -119,11 +142,8 @@ storj.makePublic()
 ```javascript
 storj.deleteBucket()
 ```
----
 
-### File API
-
-#### CreateFile
+#### createFile
 
 Upload a file to the given bucket
 
@@ -202,23 +222,6 @@ storj.getFilePointers(bucketId, fileId, function(err, pointers){
 Response: callback
   - err: Error
   - pointer: pointers to a file
-
----
-
-#### getBuffer
-
----
-### Render API
-
-#### getBlobUrl
-
----
-
-#### getBlob
-
----
-
-#### renderTo
 
 ---
 
