@@ -13,6 +13,8 @@ A [discussion](https://github.com/Storj/storj.js/issues/2) has started about mov
   - [Tutorials and Examples](#tutorials-and-examples)
   - [API](#api)
       - [File API](#file-api)
+        - [Create File](#createfile)
+        - [Get File](#getfile)
         - [Get Blob](#getblob)
         - [Get Blob URL](#getbloburl)
         - [Render to DOM](#renderto)
@@ -22,8 +24,6 @@ A [discussion](https://github.com/Storj/storj.js/issues/2) has started about mov
         - [Get Buckets](#getbuckets)
         - [Delete Bucket](#deletebucket)
         - [Make Public Bucket](#makepublic)
-        - [Create File](#createfile)
-        - [Get File](#getfile)
         - [Create File Token](#createfileToken)
         - [Get File Pointers](#getfilepointers)
         - [Get File Buffer](#getbuffer)
@@ -79,6 +79,29 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   };
   
   var storj = new Storj(options);
+  
+  // sync
+  var file = storj.createFile('bucketId', 'fileName', stream);
+  
+  // or async
+  
+  storj.createFile('bucketId', 'fileName', stream, function(file) {
+    // file is an event emitter extending the file class
+  })
+  
+  file.on('error', function(err){
+    // there was an error uploading oops!
+  })
+  
+  file.on('uploaded', function(res){
+    // the file completed the upload process. Res holds the details
+    // We can now render the file to the DOM
+    file.renderTo('img', function(err, res) {
+      // file finished rendering
+    })
+  })
+  
+  
 </script>
 ```
 ---
@@ -88,6 +111,57 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
 Storj.js extends the node implementation [API](https://storj.io/api.html) with a wrapper for the browser. It also creates a new API called `File` that has browser specific utilites such as events for full upload and downloads and web workers. 
 
 ## File API
+
+---
+
+#### createFile
+
+Upload a file to the given bucket
+
+Params:
+  - bucketId (string): The id of the bucket to be uploaded to
+  - fileName (string): The name of the file to be uploaded
+  - stream (readable): A readable stream of the file contents
+  - callback (function): (file) Returns a File object
+
+```javascript
+storj.createFile(bucketId, fileName, stream, function(err, res) {
+  // res is a file object
+})
+```
+
+Response: Callback
+  - file: 
+    File extends the following events
+      - uploaded
+      - ready
+      - error
+
+---
+
+#### getFile
+
+Retrieve a file by bucket and file id.
+
+Params:
+  - bucketId (string): The id of the bucket to be uploaded to
+  - fileId (string): The id of the file to be uploaded
+  - callback (function): (file)
+
+```javascript
+storj.getFile(bucketId, fileId, function(err, stream) {
+  // get a file object 
+})
+```
+
+Response: callback
+  - file:
+    File extends the following events
+    - uploaded
+    - ready
+    - error
+
+---
 
 ---
 
@@ -142,49 +216,6 @@ storj.makePublic()
 ```javascript
 storj.deleteBucket()
 ```
-
-#### createFile
-
-Upload a file to the given bucket
-
-Params:
-  - bucketId (string): The id of the bucket to be uploaded to
-  - fileName (string): The name of the file to be uploaded
-  - stream (readable): A readable stream of the file contents
-  - callback (function): (err, res)
-
-```javascript
-storj.createFile(bucketId, fileName, stream, function(err, res) {
-  // if res then file uploaded
-})
-```
-
-Response: Callback
-  - err: Failed to upload
-  - res: Success message
-
----
-
-#### getFile
-
-Retrieve a file by bucket and file id.
-
-Params:
-  - bucketId (string): The id of the bucket to be uploaded to
-  - fileId (string): The id of the file to be uploaded
-  - callback (function): (err, res)
-
-```javascript
-storj.getFile(bucketId, fileId, function(err, stream) {
-  // get a stream of data
-})
-```
-
-Response: callback
-  - err: Error
-  - stream: a readable stream of the decrypted and constructed file
-
----
 
 #### createFileToken
 
