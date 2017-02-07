@@ -308,16 +308,15 @@ Response: callback
           var opts = {
             body: stream
           }
-
-          storj.createFile(bucketId, files, opts, (err, res) => {
-            if (err) {
-              alert('File failed to upload' + err);
-            }
-            alert('File finished uploading! ' + JSON.stringify(res))
+          storj.createFile(bucketId, files, opts, (file) => {
+            file.on('error', (err) => {
+              alert(err);
+            });
+            
+            file.on('uploaded', (res) => {
+              alert('file finished uploading!');
+            })
           });
-        },
-        onDropText: function (text, pos) {
-          storj.createFile(bucketId, text)
         }
       })
     </script>
