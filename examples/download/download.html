@@ -18,9 +18,11 @@
       bridge: 'http://localhost:8080'
     }
 
-    var file = storj.File(bucketId, shard, options)
+    var storj = new Storj(options);
 
-    file.on('ready', () => {
+    var file = storj.getFile(bucketId, shard);
+
+    file.on('downloaded', () => {
       console.log('Finished downloading file!')
     })
 
