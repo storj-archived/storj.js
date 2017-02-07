@@ -13,8 +13,8 @@
       var options = {
         bridge: 'http://localhost:8080',
         basicAuth: {
-          email: 'ginneversource@gmail.com',
-          password: 'bushido420'
+          email: 'email',
+          password: 'pass'
         }
       };
       
@@ -22,8 +22,10 @@
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
         storj.createFile(bucketId, files[0].name, rs, (file) => {
-          //alert('File finished uploading! ' + JSON.stringify(res));
-          console.log(file);
+          file.once('uploaded', (res) => {
+            console.log(res);
+            console.log('finished uploading file')
+          })
         });
       };
     </script>
