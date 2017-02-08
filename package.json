@@ -21,7 +21,7 @@
   },
   "testling": {
     "files": [
-      "lib/**/*.js",
+      "lib/browser.js",
       "test/**/*.js"
     ]
   },
