@@ -65,5 +65,28 @@ test('Storj.js happy path integration', function(done) {
       t.end();
     });
   });
+
+  test('deleteBucket', function(t) {
+    storj.deleteBucket(bucketId, function (e) {
+      t.error(e, 'Successfully delete bucket');
+      t.end();
+    });
+  });
+
+  test('getBuckets', function(t) {
+    storj.getBuckets(function(e, buckets) {
+      t.error(e, 'Should successfully grab buckets');
+      for(var i = 0; i < buckets.length; i++) {
+        if(buckets[i].name === bucketName) {
+          t.fail('Bucket still listed');
+          bucketId = buckets[i].id;
+          return t.end();
+        }
+      }
+      t.pass('Did not find bucket');
+      t.end();
+    });
+  });
+
   done.end();
 });
