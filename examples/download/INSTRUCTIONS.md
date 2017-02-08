@@ -17,7 +17,7 @@ npm i
 npm run build
 ```
 
-After creating the browserified bundle of storj.js. You can drop it in any of the example repos such as storj.js/examples/upload/storj.es6.js will be imported from create_file.html in our example here. Or use it in your own application!
+After creating the browserified bundle of storj.js. You can drop it in any of the example repos such as storj.js/examples/upload/storj.es6.js and it will be imported from up,oad.html in our example here. Or use it in your own application!
 
 ## Create a pubilc bucket
 

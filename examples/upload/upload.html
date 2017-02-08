@@ -22,7 +22,7 @@
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
         storj.createFile(bucketId, files[0].name, rs, (file) => {
-          file.once('uploaded', (res) => {
+          file.on('uploaded', (res) => {
             console.log(res);
             console.log('finished uploading file')
           })

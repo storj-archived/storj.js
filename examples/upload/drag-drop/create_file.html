@@ -43,15 +43,16 @@
             body: stream
           }
 
-          storj.createFile(bucketId, files, opts, (err, res) => {
-            if (err) {
-              alert('File failed to upload' + err);
-            }
-            alert('File finished uploading! ' + JSON.stringify(res))
+          storj.createFile(bucketId, files, opts, (file) => {
+            file.on('uploaded', (res) => {
+              console.log(res);
+              console.log('finished uploading file')
+            })
           });
         },
         onDropText: function (text, pos) {
-          storj.createFile(bucketId, text)
+          // todo text example
+          //storj.createFile(bucketId, text)
         }
       })
     </script>
