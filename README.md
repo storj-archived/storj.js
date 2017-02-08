@@ -82,6 +82,16 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   
   var storj = new Storj(options);
   
+  // generate and register public key if not already stored in client bridge
+  var keypair = storj.generateKeypair();
+  
+  // your key is now on the storj object and the developer is responsible for saving it
+  var pubKey = storj._key._pubkey;
+  
+  storj.registerKey(pubKey, function(err, res) {
+    // res if registration was successful
+  });
+  
   // sync
   var file = storj.createFile('bucketId', 'fileName', stream);
   
@@ -202,8 +212,6 @@ Response: callback
 
 ---
 
----
-
 #### getBuffer
 
 ---
@@ -225,6 +233,7 @@ Response: callback
 #### generateKeypair
 
 create a new public/private keypair.
+
 Params:
   - callback (function): (keypair)
 
@@ -242,12 +251,13 @@ Response: callback
 #### registerKey
 
 Register a public key with the supplied client bridge.
+
 Params:
   - publicKey (String): An ECDSA public key
   - callback (function): (keypair)
 
 ```javascript
-storj.generateKeypair(publicKey, function(err, res) {
+storj.registerKey(publicKey, function(err, res) {
   // Res is a success message of uploaded key
 })
 ```
