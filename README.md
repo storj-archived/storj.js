@@ -110,6 +110,45 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
 
 Storj.js extends the node implementation [API](https://storj.io/api.html) with a wrapper for the browser. It also creates a new API called `File` that has browser specific utilites such as events for full upload and downloads and web workers. 
 
+## Storj Object
+
+### `var storj = new Storj(opts)`
+
+Instantiate a new `Storj` object used to communicate with the storj network. The `opts` object controls the behaviour of the returned object.
+
+`opts`:
+
+```
+{
+  bridge: STRING, // The url of the bridge to talk to, defaults to https://api.storj.io
+  basicAuth: OBJECT, // Used for any requests that require authentication
+  key: STRING, // Private key, used for any requests that require authentication
+}
+```
+
+`basicAuth` should be of the form:
+
+```
+{
+  user: STRING,
+  password: STRING
+}
+```
+
+If you need to use authentication in your application, we strongly suggest you use the `key` method as it provides a higher level of security.
+
+Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will attempt to create a public/private key pair for you and register it to your account. If you provide a `key`, this key will be used to authenticate every request moving forward.
+
+### `storj.on('error', function (e) ...`
+
+Emitted when the library reaches a catastrophic error that will probably prevent normal operation moving forward.
+
+### `storj.on('ready', function () ...`
+
+Emitted when all setup is complete. If you are using `basicAuth`, validating that auth and creating a private/public key pair for your account will be an asyncronous; as soon as the `storj` object has been configured to use your `basicAuth`, `ready` will be emitted.
+
+If you are passing in a `key`, `ready` will fire immediately as there will be no asyncrnous work. Note that the `key` is not validated, if you provide an invalide `key` future requests may fail.
+
 ## File API
 
 ---

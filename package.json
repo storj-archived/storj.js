@@ -6,10 +6,11 @@
   "directories": {},
   "scripts": {
     "build": "browserify lib/index.js > storj.es6.js # && babel storj.es6.js > storj.es5.js",
-    "posttest": "eslint --fix .",
+    "posttest": "npm run linter",
     "test": "npm run test-node && npm run test-browser",
     "test-node": "nyc --reporter=text --reporter=html tape test/**/*.js",
     "test-browser": "testling",
+    "linter": "eslint --fix .",
     "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc",
     "node-test": "node test/**/*.js"
   },
@@ -20,7 +21,7 @@
   },
   "testling": {
     "files": [
-      "lib/*.js",
+      "lib/**/*.js",
       "test/**/*.js"
     ]
   },
