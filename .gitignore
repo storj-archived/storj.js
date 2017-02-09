@@ -7,3 +7,4 @@ test.html
 index.html
 test.js
 *.swp
+npm-debug.log
