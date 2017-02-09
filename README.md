@@ -155,7 +155,7 @@ Instantiate a new `Storj` object used to communicate with the storj network. The
 
 If you need to use authentication in your application, we strongly suggest you use the `key` method as it provides a higher level of security.
 
-Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a pubic key with bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API. If you provide a `key`, this key will be used to authenticate every request moving forward.
+Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API. If you provide a `key`, this key will be used to authenticate every request moving forward.
 
 ### `storj.on('error', function (e) ...`
 
