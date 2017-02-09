@@ -8,13 +8,13 @@
     <h1>Storj Browser Upload Example</h1>
     <input type="file" id="input" onchange="handleFiles(this.files)">
     <script>
-      var bucketId = '77845a36aadcb966fc76d5da';
+      var bucketId = '24213949f1400a77cfcbd287';
 
       var options = {
         bridge: 'http://localhost:8080',
         basicAuth: {
-          email: 'ginneversource@gmail.com',
-          password: 'bushido420'
+          email: 'email',
+          password: 'pass'
         }
       };
       
@@ -22,10 +22,13 @@
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
         storj.createFile(bucketId, files[0].name, rs, (file) => {
+          file.on('error', (err) => {
+            console.log(err);
+          });
           file.on('uploaded', (res) => {
             console.log(res);
             console.log('finished uploading file')
-          })
+          });
         });
       };
     </script>

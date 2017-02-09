@@ -56,6 +56,8 @@ var options = {
 };
 
 var storj = new Storj(options)
+
+// All api calls are browser / node compatible unless rendering to DOM
 ```
 
 ## Usage
@@ -108,9 +110,13 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   file.on('uploaded', function(res){
     // the file completed the upload process. Res holds the details
     // We can now render the file to the DOM
-    file.renderTo('img', function(err, res) {
-      // file finished rendering
-    })
+    renderFile = storj.getFile('bucketId', res.fileId);
+    rednderFile.on('downloaded', function(){
+      // The uploaded file has been downloaded from the farmer.
+      renderFile.renderTo('img', function(err, res) {
+        // file finished rendering
+      });
+    });
   })
   
   
