@@ -1,8 +1,8 @@
 {
-  "name": "storj.js",
+  "name": "storj",
   "version": "0.0.0",
   "description": "Storj.io browser library",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {},
   "scripts": {
     "build": "browserify lib/browser.js > storj.es6.js",
