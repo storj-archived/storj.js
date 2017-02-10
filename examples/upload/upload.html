@@ -9,6 +9,7 @@
     <input type="file" id="input" onchange="handleFiles(this.files)">
     <script>
       var bucketId = '24213949f1400a77cfcbd287';
+      var fileId = '3d130c5b7e6316fd3196b3c0';
 
       var options = {
         bridge: 'http://localhost:8080',
@@ -20,8 +21,28 @@
       };
       
       var storj = new Storj(options);
+
+      storj.getData(bucketId, fileId, (err, data) => {
+        console.log('got decrypted stream')
+        console.log(data)
+      })     
+
+      storj.getFile(bucketId, fileId, (file) => {
+        console.log(file)
+        file.on('done', () => {
+          console.log('finished getting file')
+        })
+      })
+
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
+        storj.uploadData(bucketId, files[0].name, rs, (err, res) => {
+          console.log(res)
+        })
+
+        storj.on('encrypted', ()=>{
+          console.log('encrypted')
+        })
         storj.createFile(bucketId, files[0].name, rs, (file) => {
           file.on('error', (err) => {
             console.log(err);
