@@ -48,12 +48,13 @@
   "dependencies": {
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
+    "fs-blob-store": "^5.2.1",
     "local-web-server": "^1.2.6",
     "memory-blob-store": "^1.0.0",
     "memory-chunk-store": "^1.2.0",
     "render-media": "^2.9.1",
     "setimmediate": "^1.0.5",
-    "storj-lib": "github:retrohacker/core#68752abc5398bcf465d4ab0776329d65644ad2f2",
+    "storj-lib": "github:retrohacker/core#19c1e8e7ac7826919c9492ea0e7c9868c813e3f7",
     "stream-to-blob": "^1.0.0",
     "stream-to-blob-url": "^2.1.0"
   }
