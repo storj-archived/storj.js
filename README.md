@@ -19,6 +19,8 @@ A [discussion](https://github.com/Storj/storj.js/issues/2) has started about mov
         - [Get Blob URL](#getbloburl)
         - [Render to DOM](#renderto)
       - [Core API](#core-api)
+        - [Generate Keypair](#generatekeypair)
+        - [Register Public Key](#registerkey)
         - [Create Bucket](#createbucket)
         - [Get Bucket](#getbucket)
         - [Get Buckets](#getbuckets)
@@ -54,6 +56,8 @@ var options = {
 };
 
 var storj = new Storj(options)
+
+// All api calls are browser / node compatible unless rendering to DOM
 ```
 
 ## Usage
@@ -80,6 +84,16 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   
   var storj = new Storj(options);
   
+  // generate and register public key if not already stored in client bridge
+  var keypair = storj.generateKeypair();
+  
+  // your key is now on the storj object and the developer is responsible for saving it
+  var pubKey = storj._key._pubkey;
+  
+  storj.registerKey(pubKey, function(err, res) {
+    // res if registration was successful
+  });
+  
   // sync
   var file = storj.createFile('bucketId', 'fileName', stream);
   
@@ -96,9 +110,13 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   file.on('uploaded', function(res){
     // the file completed the upload process. Res holds the details
     // We can now render the file to the DOM
-    file.renderTo('img', function(err, res) {
-      // file finished rendering
-    })
+    renderFile = storj.getFile('bucketId', res.fileId);
+    rednderFile.on('downloaded', function(){
+      // The uploaded file has been downloaded from the farmer.
+      renderFile.renderTo('img', function(err, res) {
+        // file finished rendering
+      });
+    });
   })
   
   
@@ -137,7 +155,7 @@ Instantiate a new `Storj` object used to communicate with the storj network. The
 
 If you need to use authentication in your application, we strongly suggest you use the `key` method as it provides a higher level of security.
 
-Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will attempt to create a public/private key pair for you and register it to your account. If you provide a `key`, this key will be used to authenticate every request moving forward.
+Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API. If you provide a `key`, this key will be used to authenticate every request moving forward.
 
 ### `storj.on('error', function (e) ...`
 
@@ -145,9 +163,7 @@ Emitted when the library reaches a catastrophic error that will probably prevent
 
 ### `storj.on('ready', function () ...`
 
-Emitted when all setup is complete. If you are using `basicAuth`, validating that auth and creating a private/public key pair for your account will be an asyncronous; as soon as the `storj` object has been configured to use your `basicAuth`, `ready` will be emitted.
-
-If you are passing in a `key`, `ready` will fire immediately as there will be no asyncrnous work. Note that the `key` is not validated, if you provide an invalide `key` future requests may fail.
+Emitted when all setup is complete. As soon as the `storj` object has been configured to use your `basicAuth` or `key`, `ready` will be emitted.
 
 ## File API
 
@@ -202,8 +218,6 @@ Response: callback
 
 ---
 
----
-
 #### getBuffer
 
 ---
@@ -221,6 +235,44 @@ Response: callback
 ---
 
 ### Core API
+
+#### generateKeypair
+
+create a new public/private keypair.
+
+Params:
+  - callback (function): (keypair)
+
+```javascript
+storj.generateKeypair(function(keypair) {
+  // get a keypair object
+})
+```
+
+Response: callback
+  - keypair: an ECDSA keypair
+
+---
+
+#### registerKey
+
+Register a public key with the supplied client bridge.
+
+Params:
+  - publicKey (String): An ECDSA public key
+  - callback (function): (keypair)
+
+```javascript
+storj.registerKey(publicKey, function(err, res) {
+  // Res is a success message of uploaded key
+})
+```
+
+Response: callback
+  - err: Key failed to upload
+  - res: Key is now registered with bridge
+
+---
 
 #### createBucket
 
