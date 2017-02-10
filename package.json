@@ -48,6 +48,7 @@
     "testling": "^1.7.1"
   },
   "dependencies": {
+    "concat-stream": "^1.6.0",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
     "fs-blob-store": "^5.2.1",

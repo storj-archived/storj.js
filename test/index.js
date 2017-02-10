@@ -103,12 +103,22 @@ test('Storj.js happy path integration', function(done) {
   });
 
   test('getFile', function(t) {
-    storj.getFile(bucketId, fileId, function(e, file) {
-      console.log(arguments);
+    t.plan(3);
+    var file = storj.getFile(bucketId, fileId, function(e, file) {
+      t.error(e, 'callback triggered');
     });
-  });
-
-  test('deleteFile', function(t) {
+    file.on('ready', function () {
+      t.pass('ready event triggered');
+    });
+    file.on('done', function() {
+      file.getBuffer(function(e, buffer) {
+        t.equal(buffer.toString(), fileContent.toString(),
+          'got file content back');
+      });
+    });
+    file.on('error', function(e) {
+      t.error(e);
+    });
   });
 
   test('deleteBucket', function(t) {
