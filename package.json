@@ -41,6 +41,7 @@
     "eslint": "^3.14.0",
     "ink-docstrap": "bookchin/docstrap",
     "jsdoc": "^3.4.3",
+    "longjohn": "^0.2.12",
     "nyc": "^10.0.0",
     "proxyquire": "^1.7.10",
     "tape": "^4.6.3",
