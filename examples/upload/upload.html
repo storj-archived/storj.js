@@ -22,17 +22,17 @@
 
       var storj = new Storj(options);
 
-      // storj.getData(bucketId, fileId, (err, data) => {
-      //   console.log('got decrypted stream')
-      //   console.log(data)
-      // })     
+      storj.getData(bucketId, fileId, (err, data) => {
+        console.log('got decrypted stream')
+        console.log(data)
+      })     
 
-      // storj.getFile(bucketId, fileId, (file) => {
-      //   console.log(file)
-      //   file.on('done', () => {
-      //     console.log('finished getting file')
-      //   })
-      // })
+      storj.getFile(bucketId, fileId, (file) => {
+        console.log(file)
+        file.on('done', () => {
+          console.log('finished getting file')
+        })
+      })
 
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
