@@ -2,15 +2,16 @@
 
 const test = require('tape');
 const Storj = require('../lib/index.js');
-var KeyPair = require('storj-lib/lib/crypto-tools/keypair.js');
-var Writable = require('stream').Writable;
+var Readable = require('stream').Readable;
+var KeyPair = require('storj-lib/lib/crypto-tools/keypair');
 
 test('Storj.js happy path integration', function(done) {
   let storj;
 
   const bucketName = `test-${Date.now()}-${(Math.random()+'').split('.')[1]}`;
   let bucketId;
-  const fileName = 'foobar';
+  let fileId;
+  const fileName = 'foobar.txt';
   const fileContent = new Buffer(
     'IM A LUMBERJACK AND IM OK, I SLEEP ALL NIGHT AND I WORK ALL DAY'
   );
@@ -26,14 +27,20 @@ test('Storj.js happy path integration', function(done) {
     t.equal(storj.constructor, Storj, 'Returned instance of Storj');
 
     storj.on('error', t.fail);
+    storj.on('error', done.fail);
+
     storj.on('ready', function() {
       t.pass('ready emitted');
-      t.equal(storj._key.constructor, KeyPair, 'Generated key');
+      storj.removeAllListeners();
       t.end();
     });
-    storj.on('error', done.fail);
   });
 
+  test('getKeyPair', function(t) {
+    storj.getKeyPair();
+    t.ok(storj._key instanceof KeyPair, 'object', 'Generated KeyPair');
+    t.end();
+  });
 
   test('createBucket', function(t) {
     storj.createBucket(bucketName, function(e, resp) {
@@ -64,6 +71,44 @@ test('Storj.js happy path integration', function(done) {
       t.equal(bucket.user, process.env.STORJ_USERNAME, 'Returns metadata');
       t.end();
     });
+  });
+
+  test('createFile', function(t) {
+    var rs = new Readable();
+    rs._read = function() {};
+    rs.push(fileContent);
+    rs.push(null);
+    var file = storj.createFile(bucketId, fileName, rs);
+    file.emit = function (event, file) {
+      t.equal(event, 'done', 'Expect createFile to emit done');
+      t.equal(file.size, fileContent.length,
+        'Expect size to be length of fileContent');
+      fileId = file.id;
+      t.end();
+    }
+  });
+
+  test('listFiles', function(t) {
+    storj.getBucket(bucketId, function(e, bucket) {
+      t.error(e, 'Fetch bucket successfully');
+      for(var i = 0; i < bucket.files.length; i++) {
+        if(bucket.files[i].filename === fileName) {
+          t.pass('Found file in bucket');
+          return t.end();
+        }
+      }
+      t.fail('Did not find file in bucket');
+      return t.end();
+    });
+  });
+
+  test('getFile', function(t) {
+    storj.getFile(bucketId, fileId, function(e, file) {
+      console.log(arguments);
+    });
+  });
+
+  test('deleteFile', function(t) {
   });
 
   test('deleteBucket', function(t) {
