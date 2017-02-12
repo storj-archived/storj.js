@@ -19,24 +19,25 @@
         // }
         key: '1b91d8dc6d69c8debc34f9324c5054b9c2a73fba7884fae8dd163bc3be099514'
       };
-      
+
       var storj = new Storj(options);
 
-      storj.getData(bucketId, fileId, (err, data) => {
-        console.log('got decrypted stream')
-        console.log(data)
-      })     
+      // storj.getData(bucketId, fileId, (err, data) => {
+      //   console.log('got decrypted stream')
+      //   console.log(data)
+      // })     
 
-      storj.getFile(bucketId, fileId, (file) => {
-        console.log(file)
-        file.on('done', () => {
-          console.log('finished getting file')
-        })
-      })
+      // storj.getFile(bucketId, fileId, (file) => {
+      //   console.log(file)
+      //   file.on('done', () => {
+      //     console.log('finished getting file')
+      //   })
+      // })
 
       var handleFiles = function(files) {
         var rs = window.getFileStream(files);
         // storj.uploadData(bucketId, files[0].name, rs, (err, res) => {
+        //   console.log(err)
         //   console.log(res)
         // })
 
@@ -47,7 +48,7 @@
           file.on('error', (err) => {
             console.log(err);
           });
-          file.on('uploaded', (res) => {
+          file.on('done', (res) => {
             console.log(res);
             console.log('finished uploading file')
           });
