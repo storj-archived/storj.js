@@ -2,8 +2,8 @@
 
 const test = require('tape');
 const Storj = require('../lib/index.js');
-var Readable = require('stream').Readable;
-var KeyPair = require('storj-lib/lib/crypto-tools/keypair');
+const Readable = require('stream').Readable;
+const KeyPair = require('storj-lib/lib/crypto-tools/keypair');
 
 test('Storj.js happy path integration', function(done) {
   let storj;
@@ -36,10 +36,13 @@ test('Storj.js happy path integration', function(done) {
     });
   });
 
-  test('getKeyPair', function(t) {
-    storj.getKeyPair();
+  test('keyPair', function(t) {
+    const kp = storj.generateKeyPair();
     t.ok(storj._key instanceof KeyPair, 'object', 'Generated KeyPair');
-    t.end();
+    storj.registerKey(kp.getPrivateKey(), function(e) {
+      t.error(e, 'register key for tests');
+      t.end();
+    });
   });
 
   test('createBucket', function(t) {
@@ -54,7 +57,7 @@ test('Storj.js happy path integration', function(done) {
   test('getBuckets', function(t) {
     storj.getBuckets(function(e, buckets) {
       t.error(e, 'Should successfully grab buckets');
-      for(var i = 0; i < buckets.length; i++) {
+      for(let i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
           t.pass('Newly created bucket listed');
           bucketId = buckets[i].id;
@@ -74,11 +77,11 @@ test('Storj.js happy path integration', function(done) {
   });
 
   test('createFile', function(t) {
-    var rs = new Readable();
+    const rs = new Readable();
     rs._read = function() {};
     rs.push(fileContent);
     rs.push(null);
-    var file = storj.createFile(bucketId, fileName, rs);
+    const file = storj.createFile(bucketId, fileName, rs);
     file.emit = function (event, file) {
       t.equal(event, 'done', 'Expect createFile to emit done');
       t.equal(file.size, fileContent.length,
@@ -91,7 +94,7 @@ test('Storj.js happy path integration', function(done) {
   test('listFiles', function(t) {
     storj.getBucket(bucketId, function(e, bucket) {
       t.error(e, 'Fetch bucket successfully');
-      for(var i = 0; i < bucket.files.length; i++) {
+      for(let i = 0; i < bucket.files.length; i++) {
         if(bucket.files[i].filename === fileName) {
           t.pass('Found file in bucket');
           return t.end();
@@ -103,12 +106,24 @@ test('Storj.js happy path integration', function(done) {
   });
 
   test('getFile', function(t) {
-    storj.getFile(bucketId, fileId, function(e, file) {
-      console.log(arguments);
+    t.plan(3);
+    const file = storj.getFile(bucketId, fileId, function(e, file) {
+      t.error(e, 'callback triggered');
     });
-  });
-
-  test('deleteFile', function(t) {
+    file.on('ready', function () {
+      t.pass('ready event triggered');
+    });
+    file.on('done', function() {
+      file.getBuffer(function(e, buffer) {
+        t.error(e, 'Grabbed file');
+        var str = buffer ? buffer.toString() : null;
+        t.equal(str, fileContent.toString(),
+          'got file content back');
+      });
+    });
+    file.on('error', function(e) {
+      t.error(e);
+    });
   });
 
   test('deleteBucket', function(t) {
@@ -121,7 +136,7 @@ test('Storj.js happy path integration', function(done) {
   test('getBuckets', function(t) {
     storj.getBuckets(function(e, buckets) {
       t.error(e, 'Should successfully grab buckets');
-      for(var i = 0; i < buckets.length; i++) {
+      for(let i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
           t.fail('Bucket still listed');
           bucketId = buckets[i].id;
