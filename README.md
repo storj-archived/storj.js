@@ -1,4 +1,4 @@
-<img style="text-align: center;" src="http://i.imgur.com/ikzVmnd.png"></img>
+![storj.js](http://i.imgur.com/ikzVmnd.png)
 
 The official Storj library, for **node.js** and the **browser**.
 
