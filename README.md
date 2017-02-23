@@ -13,23 +13,6 @@ The official Storj library, for **node.js** and the **browser**.
   - [Use in Node.js](#use-in-nodejs)
   - [Use in the browser with browserify](#use-in-the-browser)
 - [API](#api)
-  - [File API](#file-api)
-    - [Create File](#createfile)
-    - [Get File](#getfile)
-    - [Get Blob](#getblob)
-    - [Get Blob URL](#getbloburl)
-    - [Render to DOM](#renderto)
-  - [Core API](#core-api)
-    - [Generate Keypair](#generatekeypair)
-    - [Register Public Key](#registerkey)
-    - [Create Bucket](#createbucket)
-    - [Get Bucket](#getbucket)
-    - [Get Buckets](#getbuckets)
-    - [Delete Bucket](#deletebucket)
-    - [Make Public Bucket](#makepublic)
-    - [Create File Token](#createfileToken)
-    - [Get File Pointers](#getfilepointers)
-    - [Get File Buffer](#getbuffer)
 - [Tutorials and Examples](#tutorials-and-examples)
 
 ## Install
@@ -130,9 +113,9 @@ Emitted when the `Storj` object is ready to communicate with the storj network.
 
 Upload a file to a bucket.
 
-`bucketId` - The id of the bucket that we will be uploading the file to (`String`)
-`fileName` - The name of the file we are uploading, with it's extension (`String`)
-`file` represents the contents of the file and can be any of the following:
+`bucketId` - the id of the bucket that we will be uploading the file to (`String`)
+`fileName` - the name of the file we are uploading, with it's extension (`String`)
+`file` - the contents of the file and can be any of the following:
   - a [`stream.Readable`](https://nodejs.org/api/stream.html#stream_readable_streams)
   - a `String` with the plain-text contents of the file
   - a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
@@ -146,6 +129,12 @@ Upload a file to a bucket.
 ```
 
 `cb` is an optional `function` that will be registered as a [listener](https://nodejs.org/api/events.html) on the returned `File`'s `done` event.
+
+### `var file = storj.getFile(bucketId, fileId, cb)`
+
+`bucketId` - the id of the bucket the file lives in (`String`)
+`fileId` - the id of the file itself (`String`)
+`cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object.
 
 ## File API
 
