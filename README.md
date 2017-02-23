@@ -83,20 +83,22 @@ var storj = new Storj()
 
 ## API
 
-Storj.js extends the node implementation [API](https://storj.io/api.html) with a wrapper for the browser. It also creates a new API called `File` that has browser specific utilites such as events for full upload and downloads and web workers. 
+Storj.js exposes an isomorphic API that works both in the **browser** and in **node.js**!
 
 ## Storj Object
 
 ### `var storj = new Storj(opts)`
 
-Instantiate a new `Storj` object used to communicate with the storj network. The `opts` object controls the behaviour of the returned object.
+Create a new `Storj` instance, which will be used to talk across the storj protocol. This object will emit the `ready` event when it has finished being configured.
+
+The optional `opts` allows you to override the default behaviour of this object. The `opts` object is how you will pass in your user credentials if you need to work with private buckets.
 
 `opts`:
 
 ```
 {
   bridge: STRING, // The url of the bridge to talk to, defaults to https://api.storj.io
-  basicAuth: OBJECT, // Used for any requests that require authentication
+  basicAuth: OBJECT, // Used for any requests that require authentication, this is your username and password
   key: STRING, // Private key, used for any requests that require authentication
 }
 ```
@@ -112,44 +114,52 @@ Instantiate a new `Storj` object used to communicate with the storj network. The
 
 If you need to use authentication in your application, we strongly suggest you use the `key` method as it provides a higher level of security.
 
-Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API. If you provide a `key`, this key will be used to authenticate every request moving forward.
+Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API.
+
+If you provide a `key`, this key will be used to authenticate every request moving forward.
 
 ### `storj.on('error', function (e) ...`
 
-Emitted when the library reaches a catastrophic error that will probably prevent normal operation moving forward.
+Emitted when the library encounters a catastrophic error that will probably prevent normal operation moving forward. When an `error` is emitted, you should cleanup your `Storj` object and create a new one.
 
 ### `storj.on('ready', function () ...`
 
-Emitted when all setup is complete. As soon as the `storj` object has been configured to use your `basicAuth` or `key`, `ready` will be emitted.
+Emitted when the `Storj` object is ready to communicate with the storj network.
+
+### `var file = storj.createFile(bucketId, fileName, file, opts, cb)`
+
+Upload a file to a bucket.
+
+`bucketId` - The id of the bucket that we will be uploading the file to (`String`)
+`fileName` - The name of the file we are uploading, with it's extension (`String`)
+`file` represents the contents of the file and can be any of the following:
+  - a [`stream.Readable`](https://nodejs.org/api/stream.html#stream_readable_streams)
+  - a `String` with the plain-text contents of the file
+  - a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+  
+`opts` is optional, and allows you to specify some of the file's metadata:
+
+```json
+{
+  fileSize: Number, // Size of the file in bytes, required if `file` is a stream
+}
+```
+
+`cb` is an optional `function` that will be registered as a [listener](https://nodejs.org/api/events.html) on the returned `File`'s `done` event.
 
 ## File API
 
----
+### `File.on('done', function cb() {})`
 
-#### createFile
+Emitted when a `File` has finished either uploading or downloading it's contents.
 
-Upload a file to the given bucket
+### `File.on('ready', function cb() {})`
 
-Params:
-  - bucketId (string): The id of the bucket to be uploaded to
-  - fileName (string): The name of the file to be uploaded
-  - stream (readable): A readable stream of the file contents
-  - callback (function): (file) Returns a File object
+Emitted when the `File` has finished being setup and is ready to begin transfering data. You can listen for this event if you are planning on tracking the progress of an upload/download.
 
-```javascript
-storj.createFile(bucketId, fileName, stream, function(err, res) {
-  // res is a file object
-})
-```
+### `File.on('error', function cb(e) {})`
 
-Response: Callback
-  - file: 
-    File extends the following events
-      - uploaded
-      - ready
-      - error
-
----
+Emitted when the `File` encounters an unrecoverable error either during setup or during upload/download. If this is emitted, it is safe to assume the `File` is in a corrupted state and the upload/download should be restarted from the beginning.
 
 #### getFile
 
