@@ -138,6 +138,22 @@ Upload a file to a bucket.
 
 ## File API
 
+### `file.name`
+
+The name of the file.
+
+### `file.mimetype`
+
+The mimetype of the file.
+
+### `file.length`
+
+The length of the file in bytes.
+
+### `file.progress`
+
+A number between 0 and 1 (inclusive) reflecting what percentage of the file has been downloaded from the network. To determine how many bytes have been downloaded, you can multiply `file.length` by `file.progress`.
+
 ### `file.on('done', function cb() {})`
 
 Emitted when a `File` has finished either uploading or downloading it's contents.
@@ -149,6 +165,10 @@ Emitted when the `File` has finished being setup and is ready to begin transferi
 ### `file.on('error', function cb(e) {})`
 
 Emitted when the `File` encounters an unrecoverable error either during setup or during upload/download. If this is emitted, it is safe to assume the `File` is in a corrupted state and the upload/download should be restarted from the beginning.
+
+### `file.createReadStream()`
+
+Create a [readable stream](https://nodejs.org/api/stream.html#stream_class_stream_readable) to the file. Pieces of the file will become available from the stream as soon as they are downloaded from the network.
 
 ### `file.getBuffer(function cb(e, buffer) {})`
 
