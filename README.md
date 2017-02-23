@@ -139,7 +139,7 @@ Upload a file to a bucket.
   
 `opts` is optional, and allows you to specify some of the file's metadata:
 
-```json
+```js
 {
   fileSize: Number, // Size of the file in bytes, required if `file` is a stream
 }
