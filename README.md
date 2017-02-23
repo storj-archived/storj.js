@@ -192,7 +192,7 @@ Upload a file to a bucket.
 
 `bucketId` - the id of the bucket the file lives in (`String`)
 `fileId` - the id of the file itself (`String`)
-`cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object.
+`cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object
 
 ### `storj.getFiles(bucketId, function cb(e, files) {})`
 
@@ -336,3 +336,25 @@ file.getBlobURL(function (err, url) {
   document.body.appendChild(a)
 })
 ```
+
+## KeyPair API
+
+### `var key = keypair.getPrivateKey()`
+
+Get the private key component of the `KeyPair`.
+
+### `var key = keypair.getPublicKey()`
+
+Get the public key component of the `KeyPair`.
+
+### `var signature = keypair.sign(message)`
+
+Sign a message with this key. `message` should be either a `String` or a `Buffer`, and the returned signature will be a `String`.
+
+### `var id = keypair.getNodeID()`
+
+Get your client's NodeID on the Storj network, which is derived from this `KeyPair`.
+
+### `var address = keypair.getAddress()`
+
+Return a bitcoin-format address derived from this `KeyPair`.
