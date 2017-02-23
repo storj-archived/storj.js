@@ -160,3 +160,130 @@ Upload a file to a bucket.
 `bucketId` - the id of the bucket the file lives in (`String`)
 `fileId` - the id of the file itself (`String`)
 `cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object.
+
+## File API
+
+### `file.name`
+
+The name of the file.
+
+### `file.mimetype`
+
+The mimetype of the file.
+
+### `file.length`
+
+The length of the file in bytes.
+
+### `file.progress`
+
+A number between 0 and 1 (inclusive) reflecting what percentage of the file has been downloaded from the network. To determine how many bytes have been downloaded, you can multiply `file.length` by `file.progress`.
+
+### `file.on('done', function cb() {})`
+
+Emitted when a `File` has finished either uploading or downloading it's contents.
+
+### `file.on('ready', function cb() {})`
+
+Emitted when the `File` has finished being setup and is ready to begin transfering data. You can listen for this event if you are planning on tracking the progress of an upload/download.
+
+### `file.on('error', function cb(e) {})`
+
+Emitted when the `File` encounters an unrecoverable error either during setup or during upload/download. If this is emitted, it is safe to assume the `File` is in a corrupted state and the upload/download should be restarted from the beginning.
+
+### `file.createReadStream()`
+
+Create a [readable stream](https://nodejs.org/api/stream.html#stream_class_stream_readable) to the file. Pieces of the file will become available from the stream as soon as they are downloaded from the network.
+
+### `file.getBuffer(function cb(e, buffer) {})`
+
+Returns a `Buffer` representation of the `file`. If the `file` is downloading when `getBuffer` is called, the `cb` will be called with a `Buffer` as soon as the `file` finishes downloading.
+
+### `file.appendTo(rootElem, [opts], [function cb(e, elem) {}])` (BROWSER ONLY)
+
+Show the file in a the browser by appending it to the DOM. This is a powerful function
+that handles many file types like video (.mp4, .webm, .m4v, etc.), audio (.m4a, .mp3,
+.wav, etc.), images (.jpg, .gif, .png, etc.), and other file formats (.pdf, .md, .txt,
+etc.).
+
+The file will be fetched from the network and streamed into the page (if it's video or audio).
+In some cases, video or audio files will not be streamable because they're not in a format that
+the browser can stream so the file will be fully downloaded before being played. For other
+non-streamable file types like images and PDFs, the file will be downloaded then displayed.
+
+`rootElem` is a container element (CSS selector or reference to DOM node) that the content
+will be shown in. A new DOM node will be created for the content and appended to
+`rootElem`.
+
+If provided, `opts` can contain the following options:
+
+- `autoplay`: Autoplay video/audio files (default: `true`)
+- `controls`: Show video/audio player controls (default: `true`)
+- `maxBlobLength`: Files above this size will skip the "blob" strategy and fail (default: `200 * 1000 * 1000` bytes)
+
+If provided, `callback` will be called once the file is visible to the user.
+`callback` is called with an `Error` (or `null`) and the new DOM node that is
+displaying the content.
+
+```js
+file.appendTo('#containerElement', function (err, elem) {
+  if (err) throw err // file failed to download or display in the DOM
+  console.log('New DOM node with the content', elem)
+})
+```
+
+Streaming support depends on support for `MediaSource` API in the browser. All
+modern browsers have `MediaSource` support.
+
+For video and audio, storj.js tries multiple methods of playing the file:
+
+- [`videostream`][videostream] -- best option, supports streaming **with seeking**,
+  but only works with MP4-based files for now (uses `MediaSource` API)
+- [`mediasource`][mediasource] -- supports more formats, supports streaming
+  **without seeking** (uses `MediaSource` API)
+- Blob URL -- supports the most formats of all (anything the `<video>` tag supports
+  from an http url), **with seeking**, but **does not support streaming** (entire
+  file must be downloaded first)
+
+[videostream]: https://www.npmjs.com/package/videostream
+[mediasource]: https://www.npmjs.com/package/mediasource
+
+The Blob URL strategy will not be attempted if the file is over
+`opts.maxBlobLength` (200 MB by default) since it requires the entire file to be
+downloaded before playback can start which gives the appearance of the `<video>`
+tag being stalled. If you increase the size, be sure to indicate loading progress
+to the user in the UI somehow.
+
+For other media formats, like images, the file is just added to the DOM.
+
+For text-based formats, like html files, pdfs, etc., the file is added to the DOM
+via a sandboxed `<iframe>` tag.
+
+### `file.renderTo(rootElem, [opts], [function cb(e, elem) {}])` (BROWSER ONLY)
+
+Like `file.appendTo` but renders directly into given element (or CSS selector).
+
+### `file.getBlob(function cb(e, blob) {})` (BROWSER ONLY)
+
+Get a W3C `Blob` object which contains the file data.
+
+The file will be fetched from the network, and `callback` will be called once the file is ready. `callback` must be specified, and will be called with a an `Error` (or `null`) and the `Blob` object.
+
+### `file.getBlobUrl(function cb(e, url) {})` (BROWSER ONLY)
+
+Get a url which can be used in the browser to refer to the file.
+
+The file will be fetched from the network and `callback` will be called once the file is ready. `callback` must be specified, and will be called with a an `Error` (or `null`) and the Blob URL (`String`).
+
+This method is useful for creating a file download link, like this:
+
+```js
+file.getBlobURL(function (err, url) {
+  if (err) throw err
+  var a = document.createElement('a')
+  a.download = file.name
+  a.href = url
+  a.textContent = 'Download ' + file.name
+  document.body.appendChild(a)
+})
+```
