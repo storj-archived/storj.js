@@ -7,30 +7,30 @@ The official Storj library, for **node.js** and the **browser**.
 ## Table of Contents
 
 - [Install](#install)
-  - [npm](#npm)
+  - [npm](#modejs)
+  - [browser](#browser)
 - [Usage](#usage)
   - [Use in Node.js](#use-in-nodejs)
-  - [Use in the browser with browserify](#use-in-the-browser-with-browserify)
-  - [Tutorials and Examples](#tutorials-and-examples)
-  - [API](#api)
-      - [File API](#file-api)
-        - [Create File](#createfile)
-        - [Get File](#getfile)
-        - [Get Blob](#getblob)
-        - [Get Blob URL](#getbloburl)
-        - [Render to DOM](#renderto)
-      - [Core API](#core-api)
-        - [Generate Keypair](#generatekeypair)
-        - [Register Public Key](#registerkey)
-        - [Create Bucket](#createbucket)
-        - [Get Bucket](#getbucket)
-        - [Get Buckets](#getbuckets)
-        - [Delete Bucket](#deletebucket)
-        - [Make Public Bucket](#makepublic)
-        - [Create File Token](#createfileToken)
-        - [Get File Pointers](#getfilepointers)
-        - [Get File Buffer](#getbuffer)
-- [Packages](#packages)
+  - [Use in the browser with browserify](#use-in-the-browser)
+- [API](#api)
+  - [File API](#file-api)
+    - [Create File](#createfile)
+    - [Get File](#getfile)
+    - [Get Blob](#getblob)
+    - [Get Blob URL](#getbloburl)
+    - [Render to DOM](#renderto)
+  - [Core API](#core-api)
+    - [Generate Keypair](#generatekeypair)
+    - [Register Public Key](#registerkey)
+    - [Create Bucket](#createbucket)
+    - [Get Bucket](#getbucket)
+    - [Get Buckets](#getbuckets)
+    - [Delete Bucket](#deletebucket)
+    - [Make Public Bucket](#makepublic)
+    - [Create File Token](#createfileToken)
+    - [Get File Pointers](#getfilepointers)
+    - [Get File Buffer](#getbuffer)
+- [Tutorials and Examples](#tutorials-and-examples)
 
 ## Install
 
@@ -66,16 +66,12 @@ The files on our releases page are named after the version of the [ECMAScript](h
 
 ### Use in Node.js
 
-To include this project programmatically:
-
 ```javascript
 var Storj = require('storj');
 var storj = new Storj()
 ```
 
 ### Use in the browser
-
-Load this module as browserified or webpacked bundle and import with `<script>` tags
 
 ```html
 <script src="storj.js"></script>
@@ -84,7 +80,6 @@ Load this module as browserified or webpacked bundle and import with `<script>` 
   ...
 </script>
 ```
----
 
 ## API
 
