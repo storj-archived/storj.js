@@ -1,7 +1,8 @@
-# Storj.js
-Extremely early version of the browser library for [Storj.io](https://storj.io/). This library currently exposes [storj core bridge-client](https://github.com/Storj/core/tree/master/lib/bridge-client) to the browser. 
+<img style="text-align: center;" src="http://i.imgur.com/ikzVmnd.png"></img>
 
-A [discussion](https://github.com/Storj/storj.js/issues/2) has started about moving the bridge-client and requests to bridge out of core and into storj.js api and documentation.
+The official Storj library, for **node.js** and the **browser**.
+
+> Note: This library is currently in beta. If you are building a Node.js application you plan on shipping to production soon, we recommend you use the utility libary [storj-lib](http://github.com/storj/core). For browser applications, Storj.js is the only supported option for development.
 
 ## Table of Contents
 
@@ -33,93 +34,54 @@ A [discussion](https://github.com/Storj/storj.js/issues/2) has started about mov
 
 ## Install
 
-### npm
-This project is available through [npm](https://www.npmjs.com/). To install:
+### Node.js
 
-```bash
-> npm install storj-js --save
+If you are building an application that will run outside of a browser, such as a web server, you should use Node.js. From the root of your project directory, alongside your package.json, run:
+
 ```
+npm install --save storj
+```
+
+> Note: during the beta, this package will not be available via npm. Instead, install with the following syntax:
+> `npm install --save https://github.com/storj/storj.js`
+
+### Browser
+
+Download the Storj.js library from our [releases page]() and place it alongside the `index.html` file for your website, saving it as `storj.js`. Then, in `index.html` include:
+
+```html
+<html>
+  <head>...</head>
+  <body>
+    ...
+    <script src="./storj.js"></script>
+    ...
+  </body>
+</html>
+```
+
+The files on our releases page are named after the version of the [ECMAScript](https://en.wikipedia.org/wiki/ECMAScript) they target. If you are wanting to target older browsers, use `storj.es5.js` which targets [ES5](https://en.wikipedia.org/wiki/ECMAScript#5th_Edition), othwise use `storj.es6.js`.
+
+## Usage
 
 ### Use in Node.js
 
 To include this project programmatically:
 
 ```javascript
-var Storj = require('storj-js');
-
-var options = {
-  bridge: 'http://localhost:8080',
-  basicAuth: {
-    email: 'email',
-    password: 'pass'
-  }
-};
-
-var storj = new Storj(options)
-
-// All api calls are browser / node compatible unless rendering to DOM
+var Storj = require('storj');
+var storj = new Storj()
 ```
 
-## Usage
-
-### Use in the browser with browserify
+### Use in the browser
 
 Load this module as browserified or webpacked bundle and import with `<script>` tags
 
 ```html
-<!-- loading the minified version -->
-<script src="storj.min.js"></script>
-
-<!-- loading the human-readable (not minified) version -->
 <script src="storj.js"></script>
-
 <script>
-  var options = {
-    bridge: 'http://localhost:8080',
-    basicAuth: {
-      email: 'email',
-      password: 'pass'
-    }
-  };
-  
   var storj = new Storj(options);
-  
-  // generate and register public key if not already stored in client bridge
-  var keypair = storj.generateKeypair();
-  
-  // your key is now on the storj object and the developer is responsible for saving it
-  var pubKey = storj._key._pubkey;
-  
-  storj.registerKey(pubKey, function(err, res) {
-    // res if registration was successful
-  });
-  
-  // sync
-  var file = storj.createFile('bucketId', 'fileName', stream);
-  
-  // or async
-  
-  storj.createFile('bucketId', 'fileName', stream, function(file) {
-    // file is an event emitter extending the file class
-  })
-  
-  file.on('error', function(err){
-    // there was an error uploading oops!
-  })
-  
-  file.on('uploaded', function(res){
-    // the file completed the upload process. Res holds the details
-    // We can now render the file to the DOM
-    renderFile = storj.getFile('bucketId', res.fileId);
-    rednderFile.on('downloaded', function(){
-      // The uploaded file has been downloaded from the farmer.
-      renderFile.renderTo('img', function(err, res) {
-        // file finished rendering
-      });
-    });
-  })
-  
-  
+  ...
 </script>
 ```
 ---
