@@ -124,15 +124,48 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 });
 ```
 
-### `storj.createBucket(bucketName, function cb(e) {})`
+### `storj.createBucket(bucketName, function cb(e, meta) {})`
 
-### `storj.getBucket(bucketId, function cb(e) {})`
+Create's a bucket on the storj network with the requested name. `cb` will be invoked with an error if creating the bucket fails, otherwise `meta` will contain metadata for the bucket created.
 
-### `storj.getBuckets(function cb(e) {})`
+`meta` has the following properties:
 
-### `storj.makePublic(bucketId, cb(e) {})`
+```js
+{
+  id: String, // The bucket id of the newly created bucket
+  name: String // the name of the newly created bucket
+}
+```
+
+### `storj.getBucket(bucketId, function cb(e, meta) {})`
+
+Get the metadata for a bucket. `cb` will be invoked with an error if getting the meta-data fails, otherwise `meta` will have the following properties:
+
+```js
+{
+  id: String, // The id of the bucket
+  name: String // The name of the bucket
+}
+```
+
+### `storj.getBuckets(function cb(e, buckets) {})`
+
+Get a list of all buckets associated with the currently authenticated account on the storj network. `cb` will be invoked with an error if getting the list of buckets fails, or with an array of meta-data about the buckets. Each element of the `buckets` array will have the following properties:
+
+```js
+{
+  id: String, // the bucketID of the bucket
+  name: String // the name of the bucket
+}
+```
+
+### `storj.makePublic(bucketId, [opts], cb(e) {})`
+
+TODO
 
 ### `storj.deleteBucket(bucketId, function cb(e) {})`
+
+Remove a bucket from the Storj network. `cb` will be invoked with an error if the operation fails, or `null` otherwise.
 
 ### `var file = storj.createFile(bucketId, fileName, file, opts, cb)`
 
@@ -155,11 +188,27 @@ Upload a file to a bucket.
 
 `cb` is an optional `function` that will be registered as a [listener](https://nodejs.org/api/events.html) on the returned `File`'s `done` event.
 
-### `var file = storj.getFile(bucketId, fileId, cb)`
+### `var file = storj.getFile(bucketId, fileId, function cb() {})`
 
 `bucketId` - the id of the bucket the file lives in (`String`)
 `fileId` - the id of the file itself (`String`)
 `cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object.
+
+### `storj.getFiles(bucketId, function cb(e, files) {})`
+
+Get a list of files stored in a bucket on the Storj network. `cb` will be invoked with an `Error` first if the operation fails, or `null` otherwise. `files` will be an array of meta-data about the files, each element will have the following properties:
+
+```js
+{
+  id: String, // the id of the file
+  name: String, // the name of the file
+  mimetype: String // the mime-type of the file
+}
+```
+
+### `storj.deleteFile(bucketId, fileId, function cb(e) {})`
+
+Remove a file from the Storj network. `cb` will be invoked with an `Error` first if the operation fails, or `null` otherwise.
 
 ## File API
 
