@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 'use strict';
 
 const test = require('tape');
@@ -11,6 +12,7 @@ test('Storj.js happy path integration', function(done) {
   const bucketName = `test-${Date.now()}-${(Math.random()+'').split('.')[1]}`;
   let bucketId;
   let fileId;
+  let key;
   const fileName = 'foobar.txt';
   const fileContent = new Buffer(
     'IM A LUMBERJACK AND IM OK, I SLEEP ALL NIGHT AND I WORK ALL DAY'
@@ -31,33 +33,66 @@ test('Storj.js happy path integration', function(done) {
 
     storj.on('ready', function() {
       t.pass('ready emitted');
+      // Make sure we don't use our t for other tests
       storj.removeAllListeners();
       t.end();
     });
   });
 
   test('getKeyPair', function(t) {
-    storj.getKeyPair();
-    t.ok(storj._key instanceof KeyPair, 'object', 'Generated KeyPair');
+    key = storj.generateKeyPair()
+    t.ok(key instanceof KeyPair, 'object', 'Generated KeyPair');
     t.end();
   });
 
+  test('registerKey', function(t) {
+    storj.registerKey(key.getPublicKey(), function(e) {
+      t.error(e, 'Succesfully registered the key');
+      t.done();
+    });
+  });
+
+  test('Constructor with key', function(t) {
+    storj = new Storj({
+      bridge: process.env.STORJ_BRIDGE,
+      key: key.getPublicKey()
+    });
+
+    t.equal(storj.constructor, Storj, 'Returned instance of Storj');
+
+    storj.on('error', t.fail);
+    storj.on('error', done.fail);
+    storj.on('ready', function() {
+      t.pass('ready emitted');
+      storj.removeAllListeners();
+    });
+  });
+
   test('createBucket', function(t) {
-    storj.createBucket(bucketName, function(e, resp) {
+    storj.createBucket(bucketName, function(e, meta) {
       t.error(e, 'createBucket returns success');
-      t.ok(resp.id, 'Gets bucket id back');
-      bucketId = resp.id;
+      t.ok(meta.id, 'gets bucket id back');
+      t.equal(meta.name, bucketName, 'gets bucket name back');
+      bucketId = meta.id;
       t.end();
     });
   });
 
-  test('getBuckets', function(t) {
-    storj.getBuckets(function(e, buckets) {
+  test('getBucket', function(t) {
+    storj.getBucket(bucketId, function (e, bucket) {
+      t.equal(bucket.id, bucketId, 'Bucket has correct id');
+      t.equal(bucket.name, bucketName, 'Bucket has correct name');
+      t.end();
+    });
+  });
+
+  test('getBucketList', function(t) {
+    storj.getBucketList(function(e, buckets) {
       t.error(e, 'Should successfully grab buckets');
       for(var i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
           t.pass('Newly created bucket listed');
-          bucketId = buckets[i].id;
+          t.equal(buckets[i].id, bucketId, 'Bucket has correct id');
           return t.end();
         }
       }
@@ -66,49 +101,91 @@ test('Storj.js happy path integration', function(done) {
     });
   });
 
-  test('getBucket', function(t) {
-    storj.getBucket(bucketId, function (e, bucket) {
-      t.equal(bucket.user, process.env.STORJ_USERNAME, 'Returns metadata');
-      t.end();
-    });
-  });
-
   test('createFile', function(t) {
-    var rs = new Readable();
+    const rs = new Readable();
     rs._read = function() {};
     rs.push(fileContent);
     rs.push(null);
-    var file = storj.createFile(bucketId, fileName, rs);
-    file.emit = function (event, file) {
+    const file = storj.createFile(bucketId, fileName, rs);
+    t.equal(file.name, fileName, 'file.name attribute set');
+    t.equal(file.progress, 0, 'file.progress attribute set');
+    let emittedReady = false;
+    file.on('ready', function cb() {
+      emittedReady = true;
+      t.equal(file.progress, 0, 'ready emitted before downloading anything');
+    });
+    file.on('error', t.fail)
+    let emittedData = false;
+    file.on('data', function(data) {
+      emittedData = true;
+      t.ok(fileContent.indexOf(data.toString()) !== -1, 'received chunk');
+    });
+    file.on('done', function() {
+      t.ok(emittedReady, 'file emitted ready before done');
+      t.ok(emittedData, 'file emitted data before done');
       t.equal(event, 'done', 'Expect createFile to emit done');
       t.equal(file.size, fileContent.length,
         'Expect size to be length of fileContent');
       fileId = file.id;
+      t.equal(file.progress, 1, 'file.progress shows complete');
       t.end();
-    }
+    });
   });
 
-  test('listFiles', function(t) {
-    storj.getBucket(bucketId, function(e, bucket) {
-      t.error(e, 'Fetch bucket successfully');
-      for(var i = 0; i < bucket.files.length; i++) {
-        if(bucket.files[i].filename === fileName) {
-          t.pass('Found file in bucket');
+  test('getFileList', function(t) {
+    storj.getFileList(bucketId, function(e, files) {
+      t.error(e, 'fetch file list successfully');
+      for(var i = 0; i < files.length; i++) {
+        if(files[i].filename === fileName) {
+          t.equal('text/plain', files[i].mimetype, 'correct mimetype set')
           return t.end();
         }
       }
-      t.fail('Did not find file in bucket');
+      t.fail('did not find file in bucket');
       return t.end();
     });
   });
 
   test('getFile', function(t) {
-    storj.getFile(bucketId, fileId, function(e, file) {
-      console.log(arguments);
-    });
+    let file;
+    const handler = function() {
+      t.equal(file.id, fileId, 'file.id populated');
+      t.equal(file.progress, 0, 'file.progress shows complete');
+      file.getBuffer(function (e, buffer) {
+        t.error(e, 'retreived file contents');
+        t.equal(buffer.toString(), fileContent.toString(), 'content correct');
+        const rs = file.createReadStream();
+        const content = '';
+        rs.on('data', function(d) { content += d.toString() });
+        rs.on('error', t.fail);
+        rs.on('end', function() {
+          t.equal(content, fileContent.toString(), 'stream correct');
+          t.end();
+        });
+      });
+    }
+    file = storj.getFile(bucketId, fileId, handler);
+    t.ok(storj.listeners('done').reduce((p, c) => p || c === handler, false),
+      true, 'cb is registered to done');
   });
 
   test('deleteFile', function(t) {
+    storj.deleteFile(bucketId, fileId, function (e) {
+      t.error(e, 'removed file');
+    });
+  });
+
+  test('getFileList', function(t) {
+    storj.getFileList(bucketId, function(e, files) {
+      t.error(e, 'fetch file list successfully');
+      for(var i = 0; i < files.length; i++) {
+        if(files[i].filename === fileName) {
+          t.fail('file remained after delete');
+        }
+      }
+      t.pass('file removed');
+      return t.end();
+    });
   });
 
   test('deleteBucket', function(t) {
@@ -118,8 +195,8 @@ test('Storj.js happy path integration', function(done) {
     });
   });
 
-  test('getBuckets', function(t) {
-    storj.getBuckets(function(e, buckets) {
+  test('getBucketList', function(t) {
+    storj.getBucketList(function(e, buckets) {
       t.error(e, 'Should successfully grab buckets');
       for(var i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
@@ -128,7 +205,7 @@ test('Storj.js happy path integration', function(done) {
           return t.end();
         }
       }
-      t.pass('Did not find bucket');
+      t.pass('bucket removed after delete');
       t.end();
     });
   });
