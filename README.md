@@ -124,6 +124,10 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 });
 ```
 
+### `storj.removeKey(pubkey, function cb(e) {})`
+
+Remove a public key from the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
+
 ### `storj.createBucket(bucketName, function cb(e, meta) {})`
 
 Create's a bucket on the storj network with the requested name. `cb` will be invoked with an error if creating the bucket fails, otherwise `meta` will contain metadata for the bucket created.
@@ -148,7 +152,7 @@ Get the metadata for a bucket. `cb` will be invoked with an error if getting the
 }
 ```
 
-### `storj.getBuckets(function cb(e, buckets) {})`
+### `storj.getBucketList(function cb(e, buckets) {})`
 
 Get a list of all buckets associated with the currently authenticated account on the storj network. `cb` will be invoked with an error if getting the list of buckets fails, or with an array of meta-data about the buckets. Each element of the `buckets` array will have the following properties:
 
@@ -194,7 +198,7 @@ Upload a file to a bucket.
 `fileId` - the id of the file itself (`String`)
 `cb` - an optional `function` that will be registered as a listener for the `done` event on the returned `file` object
 
-### `storj.getFiles(bucketId, function cb(e, files) {})`
+### `storj.getFileList(bucketId, function cb(e, files) {})`
 
 Get a list of files stored in a bucket on the Storj network. `cb` will be invoked with an `Error` first if the operation fails, or `null` otherwise. `files` will be an array of meta-data about the files, each element will have the following properties:
 
@@ -211,6 +215,8 @@ Get a list of files stored in a bucket on the Storj network. `cb` will be invoke
 Remove a file from the Storj network. `cb` will be invoked with an `Error` first if the operation fails, or `null` otherwise.
 
 ## File API
+
+> TODO: Define behaviour of `createReadStream`, `renderTo`, `appendTo`, etc. when _uploading_ a file.
 
 ### `file.name`
 
@@ -239,6 +245,10 @@ Emitted when the `File` has finished being setup and is ready to begin transferi
 ### `file.on('error', function cb(e) {})`
 
 Emitted when the `File` encounters an unrecoverable error either during setup or during upload/download. If this is emitted, it is safe to assume the `File` is in a corrupted state and the upload/download should be restarted from the beginning.
+
+### `file.on('data', function cb(data) {})`
+
+Emitted when data has been downloaded from the network, this can be used for tracking the value of `file.progress`. The callback will be provided the chunk of data that was pulled over the network.
 
 ### `file.createReadStream()`
 
