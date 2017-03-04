@@ -97,7 +97,7 @@ The optional `opts` allows you to override the default behaviour of this object.
 
 If you need to use authentication in your application, we strongly suggest you use the `key` method as it provides a higher level of security.
 
-Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `getKeypair` and `registerKeypair` API.
+Both `basicAuth` and `key` are optional, but you may only provide one or the other. If you use `basicAuth`, the library will assume that you already have registered a public key with the bridge you are authenticating with. To create a public/private key pair for you and register it to your account you can use the `generateKeyPair` and `registerKey` API.
 
 If you provide a `key`, this key will be used to authenticate every request moving forward.
 
@@ -109,11 +109,11 @@ Emitted when the library encounters a catastrophic error that will probably prev
 
 Emitted when the `Storj` object is ready to communicate with the storj network.
 
-### `var keypair = storj.generateKeyPair()`
+### `var keypair = storj.generateKeyPair([privateKey])`
 
 Create a new public/private `KeyPair` for authenticating against the Storj network. Note, this function will _not_ register this key with your account, you must provide `storj.registerKey` with the returned public key to do that.
 
-### `storj.registerKey(pubkey, function cb(e) {})`
+### `storj.registerKey(publicKey, function cb(e) {})`
 
 Register a public key with the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
 
@@ -124,7 +124,7 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 });
 ```
 
-### `storj.removeKey(pubkey, function cb(e) {})`
+### `storj.removeKey(publicKey, function cb(e) {})`
 
 Remove a public key from the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
 

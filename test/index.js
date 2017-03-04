@@ -39,7 +39,7 @@ test('Storj.js happy path integration', function(done) {
     });
   });
 
-  test('getKeyPair', function(t) {
+  test('generateKeyPair', function(t) {
     key = storj.generateKeyPair()
     t.ok(key instanceof KeyPair, 'object', 'Generated KeyPair');
     t.end();
@@ -48,14 +48,14 @@ test('Storj.js happy path integration', function(done) {
   test('registerKey', function(t) {
     storj.registerKey(key.getPublicKey(), function(e) {
       t.error(e, 'Succesfully registered the key');
-      t.done();
+      t.end();
     });
   });
 
   test('Constructor with key', function(t) {
     storj = new Storj({
       bridge: process.env.STORJ_BRIDGE,
-      key: key.getPublicKey()
+      key: key.getPrivateKey()
     });
 
     t.equal(storj.constructor, Storj, 'Returned instance of Storj');
@@ -65,6 +65,7 @@ test('Storj.js happy path integration', function(done) {
     storj.on('ready', function() {
       t.pass('ready emitted');
       storj.removeAllListeners();
+      t.end()
     });
   });
 
