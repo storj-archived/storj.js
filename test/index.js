@@ -83,6 +83,7 @@ test('Storj.js happy path integration', function(done) {
     storj.getBucket(bucketId, function (e, bucket) {
       t.equal(bucket.id, bucketId, 'Bucket has correct id');
       t.equal(bucket.name, bucketName, 'Bucket has correct name');
+      t.equal(bucket.files.length, 0, 'Bucket has no files');
       t.end();
     });
   });
