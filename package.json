@@ -48,6 +48,8 @@
     "testling": "^1.7.1"
   },
   "dependencies": {
+    "bitcore-mnemonic": "^1.1.1",
+    "blob-to-stream": "^1.0.0",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
     "fs-blob-store": "^5.2.1",
@@ -57,6 +59,7 @@
     "setimmediate": "^1.0.5",
     "storj-lib": "github:retrohacker/core#19c1e8e7ac7826919c9492ea0e7c9868c813e3f7",
     "stream-to-blob": "^1.0.0",
-    "stream-to-blob-url": "^2.1.0"
+    "stream-to-blob-url": "^2.1.0",
+    "string-to-stream": "^1.1.0"
   }
 }

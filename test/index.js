@@ -13,6 +13,7 @@ test('Storj.js happy path integration', function(done) {
   let bucketId;
   let fileId;
   let key;
+  let mnemonic;
   const fileName = 'foobar.txt';
   const fileContent = new Buffer(
     'IM A LUMBERJACK AND IM OK, I SLEEP ALL NIGHT AND I WORK ALL DAY'
@@ -26,7 +27,7 @@ test('Storj.js happy path integration', function(done) {
         password: process.env.STORJ_PASSWORD,
       }
     });
-    t.equal(storj.constructor, Storj, 'Returned instance of Storj');
+    t.equal(storj.constructor, Storj, 'returned instance of Storj');
 
     storj.on('error', t.fail);
     storj.on('error', done.fail);
@@ -41,7 +42,7 @@ test('Storj.js happy path integration', function(done) {
 
   test('generateKeyPair', function(t) {
     key = storj.generateKeyPair()
-    t.ok(key instanceof KeyPair, 'object', 'Generated KeyPair');
+    t.ok(key instanceof KeyPair, 'object', 'generated KeyPair');
     t.end();
   });
 
@@ -52,13 +53,20 @@ test('Storj.js happy path integration', function(done) {
     });
   });
 
+  test('generateMnemonic', function(t) {
+    mnemonic = storj.generateMnemonic();
+    t.ok(typeof mnemonic === 'string', 'generated mnemonic');
+    t.end();
+  });
+
   test('Constructor with key', function(t) {
     storj = new Storj({
       bridge: process.env.STORJ_BRIDGE,
-      key: key.getPrivateKey()
+      key: key.getPrivateKey(),
+      mnemonic: mnemonic
     });
 
-    t.equal(storj.constructor, Storj, 'Returned instance of Storj');
+    t.equal(storj.constructor, Storj, 'returned instance of Storj');
 
     storj.on('error', t.fail);
     storj.on('error', done.fail);
@@ -81,24 +89,24 @@ test('Storj.js happy path integration', function(done) {
 
   test('getBucket', function(t) {
     storj.getBucket(bucketId, function (e, bucket) {
-      t.equal(bucket.id, bucketId, 'Bucket has correct id');
-      t.equal(bucket.name, bucketName, 'Bucket has correct name');
-      t.equal(bucket.files.length, 0, 'Bucket has no files');
+      t.equal(bucket.id, bucketId, 'bucket has correct id');
+      t.equal(bucket.name, bucketName, 'bucket has correct name');
+      t.equal(bucket.files.length, 0, 'bucket has no files');
       t.end();
     });
   });
 
   test('getBucketList', function(t) {
     storj.getBucketList(function(e, buckets) {
-      t.error(e, 'Should successfully grab buckets');
+      t.error(e, 'should successfully grab buckets');
       for(var i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
-          t.pass('Newly created bucket listed');
-          t.equal(buckets[i].id, bucketId, 'Bucket has correct id');
+          t.pass('newly created bucket listed');
+          t.equal(buckets[i].id, bucketId, 'bucket has correct id');
           return t.end();
         }
       }
-      t.fail('Did not find newly created bucket');
+      t.fail('did not find newly created bucket');
       t.end();
     });
   });
@@ -117,17 +125,10 @@ test('Storj.js happy path integration', function(done) {
       t.equal(file.progress, 0, 'ready emitted before downloading anything');
     });
     file.on('error', t.fail)
-    let emittedData = false;
-    file.on('data', function(data) {
-      emittedData = true;
-      t.ok(fileContent.indexOf(data.toString()) !== -1, 'received chunk');
-    });
     file.on('done', function() {
       t.ok(emittedReady, 'file emitted ready before done');
-      t.ok(emittedData, 'file emitted data before done');
-      t.equal(event, 'done', 'Expect createFile to emit done');
       t.equal(file.size, fileContent.length,
-        'Expect size to be length of fileContent');
+        'expect size to be length of fileContent');
       fileId = file.id;
       t.equal(file.progress, 1, 'file.progress shows complete');
       t.end();
@@ -192,17 +193,17 @@ test('Storj.js happy path integration', function(done) {
 
   test('deleteBucket', function(t) {
     storj.deleteBucket(bucketId, function (e) {
-      t.error(e, 'Successfully delete bucket');
+      t.error(e, 'successfully delete bucket');
       t.end();
     });
   });
 
   test('getBucketList', function(t) {
     storj.getBucketList(function(e, buckets) {
-      t.error(e, 'Should successfully grab buckets');
+      t.error(e, 'should successfully grab buckets');
       for(var i = 0; i < buckets.length; i++) {
         if(buckets[i].name === bucketName) {
-          t.fail('Bucket still listed');
+          t.fail('bucket still listed');
           bucketId = buckets[i].id;
           return t.end();
         }
