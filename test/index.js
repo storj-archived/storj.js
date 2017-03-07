@@ -177,6 +177,7 @@ test('Storj.js happy path integration', function(done) {
   test('deleteFile', function(t) {
     storj.deleteFile(bucketId, fileId, function (e) {
       t.error(e, 'removed file');
+      t.end();
     });
   });
 
