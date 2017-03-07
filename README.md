@@ -378,3 +378,11 @@ Get your client's NodeID on the Storj network, which is derived from this `KeyPa
 ### `var address = keypair.getAddress()`
 
 Return a bitcoin-format address derived from this `KeyPair`.
+
+## Low Level API
+
+The Low Level API isn't actually that low level. The purpose of these methods is to provide tools that are useful when building production Storj.js applications, but that aren't necessary for casual development. These methods may expose primitives, and often sacrifice usability for perfomance.
+
+### `var stream = storj.download(fileId, bucketId)`
+
+Return a readable stream of decrypted data being pulled directly from farmers. This method bypasses the File API entirely, and doesn't use a backend abstract-blob-store. If you only need to download a file once, and don't want to hold onto it in memory, this is the method for you.

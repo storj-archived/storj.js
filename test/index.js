@@ -174,6 +174,18 @@ test('Storj.js happy path integration', function(done) {
     t.equal(file.progress, 0, 'file.progress set');
   });
 
+  test('download', function(t) {
+    var rs = storj.download(bucketId, fileId);
+    var content = ''
+    rs.on('data', function(d) {
+      content += d.toString();
+    });
+    rs.on('end', function () {
+      t.equal(content, fileContent.toString(), 'stream correct');
+      t.end();
+    });
+  });
+
   test('deleteFile', function(t) {
     storj.deleteFile(bucketId, fileId, function (e) {
       t.error(e, 'removed file');
