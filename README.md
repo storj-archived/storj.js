@@ -193,7 +193,7 @@ Upload a file to a bucket.
   - a [`stream.Readable`](https://nodejs.org/api/stream.html#stream_readable_streams)
   - a `String` with the plain-text contents of the file
   - a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
-  
+
 `opts` is optional, and allows you to specify some of the file's metadata:
 
 ```js
@@ -227,8 +227,6 @@ Get a list of files stored in a bucket on the Storj network. `cb` will be invoke
 Remove a file from the Storj network. `cb` will be invoked with an `Error` first if the operation fails, or `null` otherwise.
 
 ## File API
-
-> TODO: Define behaviour of `createReadStream`, `renderTo`, `appendTo`, etc. when _uploading_ a file.
 
 ### `file.name`
 

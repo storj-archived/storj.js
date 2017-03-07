@@ -153,12 +153,12 @@ test('Storj.js happy path integration', function(done) {
     let file;
     const handler = function() {
       t.equal(file.id, fileId, 'file.id populated');
-      t.equal(file.progress, 0, 'file.progress shows complete');
+      t.equal(file.progress, 1, 'file.progress shows complete');
       file.getBuffer(function (e, buffer) {
         t.error(e, 'retreived file contents');
         t.equal(buffer.toString(), fileContent.toString(), 'content correct');
         const rs = file.createReadStream();
-        const content = '';
+        let content = '';
         rs.on('data', function(d) { content += d.toString() });
         rs.on('error', t.fail);
         rs.on('end', function() {
@@ -168,8 +168,10 @@ test('Storj.js happy path integration', function(done) {
       });
     }
     file = storj.getFile(bucketId, fileId, handler);
-    t.ok(storj.listeners('done').reduce((p, c) => p || c === handler, false),
+    file.on('error', t.fail);
+    t.equal(file.listeners('done').reduce((p, c) => p || c === handler, false),
       true, 'cb is registered to done');
+    t.equal(file.progress, 0, 'file.progress set');
   });
 
   test('deleteFile', function(t) {
