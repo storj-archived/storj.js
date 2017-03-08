@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>Storj upload example</title>
+    <style>
+      .box {
+        border: dotted 1px black; 
+        height: 400px;
+        background-color: powderblue;
+        width: 400px;
+        margin: 0 auto; 
+      }
+      .drag {
+        border: 5px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Drag a file into the box to upload it to Storj</h1>
+    <br/>
+    <br/>
+    <div class="box"></div>
+    <script src="storj.es6.js"></script>
+    <script src="dragdrop_bundle.js"></script>
+    <script src="stream_bundle.js"></script>
+    <script>
+      var bucketId = '77845a36aadcb966fc76d5da'
+      var shard = '603d9480ab2e9b66705f3896'
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+      }
+      
+      var storj = new Storj(options)
+
+      window.remove = DragDrop('.box', {
+        onDrop: function (files, pos) {
+          var stream = window.getFileStream(files);
+          var opts = {
+            body: stream
+          }
+
+          storj.createFile(bucketId, files, opts, (file) => {
+            file.on('uploaded', (res) => {
+              console.log(res);
+              console.log('finished uploading file')
+            })
+          });
+        },
+        onDropText: function (text, pos) {
+          // todo text example
+          //storj.createFile(bucketId, text)
+        }
+      })
+    </script>
+  </body>
+</html>

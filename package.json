@@ -1,25 +1,66 @@
 {
-  "name": "storj.js",
+  "name": "storj",
   "version": "0.0.0",
   "description": "Storj.io browser library",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {},
   "scripts": {
-    "start": "node index.js",
-    "build": "grunt browserify; grunt concat; grunt closure-compiler",
-    "watch": "grunt watch"
+    "build": "browserify --standalone 'storj' lib/browser.js > storj.es6.js",
+    "postbuild": "babel storj.es6.js > storj.es5.js",
+    "posttest": "npm run linter",
+    "test": "npm run test-node && npm run test-browser",
+    "test-node": "nyc --reporter=text --reporter=html tape test/**/*.js",
+    "test-browser": "testling",
+    "linter": "eslint --fix .",
+    "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc",
+    "node-test": "node test/**/*.js"
+  },
+  "browserify": {
+    "transform": [
+      "envify"
+    ]
+  },
+  "testling": {
+    "files": [
+      "lib/browser.js",
+      "test/**/*.js"
+    ]
   },
   "author": "Chris Pollard",
+  "contributors": [
+    {
+      "name": "retrohacker",
+      "url": "https://github.com/retrohacker"
+    }
+  ],
   "license": "LGPL",
   "devDependencies": {
-    "express": "^4.14.0",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-closure-compiler": "0.0.21",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0"
+    "babel-cli": "^6.18.0",
+    "browserify": "^13.1.1",
+    "envify": "^4.0.0",
+    "eslint": "^3.14.0",
+    "ink-docstrap": "bookchin/docstrap",
+    "jsdoc": "^3.4.3",
+    "longjohn": "^0.2.12",
+    "nyc": "^10.0.0",
+    "proxyquire": "^1.7.10",
+    "tape": "^4.6.3",
+    "testling": "^1.7.1"
   },
   "dependencies": {
-    "storj-lib": "^5.1.2"
+    "bitcore-mnemonic": "^1.1.1",
+    "blob-to-stream": "^1.0.0",
+    "filereader-stream": "^1.0.0",
+    "from2": "^2.3.0",
+    "fs-blob-store": "^5.2.1",
+    "local-web-server": "^1.2.6",
+    "memory-blob-store": "^5.0.1",
+    "render-media": "^2.9.1",
+    "setimmediate": "^1.0.5",
+    "storj-lib": "github:retrohacker/core#19c1e8e7ac7826919c9492ea0e7c9868c813e3f7",
+    "stream-to-blob": "^1.0.0",
+    "stream-to-blob-url": "^2.1.0",
+    "stream-with-known-length-to-buffer": "^1.0.0",
+    "string-to-stream": "^1.1.0"
   }
 }

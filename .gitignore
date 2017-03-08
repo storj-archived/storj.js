@@ -1,1 +1,10 @@
 node_modules/
+.nyc_output/
+coverage/
+storj.es5.js
+storj.es6.js
+test.html
+index.html
+test.js
+*.swp
+npm-debug.log

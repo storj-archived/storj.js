@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Storj Core Source: Client.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script src="scripts/highlight.min.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="styles/site.storj.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" style="background-image:url(img/logo.svg)"  href="index.html">Storj Core</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client.html">storjjs/client</a></li><li><a href="module-storjjs_file.html">storjjs/file</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-storjjs_client-Client.html">storjjs/client~Client</a></li><li><a href="module-storjjs_file-File.html">storjjs/file~File</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Client.html#event:error">Client#event:error</a></li><li><a href="Client.html#event:file">Client#event:file</a></li><li><a href="File.html#event:done">File#event:done</a></li><li><a href="File.html#event:error">File#event:error</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-4">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: Client.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript ">/**
+ * @module storjjs/client
+ * @license LGPL-3.0
+ */
+'use strict';
+
+// We use assert to test user-provided data against our expectations
+var assert = require('assert');
+
+// Client will emit events
+var EventEmitter = require('events').EventEmitter;
+
+// We use util to make Client extend EventEmitter
+var util = require('util');
+
+/**
+ * Creates a new client for interacting with the storj network.
+ * @constructor
+ * @prop {Array} files - An array of all files the client is tracking
+ * @prop {Number} progress - Download progress across all files, a value
+ * between 0 and 1
+ * @prop {Number} downloadSpeed - Total download speed across all files,
+ * measured in bytes/sec
+ * @license LGPL-3.0
+ * @see https://github.com/storj/storj.js
+ * @param {Object} [opts] - Control the behaviour of the client
+ * @param {String} [opts.bridge=https://api.storj.io] - API base url
+ * @param {String} [opts.protocol=http] - Protocol for downloading shards
+ * @implements {EventEmitter}
+ */
+function Client(opts) {
+  // Be nice to our users. If they don't use `new`, do it for them.
+  if(!(this instanceof Client)) {
+    return new Client(opts);
+  }
+
+  // Scrub our incomming opts and configure our client's properties
+  opts = opts || {};
+  assert(typeof opts === 'object', 'Client options must be an object');
+  this.bridge = opts.bridge || Client.Defaults.bridge;
+  this.protocol = opts.protocol || Client.Defaults.protocol;
+  assert(typeof this.bridge === 'string', 'Bridge url must be a string');
+  assert(typeof this.protocol === 'string', 'Protocol must be a string');
+
+  // Setup up magic values for our client
+
+
+  // Done setting up our client!
+  return this;
+}
+
+/**
+ * Default values for new clients
+ * @private
+ */
+Client.Defaults = {
+  bridge: 'https://api.storj.io',
+  protocol: 'http'
+};
+
+
+// Make Client extend the EventEmitter class
+util.inherits(Client, EventEmitter);
+
+/**
+ * Emittted when a download begins and a file becomes available. The file may
+ * not be fully downloaded yet.
+ * @event Client#file
+ * @type {File}
+ */
+
+/**
+ * Emitted when the client encounters an error that isn't caught by another
+ * handler
+ * @event Client#error
+ * @type {error}
+ */
+
+/**
+ * Add a new file to be downloaded by the client
+ * @param {Object} opts - Information about the file to be downloaded
+ * @param {String} [opts.bucketId]
+ * @param {String} [opts.user] - Required if bucketId not provided
+ * @param {String} [opts.bucketName] - Required if bucketId not provided
+ * @param {String} opts.file - Name of the file to download
+ * @param {Function} [opts.store] - Custom chunk store (must
+ * follow the
+ * [abstract-chunk-store](https://www.npmjs.com/package/abstract-chunk-store)
+ * API). In the browser, the default is memory-chunk-store, on the server it
+ * is fs-chunk-store.
+ * @param {String} [opts.type] - Mimetype of the file, may be required to render
+ * @param {Function} [onFile] - Called when the file has started downloading
+ */
+Client.prototype.add = function add() {
+  /* TODO */
+};
+
+/**
+ * Remove a file from the client. This will close all active connections for
+ * the file and will delete all saved data for the file.
+ * @param {String} opts.bucketId
+ * @param {String} opts.file - Name of the file to remove
+ */
+Client.prototype.remove = function remove() {
+  /* TODO */
+};
+
+/**
+ * Destroy the client, including all tracked files and connections.
+ * @param {Function} cb - Called once the client has gracefully shutdown
+ */
+Client.prototype.destroy = function destroy() {
+};
+
+module.exports = Client;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2016 Storj Labs
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	$('pre').each(function(i, block) {
+		hljs.highlightBlock(block);
+	});
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

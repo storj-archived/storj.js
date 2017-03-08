@@ -1,0 +1,17 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script src="./storj.es6.js"></script>
+    <iframe id="pdf"></iframe>
+    <script>
+      var bucket = '51ffcf13d349e2b199550bcc';
+      var config = { bridge: 'http://127.0.0.1:8080' };
+      var storj = new Storj(config);
+      var pdf = new storj.getFile(bucket, 'db259e03219fa449c6a277b7',config)
+        .on('done', function () { pdf.renderTo('#pdf'); });
+      var video = new storj.getFile(bucket, 'e92547cc0c74f588a20b80a0', config)
+        .on('done', function () { video.appendTo('body'); });
+    </script>
+  </body>
+</html>
