@@ -387,11 +387,35 @@ The Low Level API isn't actually that low level. The purpose of these methods is
 
 Return a readable stream of decrypted data being pulled directly from farmers. This method bypasses the File API entirely, and doesn't use a backend abstract-blob-store. If you only need to download a file once, and don't want to hold onto it in memory, this is the method for you.
 
+```js
+storj.download(fileId, bucketId).pipe(fs.createWriteStream('cat.jpg'));
+```
+
 ### `var stream = storj.upload(bucketId, fileName, opts)`
 
 Return a writable stream. When written to, the data will be encrypted and uploaded to the storj network.
 
 Since the size of the file needs to be known upfront when uploading, `opts` is required and should contain `fileSize`.
+
+When it becomes available, `stream` will emit a `meta` event. This event will contain the metadata for the uploaded file including:
+
+```js
+{
+  bucket: STRING, // bucketId
+  filename: STRING,
+  mimetype: STRING,
+  id: STRING, // fileId
+  size: NUMBER // Size of file on the network
+}
+```
+
+```js
+fs.createReadStream('cat.jpg').pipe(
+  storj.upload(fileId, bucketId, fs.statSync('cat.jpg').size)
+).on('meta', function(metadata) {
+  console.log(`Uploading to id: ${metadata.id}`);
+})
+```
 
 ### `storj.getFilePointers(fileId, bucketId, function cb(e, pointers) {})`
 
