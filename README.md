@@ -13,7 +13,6 @@ The official Storj library, for **node.js** and the **browser**.
   - [Use in Node.js](#use-in-nodejs)
   - [Use in the browser](#use-in-the-browser)
 - [API](#api)
-- [Tutorials and Examples](#tutorials-and-examples)
 
 ## Install
 
