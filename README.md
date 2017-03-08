@@ -90,7 +90,7 @@ The optional `opts` allows you to override the default behaviour of this object.
 
 ```
 {
-  user: STRING,
+  email: STRING,
   password: STRING
 }
 ```
