@@ -386,3 +386,24 @@ The Low Level API isn't actually that low level. The purpose of these methods is
 ### `var stream = storj.download(fileId, bucketId)`
 
 Return a readable stream of decrypted data being pulled directly from farmers. This method bypasses the File API entirely, and doesn't use a backend abstract-blob-store. If you only need to download a file once, and don't want to hold onto it in memory, this is the method for you.
+
+### `var stream = storj.upload(bucketId, fileName, opts)`
+
+Return a writable stream. When written to, the data will be encrypted and uploaded to the storj network.
+
+Since the size of the file needs to be known upfront when uploading, `opts` is required and should contain `fileSize`.
+
+### `storj.getFilePointers(fileId, bucketId, function cb(e, pointers) {})`
+
+Get all of the information necessary to download a file from the Storj network. The callback will be inovked with an `Error` if something goes wrong, otherwise it will return an object of the form:
+
+```js
+{
+  token: [Object], // Information necessary to decrypt files from public buckets
+  pointers: [Array] // Information necessary to find farmers with shards
+}
+```
+
+While this method is currently exposed, there is no direct way of instructing the Storj.js API to use this when downloading a file from the network.
+
+> Note: `getFilePointers` is not considered stable. Please do not develop against this method unless you are willing to deal with breaking changes in future releases. Until otherwise stated, minor and patch releases may ship breaking cheanges to this function. In future releases, the name of this method may be changed.
