@@ -42,14 +42,6 @@
     ],
     "no-undef": 2,
     "no-unused-vars": 2,
-    "max-params": [
-      2,
-      4
-    ],
-    "max-statements": [
-      2,
-      14
-    ],
     "complexity": [
       2,
       6
