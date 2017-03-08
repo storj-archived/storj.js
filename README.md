@@ -383,6 +383,8 @@ Return a bitcoin-format address derived from this `KeyPair`.
 
 The Low Level API isn't actually that low level. The purpose of these methods is to provide tools that are useful when building production Storj.js applications, but that aren't necessary for casual development. These methods may expose primitives, and often sacrifice usability for perfomance.
 
+> Note: The Low Level API is not considered stable yet. Please do not develop against this API unless you are willing to deal with breaking changes in future releases. Until otherwise stated, minor and patch releases may ship breaking cheanges to this API.
+
 ### `var stream = storj.download(fileId, bucketId)`
 
 Return a readable stream of decrypted data being pulled directly from farmers. This method bypasses the File API entirely, and doesn't use a backend abstract-blob-store. If you only need to download a file once, and don't want to hold onto it in memory, this is the method for you.
@@ -429,5 +431,3 @@ Get all of the information necessary to download a file from the Storj network. 
 ```
 
 While this method is currently exposed, there is no direct way of instructing the Storj.js API to use this when downloading a file from the network.
-
-> Note: `getFilePointers` is not considered stable. Please do not develop against this method unless you are willing to deal with breaking changes in future releases. Until otherwise stated, minor and patch releases may ship breaking cheanges to this function. In future releases, the name of this method may be changed.
