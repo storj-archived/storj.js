@@ -59,6 +59,12 @@ test('Storj.js happy path integration', function(done) {
     t.end();
   });
 
+  test('Storj.generateMnemonic', function(t) {
+    mnemonic = Storj.generateMnemonic();
+    t.ok(typeof mnemonic === 'string', 'generated mnemonic');
+    t.end();
+  });
+
   test('Constructor with key', function(t) {
     storj = new Storj({
       bridge: process.env.STORJ_BRIDGE,
