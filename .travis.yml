@@ -1,0 +1,24 @@
+sudo: false
+addons:
+  apt:
+    packages:
+      - ca-certificates
+      - libgl1-mesa-dri
+      - xfonts-100dpi
+      - xfonts-75dpi
+      - xfonts-scalable
+      - dbus-x11
+      - libdbus-glib-1-2 \
+      - libx11-xcb-dev \
+      - libgtk-3-0 \
+      - xvfb
+      - wget
+      - bzip2
+      - git
+
+before_install:
+  - wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-52.0-SSL&os=linux64&lang=en-US"
+  - bunzip2 firefox.tar.bz2
+  - tar -xvf firefox.tar
+
+script: PATH="$PWD/firefox:$PATH" ./start.sh npm run test-browser
