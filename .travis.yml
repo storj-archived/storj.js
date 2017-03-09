@@ -26,4 +26,7 @@ before_install:
   - bunzip2 firefox.tar.bz2
   - tar -xvf firefox.tar
 
+after_install:
+  - chmod +x ./start.sh
+
 script: PATH="$PWD/firefox:$PATH" ./start.sh npm run test-browser
