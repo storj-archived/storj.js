@@ -13,9 +13,9 @@ addons:
       - xfonts-75dpi
       - xfonts-scalable
       - dbus-x11
-      - libdbus-glib-1-2 \
-      - libx11-xcb-dev \
-      - libgtk-3-0 \
+      - libdbus-glib-1-2
+      - libx11-xcb-dev
+      - libgtk-3-0
       - xvfb
       - wget
       - bzip2
