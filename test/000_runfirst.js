@@ -26,6 +26,6 @@ if(process.env.STORJ_BRIDGE === undefined) {
 var bridge = process.env.STORJ_BRIDGE;
 
 test('Environment', function(t) {
-  t.comment(JSON.stringify(process.env, null, ' '));
+  t.comment(`Using: ${process.env.STORJ_USERNAME}:${process.env.STORJ_PASSWORD}@${process.env.STORJ_BRIDGE}`);
   t.end();
 });
