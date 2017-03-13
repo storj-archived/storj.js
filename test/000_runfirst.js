@@ -24,8 +24,3 @@ if(process.env.STORJ_BRIDGE === undefined) {
 }
 
 var bridge = process.env.STORJ_BRIDGE;
-
-test('Valid environment', function(t) {
-  t.comment(`Running with ${user}:${pass}@${bridge}`);
-  t.end();
-});
