@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "bitcore-mnemonic": "^1.1.1",
-    "blob-to-stream": "^1.0.0",
+    "blob-to-stream": "^1.0.3",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
     "fs-blob-store": "^5.2.1",
