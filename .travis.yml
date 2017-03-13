@@ -29,4 +29,4 @@ before_install:
 before_script:
   - chmod +x ./start.sh
 
-script: PATH="$PWD/firefox:$PATH" ./start.sh npm run test-browser
+script: PATH="$PWD/firefox:$PATH" ./start.sh npm run test
