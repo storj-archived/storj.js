@@ -1,4 +1,4 @@
-FROM node:6
+FROM ubuntu:precise
 
 # Browser install from sitespeedio/docker-browsers
 
@@ -18,29 +18,38 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # Adding sudo for SLTC, lets see if we can find a better place (needed in Ubuntu 16)
 
 RUN apt-get update && \
-    apt-get install -y wget sudo --no-install-recommends && \
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-      echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get update && \
     apt-get install -y \
     ca-certificates \
-    x11vnc \
     libgl1-mesa-dri \
     xfonts-100dpi \
     xfonts-75dpi \
     xfonts-scalable \
-    xfonts-cyrillic \
     dbus-x11 \
-    xvfb --no-install-recommends && \
-    apt-get purge -y wget && \
-    apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
-    apt-get install -y firefox-esr=${FIREFOX_VERSION} --no-install-recommends && \
-    apt-get clean autoclean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    libdbus-glib-1-2 \
+    libx11-xcb-dev \
+    wget \
+    bzip2 \
+    curl \
+    git \
+    libgtk-3-0 \
+    xvfb
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get install -y nodejs
+
+RUN wget -O firefox.tar.bz "https://download.mozilla.org/?product=firefox-52.0-SSL&os=linux64&lang=en-US" && \
+    bunzip2 firefox.tar.bz && \
+    tar -xvf firefox.tar
+
+ENV PATH="$PWD/firefox:$PATH"
 
 ADD ./start.sh /bin/xvfb_wrap
 RUN chmod +x /bin/xvfb_wrap
 
 WORKDIR /usr/src/app
 
-ENTRYPOINT ["/bin/xvfb_wrap", "npm", "test"]
+ADD ./package.json ./package.json
+RUN npm install
+ADD ./ ./
+
+RUN /bin/xvfb_wrap npm run test-browser

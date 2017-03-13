@@ -5,27 +5,14 @@
  */
 'use strict'
 
-var test = require('tape');
-
 if(process.env.STORJ_USERNAME === undefined) {
   throw new Error('Must set STORJ_USERNAME to run tests');
 }
-
-var user = process.env.STORJ_USERNAME;
 
 if(process.env.STORJ_PASSWORD === undefined) {
   throw new Error('Must set STORJ_PASSWORD to run tests');
 }
 
-var pass = process.env.STORJ_PASSWORD;
-
 if(process.env.STORJ_BRIDGE === undefined) {
   throw new Error('Must set STORJ_BRIDGE to run tests');
 }
-
-var bridge = process.env.STORJ_BRIDGE;
-
-test('Valid environment', function(t) {
-  t.comment(`Running with ${user}:${pass}@${bridge}`);
-  t.end();
-});
