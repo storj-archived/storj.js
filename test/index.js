@@ -54,22 +54,23 @@ test('Storj.js happy path integration', function(done) {
   });
 
   test('generateMnemonic', function(t) {
-    mnemonic = storj.generateMnemonic();
+    mnemonic = storj.generateEncryptionKey();
     t.ok(typeof mnemonic === 'string', 'generated mnemonic');
     t.end();
   });
 
-  test('Storj.generateMnemonic', function(t) {
-    mnemonic = Storj.generateMnemonic();
+  test('Storj.generateEncryptionKey', function(t) {
+    mnemonic = Storj.generateEncryptionKey();
     t.ok(typeof mnemonic === 'string', 'generated mnemonic');
     t.end();
   });
 
   test('Constructor with key', function(t) {
+    console.log(mnemonic)
     storj = new Storj({
       bridge: process.env.STORJ_BRIDGE,
       key: key.getPrivateKey(),
-      mnemonic: mnemonic
+      encryptionKey: mnemonic
     });
 
     t.equal(storj.constructor, Storj, 'returned instance of Storj');
