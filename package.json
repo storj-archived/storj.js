@@ -57,7 +57,7 @@
     "memory-blob-store": "^5.0.1",
     "render-media": "^2.9.1",
     "setimmediate": "^1.0.5",
-    "storj-lib": "github:retrohacker/core#19c1e8e7ac7826919c9492ea0e7c9868c813e3f7",
+    "storj-lib": "^6.3.2",
     "stream-to-blob": "^1.0.0",
     "stream-to-blob-url": "^2.1.0",
     "stream-with-known-length-to-buffer": "^1.0.0",
