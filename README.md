@@ -182,7 +182,7 @@ TODO
 
 Remove a bucket from the Storj network. `cb` will be invoked with an error if the operation fails, or `null` otherwise.
 
-### `var file = storj.createFile(bucketId, fileName, file, [opts], cb)`
+### `var file = storj.createFile(bucketId, fileName, file, [opts], [function cb() {}])`
 
 Upload a file to a bucket.
 
@@ -203,7 +203,7 @@ Upload a file to a bucket.
 
 `cb` is an optional `function` that will be registered as a [listener](https://nodejs.org/api/events.html) on the returned `File`'s `done` event.
 
-### `var file = storj.getFile(bucketId, fileId, function cb() {})`
+### `var file = storj.getFile(bucketId, fileId, [function cb() {}])`
 
 `bucketId` - the id of the bucket the file lives in (`String`)
 `fileId` - the id of the file itself (`String`)
