@@ -82,7 +82,7 @@ The optional `opts` allows you to override the default behaviour of this object.
   bridge: STRING, // The url of the bridge to talk to, defaults to https://api.storj.io
   basicAuth: OBJECT, // Used for any requests that require authentication, this is your username and password
   key: STRING, // Private key, used for any requests that require authentication
-  mnemonic: STRING // Used to encrypt and decrypt data stored in private buckets
+  encryptionKey: STRING // Used to encrypt and decrypt data stored in private buckets
 }
 ```
 
@@ -128,14 +128,14 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 
 Remove a public key from the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
 
-### `var mnemonic = storj.generateMnemonic()`
+### `var encryptionKey = storj.generateEncryptionKey()`
 
-Create a new mnemonic, which can be used to encrypt/decrypt files on the storj network. Certain operations, such as `createFile`, require that `Storj` was provided a mnemonic when constructed. Keep track of this, as it will be necessary to retrieve your files in the future.
+Create a new encryption key, which can be used to encrypt/decrypt files on the storj network. Certain operations, such as `createFile`, require that `Storj` was provided an encryption key when constructed. Keep track of this, as it will be necessary to retrieve your files in the future.
 
 ```js
 var key = storj.generateKeyPair().getPrivateKey();
-var mnemonic = storj.generateMnemonic();
-var storj = new Storj({ key, mnemonic });
+var encryptionKey = storj.generateEncryptionKey();
+var storj = new Storj({ key, encryptionKey });
 // storj can now perform bucket operations and upload/download files
 ```
 
@@ -182,7 +182,7 @@ TODO
 
 Remove a bucket from the Storj network. `cb` will be invoked with an error if the operation fails, or `null` otherwise.
 
-### `var file = storj.createFile(bucketId, fileName, file, [opts], cb)`
+### `var file = storj.createFile(bucketId, fileName, file, [opts], [function cb() {}])`
 
 Upload a file to a bucket.
 
@@ -203,7 +203,7 @@ Upload a file to a bucket.
 
 `cb` is an optional `function` that will be registered as a [listener](https://nodejs.org/api/events.html) on the returned `File`'s `done` event.
 
-### `var file = storj.getFile(bucketId, fileId, function cb() {})`
+### `var file = storj.getFile(bucketId, fileId, [function cb() {}])`
 
 `bucketId` - the id of the bucket the file lives in (`String`)
 `fileId` - the id of the file itself (`String`)

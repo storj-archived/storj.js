@@ -53,7 +53,7 @@
     "testling": "^1.7.1"
   },
   "dependencies": {
-    "bitcore-mnemonic": "^1.1.1",
+    "bitcore-mnemonic": "=1.1.1",
     "blob-to-stream": "^1.0.3",
     "filereader-stream": "^1.0.0",
     "from2": "^2.3.0",
