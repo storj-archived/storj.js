@@ -3,6 +3,8 @@ node_modules/
 coverage/
 storj.es5.js
 storj.es6.js
+storj.es5.js.map
+storj.es6.js.map
 test.html
 index.html
 test.js

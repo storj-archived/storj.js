@@ -2,11 +2,12 @@
   "name": "storj",
   "version": "0.0.0",
   "description": "Storj.io browser library",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "browser": "./lib/browser.js",
   "directories": {},
   "scripts": {
-    "build": "browserify --standalone 'storj' lib/browser.js > storj.es6.js",
-    "postbuild": "babel storj.es6.js > storj.es5.js",
+    "prebuild": "npm dedupe",
+    "build": "browserify -s 'storj' -d ./lib/browser.js > storj.es6.debug.js && babel -o storj.es5.js -s true ./storj.es6.debug.js && cat storj.es6.debug.js | exorcist storj.es6.js.map > storj.es6.js && rm ./storj.es6.debug.js",
     "posttest": "npm run linter",
     "test": "npm run test-node && npm run test-browser",
     "test-node": "nyc --reporter=text --reporter=html tape test/**/*.js",
@@ -26,6 +27,9 @@
       "test/**/*.js"
     ]
   },
+  "babel": {
+    "inputSourceMap": true
+  },
   "author": "Chris Pollard",
   "contributors": [
     {
@@ -39,6 +43,7 @@
     "browserify": "^13.1.1",
     "envify": "^4.0.0",
     "eslint": "^3.14.0",
+    "exorcist": "^0.4.0",
     "ink-docstrap": "bookchin/docstrap",
     "jsdoc": "^3.4.3",
     "longjohn": "^0.2.12",
