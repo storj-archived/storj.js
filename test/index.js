@@ -54,16 +54,23 @@ test('Storj.js happy path integration', function(done) {
   });
 
   test('generateMnemonic', function(t) {
-    mnemonic = storj.generateMnemonic();
+    mnemonic = storj.generateEncryptionKey();
+    t.ok(typeof mnemonic === 'string', 'generated mnemonic');
+    t.end();
+  });
+
+  test('Storj.generateEncryptionKey', function(t) {
+    mnemonic = Storj.generateEncryptionKey();
     t.ok(typeof mnemonic === 'string', 'generated mnemonic');
     t.end();
   });
 
   test('Constructor with key', function(t) {
+    console.log(mnemonic)
     storj = new Storj({
       bridge: process.env.STORJ_BRIDGE,
       key: key.getPrivateKey(),
-      mnemonic: mnemonic
+      encryptionKey: mnemonic
     });
 
     t.equal(storj.constructor, Storj, 'returned instance of Storj');
@@ -89,6 +96,7 @@ test('Storj.js happy path integration', function(done) {
 
   test('getBucket', function(t) {
     storj.getBucket(bucketId, function (e, bucket) {
+      t.error(e, 'getBucket returns success');
       t.equal(bucket.id, bucketId, 'bucket has correct id');
       t.equal(bucket.name, bucketName, 'bucket has correct name');
       t.equal(bucket.files.length, 0, 'bucket has no files');
@@ -172,6 +180,28 @@ test('Storj.js happy path integration', function(done) {
     t.equal(file.listeners('done').reduce((p, c) => p || c === handler, false),
       true, 'cb is registered to done');
     t.equal(file.progress, 0, 'file.progress set');
+  });
+
+  test('makePublic', function(t) {
+    storj.makePublic(bucketId, ['PUSH', 'PULL'], function(e) {
+      t.error(e, 'make public successful');
+      t.end();
+    })
+  });
+
+  test('getFile:public', function(t) {
+    var s = new Storj({bridge: process.env.STORJ_BRIDGE});
+    s.on('ready', function() {
+      var file = s.getFile(bucketId, fileId, function() {
+        file.getBuffer(function(e, buffer) {
+          t.error(e, 'getFile public successful');
+          t.equal(buffer.toString(), fileContent.toString(), 'content correct');
+          t.end();
+        })
+      });
+
+      file.on('error', t.fail);
+    });
   });
 
   test('download', function(t) {
