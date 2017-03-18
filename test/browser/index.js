@@ -3,6 +3,7 @@
 const test = require('tape');
 const Storj = require('../../lib/index.js');
 const stream = require('stream');
+const blobToBuffer = require('blob-to-buffer');
 
 let storj;
 
@@ -125,6 +126,23 @@ test('Browser: renderTo', function(t) {
     }
     img.remove();
     t.end();
+  })
+});
+
+test('Browser: getBlob', function(t) {
+  file.getBlob(function(e, blob) {
+    t.error(e, 'retrieved blob');
+    if(e) {
+      return t.end();
+    }
+    blobToBuffer(blob, function(e, buffer) {
+      t.error(e, 'converted to buffer');
+      if(e) {
+        return t.end();
+      }
+      t.deepEqual(buffer, fileContent, 'buffer should match fileContent');
+      t.end();
+    });
   })
 });
 

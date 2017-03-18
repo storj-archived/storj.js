@@ -40,6 +40,7 @@
   "license": "LGPL",
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "blob-to-buffer": "^1.2.6",
     "browserify": "^13.1.1",
     "envify": "^4.0.0",
     "eslint": "^3.14.0",
