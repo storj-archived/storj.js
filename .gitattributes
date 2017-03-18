@@ -1,2 +1,8 @@
-jsdoc/ linguist-documentation
-examples/ linguist-documentation
+./jsdoc linguist-documentation
+./examples linguist-documentation
+./start.sh linguist-documentation
+./Dockerfile linguist-documentation
+./travis.yml linguist-documentation
+./.jsdoc.json linguist-documentation
+README.md linguist-documentation
+start.sh linguist-documentation
