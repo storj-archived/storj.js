@@ -146,6 +146,25 @@ test('Browser: getBlob', function(t) {
   })
 });
 
+test('Browser: getBlobUrl', function(t) {
+  file.getBlobUrl(function(e, url) {
+    t.error(e, 'retrieved blob url');
+    if(e) {
+      return t.end();
+    }
+
+    var req = new XMLHttpRequest();
+    req.responseType = 'text';
+    req.open('GET', url);
+    req.addEventListener('load', function() {
+      t.equal(this.responseText.toString(), fileContent.toString('utf8'),
+        'downloading blob url yields original file content');
+      t.end();
+    });
+    req.send();
+  })
+});
+
 test('Browser: BEGIN TEARDOWN', function(t) {
   t.end();
 })
