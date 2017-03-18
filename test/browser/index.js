@@ -113,6 +113,21 @@ test('Browser: appendTo', function(t) {
   })
 });
 
+test('Browser: renderTo', function(t) {
+  var img = document.createElement('img')
+  img.id = 'foobar'
+  document.body.appendChild(img)
+  file.renderTo('#foobar', function(e, elem) {
+    t.equal(img, elem, 'file placed into img');
+    t.ok(img.src, 'src set on img');
+    if(img.src) {
+      t.equal(img.src.indexOf('blob:'), 0, 'src set to blob url');
+    }
+    img.remove();
+    t.end();
+  })
+});
+
 test('Browser: BEGIN TEARDOWN', function(t) {
   t.end();
 })
