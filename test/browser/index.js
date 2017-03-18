@@ -76,8 +76,7 @@ test('Browser: createFile', function(t) {
   rs._read = function() {};
   rs.push(fileContent);
   rs.push(null);
-  const file = storj.createFile(bucketId, fileName, rs);
-  let emittedReady = false;
+  file = storj.createFile(bucketId, fileName, rs);
   file.on('error', t.fail)
   file.on('done', function() {
     fileId = file.id
@@ -86,9 +85,10 @@ test('Browser: createFile', function(t) {
 });
 
 test('Browser: getFile', function(t) {
-  file = storj.getFile(bucketId, fileId, function () {
-    t.end();
-  });
+  file = storj.getFile(bucketId, fileId);
+  file.on('done', function() {
+    t.end()
+  })
 });
 
 test('Browser: END SETUP', function(t) {
