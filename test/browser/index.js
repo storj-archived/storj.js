@@ -14,8 +14,8 @@ let encryptionKey;
 let file;
 const fileName = 'foobar.svg';
 const fileContent = new Buffer(
-  '<svg width=400 height=10>' +
-    '<text x=0 y=10>' +
+  '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="12">' +
+    '<text x="0" y="10" font-size="10">' +
       'IM A LUMBERJACK AND IM OK, I SLEEP ALL NIGHT AND I WORK ALL DAY' +
     '</text>' +
   '</svg>'
@@ -45,7 +45,9 @@ test('Browser: registerKey', function(t) {
   key = storj.generateKeyPair()
   encryptionKey = storj.generateEncryptionKey();
   storj.registerKey(key.getPublicKey(), function(e) {
-    t.error(e, 'Succesfully registered the key');
+    if(e) {
+      throw e;
+    }
     t.end();
   });
 });
@@ -66,6 +68,9 @@ test('Browser: Storj with key', function(t) {
 
 test('Browser: createBucket', function(t) {
   storj.createBucket(bucketName, function(e, meta) {
+    if(e) {
+      throw e;
+    }
     bucketId = meta.id;
     t.end();
   });
@@ -94,6 +99,19 @@ test('Browser: getFile', function(t) {
 test('Browser: END SETUP', function(t) {
   t.end();
 })
+
+test('Browser: appendTo', function(t) {
+  var div = document.createElement('div')
+  div.id = 'foobar'
+  document.body.appendChild(div)
+  file.appendTo('#foobar', function(e, elem) {
+    t.equal(div.children.length, 1, 'Created child element');
+    t.equal(div.children[0], elem, 'Inserted at correct location in DOM');
+    t.equal(elem.tagName, 'IMG', 'File inserted as img');
+    div.remove();
+    t.end();
+  })
+});
 
 test('Browser: BEGIN TEARDOWN', function(t) {
   t.end();

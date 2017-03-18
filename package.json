@@ -60,7 +60,7 @@
     "fs-blob-store": "^5.2.1",
     "local-web-server": "^1.2.6",
     "memory-blob-store": "^5.0.1",
-    "render-media": "^2.9.1",
+    "render-media": "github:retrohacker/render-media",
     "setimmediate": "^1.0.5",
     "storj-lib": "^6.3.2",
     "stream-to-blob": "^1.0.0",

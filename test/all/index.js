@@ -64,7 +64,6 @@ test('Storj.generateEncryptionKey', function(t) {
 });
 
 test('Constructor with key', function(t) {
-  console.log(mnemonic)
   storj = new Storj({
     bridge: process.env.STORJ_BRIDGE,
     key: key.getPrivateKey(),
@@ -132,8 +131,9 @@ test('createFile', function(t) {
   file.on('error', t.fail)
   file.on('done', function() {
     t.ok(emittedReady, 'file emitted ready before done');
-    t.equal(file.size, fileContent.length,
-      'expect size to be length of fileContent');
+    t.equal(file.length, fileContent.length,
+      'expect length to be length of fileContent');
+    t.equal(file.mimetype, 'text/plain', 'expect .txt mimetype');
     fileId = file.id;
     t.equal(file.progress, 1, 'file.progress shows complete');
     t.end();
@@ -158,6 +158,8 @@ test('getFile', function(t) {
   let file;
   const handler = function() {
     t.equal(file.id, fileId, 'file.id populated');
+    t.equal(file.name, fileName, 'file name populated');
+    t.equal(file.mimetype, 'text/plain', 'mimetype for .txt set');
     t.equal(file.progress, 1, 'file.progress shows complete');
     file.getBuffer(function (e, buffer) {
       t.error(e, 'retreived file contents');
