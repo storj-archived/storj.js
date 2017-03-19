@@ -55,9 +55,6 @@
         uploadStream.on('encrypted', () => {
           console.log('file finished encrypting')
         })
-        uploadStream.on('close', ()=>{
-          console.log('through emitted close')
-        })
 
         uploadStream.on('stored', () => {
           console.log('encrypted file stored locally')
