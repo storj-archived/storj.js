@@ -22,14 +22,6 @@ const fileContent = new Buffer(
   '</svg>'
 );
 
-const fileName2 = 'foobaz.svg';
-const fileContent2 = new Buffer(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="12">' +
-    '<text x="0" y="10" font-size="10">' +
-      'I SLEEP ALL NIGHT AND I WORK ALL DAY, IM A LUMBERJACK AND IM OK' +
-    '</text>' +
-  '</svg>'
-);
 /* Testing of functions used in setup/teardown happen in test/all/*.js */
 test('Browser: BEGIN SETUP', function(t) {
   t.end()
@@ -97,27 +89,6 @@ test('Browser: createFile', function(t) {
     t.end();
   });
 });
-
-test('Browser: upload', function(t) {
-  var encrypted = false;
-  var stored = false;
-  const rs = new stream.Readable();
-  rs._read = function() {};
-  rs.push(fileContent2);
-  rs.push(null);
-  var uploadStream = storj.createFile(bucketId, fileName2, rs);
-  uploadStream.on('error', t.fail);
-  uploadStream.on('encrypted', function(){
-    encrypted = true;
-  });
-  uploadStream.on('stored', function(){
-    stored = true;
-  });
-  uploadStream.on('done', function() {
-    t.end();
-  });
-});
-
 
 test('Browser: getFile', function(t) {
   file = storj.getFile(bucketId, fileId);
@@ -197,6 +168,10 @@ test('Browser: getBlobUrl', function(t) {
 test('Browser: BEGIN TEARDOWN', function(t) {
   t.end();
 })
+
+test('Browser: deleteFile', function(t) {
+  storj.deleteFile(bucketId, fileId, t.end);
+});
 
 test('Browser: deleteFile', function(t) {
   storj.deleteFile(bucketId, fileId, t.end);
