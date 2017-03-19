@@ -173,10 +173,6 @@ test('Browser: deleteFile', function(t) {
   storj.deleteFile(bucketId, fileId, t.end);
 });
 
-test('Browser: deleteFile', function(t) {
-  storj.deleteFile(bucketId, fileId, t.end);
-});
-
 test('Browser: deleteBucket', function(t) {
   storj.deleteBucket(bucketId, function (e) {
     t.end(e);

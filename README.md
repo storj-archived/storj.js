@@ -416,7 +416,7 @@ Return a readable stream of decrypted data being pulled directly from farmers. T
 storj.download(fileId, bucketId).pipe(fs.createWriteStream('cat.jpg'));
 ```
 
-### `var stream = storj.upload(bucketId, fileName, opts)`
+### `var stream = storj.upload(bucketId, fileName)`
 
 Return a writable stream. When written to, the data will be encrypted and uploaded to the storj network.
 
