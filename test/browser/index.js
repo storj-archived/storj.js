@@ -22,6 +22,14 @@ const fileContent = new Buffer(
   '</svg>'
 );
 
+const fileName2 = 'foobaz.svg';
+const fileContent2 = new Buffer(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="12">' +
+    '<text x="0" y="10" font-size="10">' +
+      'I SLEEP ALL NIGHT AND I WORK ALL DAY, IM A LUMBERJACK AND IM OK' +
+    '</text>' +
+  '</svg>'
+);
 /* Testing of functions used in setup/teardown happen in test/all/*.js */
 test('Browser: BEGIN SETUP', function(t) {
   t.end()
