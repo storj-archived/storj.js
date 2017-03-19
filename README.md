@@ -124,6 +124,18 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 });
 ```
 
+### `storj.getKeyList(function cb(e, keys) {})`
+
+Get a list of all public keys stored for the current user. `cb` will be called with an `Error` if something goes wrong, or will be passed an array `keys`, where each element of the array is an object in the form:
+
+```js
+{
+  user: String, // The user the key belongs to
+  key: Striong, // The public key itself
+  id: String    // The unique id of the key
+}
+```
+
 ### `storj.removeKey(publicKey, function cb(e) {})`
 
 Remove a public key from the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
