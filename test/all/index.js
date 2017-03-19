@@ -130,6 +130,11 @@ test('createFile', function(t) {
   });
   file.on('error', t.fail)
   file.on('done', function() {
+    // Make sure resetting the file.name attribute doesn't corrupt it. Since
+    // we created a fresh bucket, the name the bridge uses should still match
+    // the original file name.
+    t.equal(file.name, fileName, 'file.name attribute reset');
+    t.ok(file.id, 'file.id populated');
     t.ok(emittedReady, 'file emitted ready before done');
     t.equal(file.length, fileContent.length,
       'expect length to be length of fileContent');
