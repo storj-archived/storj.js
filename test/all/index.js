@@ -51,6 +51,20 @@ test('registerKey', function(t) {
   });
 });
 
+test('getKeyList', function(t) {
+  storj.getKeyList(function(e, keys) {
+    for(var i = 0; i < keys.length; i++) {
+      if(keys[i].key === key.getPublicKey()) {
+        t.pass('found registered key');
+        return t.end();
+      }
+    }
+    t.fail('did not find registered key');
+    t.end();
+  });
+});
+
+
 test('generateMnemonic', function(t) {
   mnemonic = storj.generateEncryptionKey();
   t.ok(typeof mnemonic === 'string', 'generated mnemonic');

@@ -124,6 +124,18 @@ storj.registerKey(keypair.getPublicKey(), function(e) {
 });
 ```
 
+### `storj.getKeyList(function cb(e, keys) {})`
+
+Get a list of all public keys stored for the current user. `cb` will be called with an `Error` if something goes wrong, or will be passed an array `keys`, where each element of the array is an object in the form:
+
+```js
+{
+  user: String, // The user the key belongs to
+  key: Striong, // The public key itself
+  id: String    // The unique id of the key
+}
+```
+
 ### `storj.removeKey(publicKey, function cb(e) {})`
 
 Remove a public key from the Storj network. `cb` will be called with an `Error` if something goes wrong or `null` otherwise.
@@ -174,9 +186,21 @@ Get a list of all buckets associated with the currently authenticated account on
 }
 ```
 
-### `storj.makePublic(bucketId, [opts], cb(e) {})`
+### `storj.makePublic(bucketId, [perms], function cb(e) {})`
 
-TODO
+Give public access to an existing bucket. `cb` will be passed an `Error` if something goes wrong, or `undefined` otherwise. `perms` should be an array of permission strings, currently supported permissions are:
+
+* `PULL` - Allow others to download from this bucket
+* `PUSH` - Allow users to upload to this bucket
+
+```js
+storj.makePublic(bucketId, ["PULL", "PUSH"], function(e) {
+  if(e) {
+    /* Handle Error */
+  }
+  /* Bucket is now public with both pull and push permissions */
+})
+```
 
 ### `storj.deleteBucket(bucketId, function cb(e) {})`
 
