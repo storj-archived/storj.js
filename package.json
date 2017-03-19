@@ -10,11 +10,11 @@
     "build": "browserify -s 'storj' -d ./lib/browser.js > storj.es6.debug.js && babel -o storj.es5.js -s true ./storj.es6.debug.js && cat storj.es6.debug.js | exorcist storj.es6.js.map > storj.es6.js && rm ./storj.es6.debug.js",
     "posttest": "npm run linter",
     "test": "npm run test-node && npm run test-browser",
-    "test-node": "nyc --reporter=text --reporter=html tape test/**/*.js",
+    "test-node": "nyc --reporter=text --reporter=html tape test/all/*.js",
     "test-browser": "testling",
+    "bundle-tests": "browserify -s 'storj' -d ./lib/browser.js ./test/all/*.js ./test/browser/*.js > storj.test.js",
     "linter": "eslint .",
-    "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc",
-    "node-test": "node test/**/*.js"
+    "make-docs": "rm -rf ./jsdoc && ./node_modules/.bin/jsdoc lib -r -R README.md -c .jsdoc.json --verbose -d ./jsdoc"
   },
   "browserify": {
     "transform": [
@@ -24,7 +24,7 @@
   "testling": {
     "files": [
       "lib/browser.js",
-      "test/**/*.js"
+      "test/{all,browser}/*.js"
     ]
   },
   "babel": {
@@ -40,6 +40,7 @@
   "license": "LGPL",
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "blob-to-buffer": "^1.2.6",
     "browserify": "^13.1.1",
     "envify": "^4.0.0",
     "eslint": "^3.14.0",
@@ -60,7 +61,7 @@
     "fs-blob-store": "^5.2.1",
     "local-web-server": "^1.2.6",
     "memory-blob-store": "^5.0.1",
-    "render-media": "^2.9.1",
+    "render-media": "github:retrohacker/render-media",
     "setimmediate": "^1.0.5",
     "storj-lib": "^6.3.2",
     "stream-to-blob": "^1.0.0",
