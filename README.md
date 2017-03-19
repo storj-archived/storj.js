@@ -174,9 +174,21 @@ Get a list of all buckets associated with the currently authenticated account on
 }
 ```
 
-### `storj.makePublic(bucketId, [opts], cb(e) {})`
+### `storj.makePublic(bucketId, [perms], function cb(e) {})`
 
-TODO
+Give public access to an existing bucket. `cb` will be passed an `Error` if something goes wrong, or `undefined` otherwise. `perms` should be an array of permission strings, currently supported permissions are:
+
+* `PULL` - Allow others to download from this bucket
+* `PUSH` - Allow users to upload to this bucket
+
+```js
+storj.makePublic(bucketId, ["PULL", "PUSH"], function(e) {
+  if(e) {
+    /* Handle Error */
+  }
+  /* Bucket is now public with both pull and push permissions */
+})
+```
 
 ### `storj.deleteBucket(bucketId, function cb(e) {})`
 
