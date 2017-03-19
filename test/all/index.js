@@ -18,6 +18,11 @@ const fileContent = new Buffer(
   'IM A LUMBERJACK AND IM OK, I SLEEP ALL NIGHT AND I WORK ALL DAY'
 );
 
+const file2 = 'foobaz.txt';
+const fileC2 = new Buffer(
+  'I SLEEP ALL NIGHT AND I WORK ALL DAY, IM A LUMBERJACK AND IM OK'
+);
+
 test('Constructor with username and password', function(t) {
   storj = new Storj({
     bridge: process.env.STORJ_BRIDGE,
@@ -155,6 +160,31 @@ test('createFile', function(t) {
     t.equal(file.mimetype, 'text/plain', 'expect .txt mimetype');
     fileId = file.id;
     t.equal(file.progress, 1, 'file.progress shows complete');
+    t.end();
+  });
+});
+
+test('upload', function(t) {
+  var encrypted =false;
+  var stored = false;
+  const rs = new Readable();
+  rs._read = function() {};
+  rs.push(fileC2);
+  rs.push(null);
+  const uploadStream = storj.upload(bucketId, file2);
+  rs.pipe(uploadStream);
+  t.equal(uploadStream.readable, true, 'returned stream is readable');
+  t.equal(uploadStream.writable, true, 'returned stream is writable');
+  uploadStream.on('encrypted', function cb() {
+    encrypted = true;
+  });
+  uploadStream.on('stored', function cb() {
+    stored = true;
+  });
+  uploadStream.on('error', t.fail)
+  uploadStream.on('done', function() {
+    t.equal(stored, true, 'store finished getting encrypted file');
+    t.equal(encrypted, true, 'stream finished encrypting the file');
     t.end();
   });
 });

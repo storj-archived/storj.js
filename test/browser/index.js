@@ -90,6 +90,27 @@ test('Browser: createFile', function(t) {
   });
 });
 
+test('Browser: upload', function(t) {
+  var encrypted = false;
+  var stored = false;
+  const rs = new stream.Readable();
+  rs._read = function() {};
+  rs.push(fileContent2);
+  rs.push(null);
+  var uploadStream = storj.createFile(bucketId, fileName2, rs);
+  uploadStream.on('error', t.fail);
+  uploadStream.on('encrypted', function(){
+    encrypted = true;
+  });
+  uploadStream.on('stored', function(){
+    stored = true;
+  });
+  uploadStream.on('done', function() {
+    t.end();
+  });
+});
+
+
 test('Browser: getFile', function(t) {
   file = storj.getFile(bucketId, fileId);
   file.on('done', function() {
