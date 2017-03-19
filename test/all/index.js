@@ -6,6 +6,7 @@ const Storj = require('../../lib/index.js');
 var Readable = require('stream').Readable;
 var KeyPair = require('storj-lib/lib/crypto-tools/keypair');
 
+let basicStorj;
 let storj;
 
 const bucketName = `test-${Date.now()}-${(Math.random()+'').split('.')[1]}`;
@@ -19,40 +20,40 @@ const fileContent = new Buffer(
 );
 
 test('Constructor with username and password', function(t) {
-  storj = new Storj({
+  basicStorj = new Storj({
     bridge: process.env.STORJ_BRIDGE,
     basicAuth: {
       email: process.env.STORJ_USERNAME,
       password: process.env.STORJ_PASSWORD,
     }
   });
-  t.equal(storj.constructor, Storj, 'returned instance of Storj');
+  t.equal(basicStorj.constructor, Storj, 'returned instance of Storj');
 
-  storj.on('error', t.fail);
+  basicStorj.on('error', t.fail);
 
-  storj.on('ready', function() {
+  basicStorj.on('ready', function() {
     t.pass('ready emitted');
     // Make sure we don't use our t for other tests
-    storj.removeAllListeners();
+    basicStorj.removeAllListeners();
     t.end();
   });
 });
 
 test('generateKeyPair', function(t) {
-  key = storj.generateKeyPair()
+  key = basicStorj.generateKeyPair()
   t.ok(key instanceof KeyPair, 'object', 'generated KeyPair');
   t.end();
 });
 
 test('registerKey', function(t) {
-  storj.registerKey(key.getPublicKey(), function(e) {
+  basicStorj.registerKey(key.getPublicKey(), function(e) {
     t.error(e, 'Succesfully registered the key');
     t.end();
   });
 });
 
 test('getKeyList', function(t) {
-  storj.getKeyList(function(e, keys) {
+  basicStorj.getKeyList(function(e, keys) {
     for(var i = 0; i < keys.length; i++) {
       if(keys[i].key === key.getPublicKey()) {
         t.pass('found registered key');
@@ -66,7 +67,7 @@ test('getKeyList', function(t) {
 
 
 test('generateMnemonic', function(t) {
-  mnemonic = storj.generateEncryptionKey();
+  mnemonic = basicStorj.generateEncryptionKey();
   t.ok(typeof mnemonic === 'string', 'generated mnemonic');
   t.end();
 });
@@ -272,6 +273,26 @@ test('getBucketList', function(t) {
       }
     }
     t.pass('bucket removed after delete');
+    t.end();
+  });
+});
+
+test('removeKey', function(t) {
+  storj.removeKey(key.getPublicKey(), function(e) {
+    t.error(e, 'Succesfully removed key');
+    t.end();
+  });
+});
+
+test('getKeyList', function(t) {
+  basicStorj.getKeyList(function(e, keys) {
+    for(var i = 0; i < keys.length; i++) {
+      if(keys[i].key === key.getPublicKey()) {
+        t.fail('found registered key');
+        return t.end();
+      }
+    }
+    t.pass('did not find registered key');
     t.end();
   });
 });
