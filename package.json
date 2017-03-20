@@ -28,7 +28,10 @@
     ]
   },
   "babel": {
-    "inputSourceMap": true
+    "inputSourceMap": true,
+    "presets": [
+      "es2015"
+    ]
   },
   "author": "Chris Pollard",
   "contributors": [
@@ -40,6 +43,7 @@
   "license": "LGPL",
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.24.0",
     "blob-to-buffer": "^1.2.6",
     "browserify": "^13.1.1",
     "envify": "^4.0.0",
