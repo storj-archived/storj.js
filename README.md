@@ -416,13 +416,11 @@ Return a readable stream of decrypted data being pulled directly from farmers. T
 storj.download(fileId, bucketId).pipe(fs.createWriteStream('cat.jpg'));
 ```
 
-### `var stream = storj.upload(bucketId, fileName, opts)`
+### `var stream = storj.upload(bucketId, fileName)`
 
 Return a writable stream. When written to, the data will be encrypted and uploaded to the storj network.
 
-Since the size of the file needs to be known upfront when uploading, `opts` is required and should contain `fileSize`.
-
-When it becomes available, `stream` will emit a `meta` event. This event will contain the metadata for the uploaded file including:
+When it becomes available, `stream` will emit a `done` event. This event will contain the metadata for the uploaded file including:
 
 ```js
 {
@@ -436,8 +434,8 @@ When it becomes available, `stream` will emit a `meta` event. This event will co
 
 ```js
 fs.createReadStream('cat.jpg').pipe(
-  storj.upload(fileId, bucketId, fs.statSync('cat.jpg').size)
-).on('meta', function(metadata) {
+  storj.upload(fileId, bucketId)
+).on('done', function(metadata) {
   console.log(`Uploading to id: ${metadata.id}`);
 })
 ```

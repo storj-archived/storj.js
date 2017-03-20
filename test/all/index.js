@@ -223,18 +223,6 @@ test('getFile:public', function(t) {
   });
 });
 
-test('download', function(t) {
-  var rs = storj.download(bucketId, fileId);
-  var content = ''
-  rs.on('data', function(d) {
-    content += d.toString();
-  });
-  rs.on('end', function () {
-    t.equal(content, fileContent.toString(), 'stream correct');
-    t.end();
-  });
-});
-
 test('deleteFile', function(t) {
   storj.deleteFile(bucketId, fileId, function (e) {
     t.error(e, 'removed file');
@@ -252,6 +240,51 @@ test('getFileList', function(t) {
     }
     t.pass('file removed');
     return t.end();
+  });
+});
+
+test('upload', function(t) {
+  var encrypted =false;
+  var stored = false;
+  const rs = new Readable();
+  rs._read = function() {};
+  rs.push(fileContent);
+  rs.push(null);
+  const uploadStream = storj.upload(bucketId, `stream-${fileName}`);
+  rs.pipe(uploadStream);
+  t.equal(uploadStream.readable, true, 'returned stream is readable');
+  t.equal(uploadStream.writable, true, 'returned stream is writable');
+  uploadStream.on('encrypted', function cb() {
+    encrypted = true;
+  });
+  uploadStream.on('stored', function cb() {
+    stored = true;
+  });
+  uploadStream.on('error', t.fail)
+  uploadStream.on('done', function(metadata) {
+    t.equal(stored, true, 'store finished getting encrypted file');
+    t.equal(encrypted, true, 'stream finished encrypting the file');
+    fileId = metadata.id;
+    t.end();
+  });
+});
+
+test('download', function(t) {
+  var rs = storj.download(bucketId, fileId);
+  var content = ''
+  rs.on('data', function(d) {
+    content += d.toString();
+  });
+  rs.on('end', function () {
+    t.equal(content, fileContent.toString(), 'stream correct');
+    t.end();
+  });
+});
+
+test('deleteFile', function(t) {
+  storj.deleteFile(bucketId, fileId, function (e) {
+    t.error(e, 'removed file');
+    t.end();
   });
 });
 
