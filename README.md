@@ -283,6 +283,8 @@ Emitted when the `File` encounters an unrecoverable error either during setup or
 
 Emitted when data has been downloaded from the network, this can be used for tracking the value of `file.progress`. The callback will be provided the chunk of data that was pulled over the network.
 
+> Note: This event is not yet implemented. Registering the `data` event will not throw an error, but the event will never be triggered. To track implementation progress, follow [issue #72](https://github.com/Storj/storj.js/issues/72)
+
 ### `file.createReadStream()`
 
 Create a [readable stream](https://nodejs.org/api/stream.html#stream_class_stream_readable) to the file. Pieces of the file will become available from the stream as soon as they are downloaded from the network.
