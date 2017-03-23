@@ -29,7 +29,7 @@ npm install --save storj
 
 ### Browser
 
-Download the Storj.js library from our [releases page]() and place it alongside the `index.html` file for your website, saving it as `storj.js`. Then, in `index.html` include:
+Download the Storj.js library from our [releases page](https://github.com/Storj/storj.js/releases) and place it alongside the `index.html` file for your website, saving it as `storj.js`. Then, in `index.html` include:
 
 ```html
 <html>
