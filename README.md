@@ -202,6 +202,25 @@ storj.makePublic(bucketId, ["PULL", "PUSH"], function(e) {
 })
 ```
 
+### `storj.updateBucketById(bucketId, updateInfo, function cb(e) {})`
+
+Update an existing bucket. `cb` will be passed an `Error` if something goes wrong, or `undefined` otherwise. `updateInfo` should be an object of updated parameter strings, currently supported parameters are:
+
+* pubkeys - Array
+* encryptionKey - String
+* publicPermissions - Array
+ - `PULL` - Allow others to download from this bucket
+ - `PUSH` - Allow users to upload to this bucket
+
+```js
+storj.updateBucketById(bucketId, {publicPermissions:["PULL", "PUSH"]}, function(e) {
+  if(e) {
+    /* Handle Error */
+  }
+  /* Bucket is now public with both pull and push permissions */
+})
+```
+
 ### `storj.deleteBucket(bucketId, function cb(e) {})`
 
 Remove a bucket from the Storj network. `cb` will be invoked with an error if the operation fails, or `null` otherwise.

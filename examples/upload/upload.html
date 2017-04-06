@@ -9,21 +9,27 @@
     <input type="file" id="input" onchange="handleFiles(this.files)">
     <img id="pic"></img>
     <script>
-      var bucketId = 'a694b6273dd770d2ea8a25bc';
+      var bucketId = '4f04f386282c86c7dc8a03ce';
       var fileId = '6cbbf72deee0f86f34c5c8ff';
 
       var options = {
         bridge: 'http://localhost:8080',
-        // basicAuth: {
-        //   email: 'email',
-        //   password: 'pass'
-        // }
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
         // key: '1b91d8dc6d69c8debc34f9324c5054b9c2a73fba7884fae8dd163bc3be099514'
       };
 
       var storj = new Storj(options);
 
-      var rs = storj.download(bucketId, fileId)
+      //var rs = storj.download(bucketId, fileId)
+      // storj.updateBucketById(bucketId, {publicPermissions: ['PULL', 'PULL']}, (err, res) => {
+      //   console.log(err)
+      //   console.log(res)
+      // })
+
+      var rs = {on: function(){}}
       var concat = new Int8Array()
 
       rs.on('data', (data) => {

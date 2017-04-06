@@ -208,6 +208,15 @@ test('makePublic', function(t) {
   })
 });
 
+test('updateBucket', function(t) {
+  var update = {publicPermissions:['PUSH', 'PULL']};
+  storj.updateBucketById(bucketId, update, function(e, res) {
+    t.equal(res.publicPermissions[1], 'PULL');
+    t.error(e, 'update bucket successful');
+    t.end();
+  })
+});
+
 test('getFile:public', function(t) {
   var s = new Storj({bridge: process.env.STORJ_BRIDGE});
   s.on('ready', function() {
