@@ -1,0 +1,46 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script src="./storj.es6.js"></script>
+    <img id="pic"></img>
+    <script>
+      var bucketId = '4f04f386282c86c7dc8a03ce';
+      var fileId = '6cbbf72deee0f86f34c5c8ff';
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+        key: 'private key'
+      };
+
+      var storj = new Storj(options);
+      var rs = storj.download(bucketId, fileId)
+
+      var concat = new Int8Array()
+
+      rs.on('data', (data) => {
+        concat = _appendBuffer(concat, data)
+        console.log('got decrypted data')
+      })
+
+      rs.on('end',()=>{
+        var blob = new Blob([concat], {type:"image/png"})
+        var img = document.createElement("img");
+        document.getElementById("pic").src = window.URL.createObjectURL(blob);
+        document.getElementById("pic").height = 400;
+        document.body.appendChild(img); 
+      })
+
+      var _appendBuffer = function(buffer1, buffer2) {
+        var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+        tmp.set(new Uint8Array(buffer1), 0);
+        tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+        return tmp.buffer;
+      };
+    </script>
+  </body>
+</html>

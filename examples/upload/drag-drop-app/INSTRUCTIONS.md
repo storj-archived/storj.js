@@ -16,15 +16,7 @@ This will serve as an example for developers wishing to create applications with
 Until the PR is landed, we will be working with isomorphic-bridge-client branch on core and the api branch on storj.js
 
 ```
-git clone https://github.com/Storj/storj.js/tree/api
-git clone https://github.com/retrohacker/core/tree/isomorphic-bridge-client
-cd core
-npm i
-npm link
-cd ..
-cd storj.js
-npm link storj-lib
-npm i
+git clone https://github.com/Storj/storj.js
 npm run build
 ```
 
@@ -42,9 +34,9 @@ Create a public bucket (or private if not serving downloads to the browser) with
 
 ## Input bridge url and auth credentials
 
-Currently we need to auth with the bridge server to request file shard frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj integration for instructions on how to run a test storj netowork. 
+Currently we need to auth with the bridge server to request file shard frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj integration for instructions on how to run a test storj network. 
 
-Provide your email and password to the create_file.html basicAuth object.
+Provide your email and password to the create_file.html basicAuth object or the private key string for signed auth.
 
 ## Run
 

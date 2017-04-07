@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Storj upload form example</title>
+    <script src="drag-drop/stream_bundle.js"></script>
+    <script src="storj.es6.js"></script>
+  </head>
+  <body>
+    <h1>Storj Browser Upload/Download Example</h1>
+    <input type="file" id="input" onchange="handleFiles(this.files)">
+    <img id="pic"></img>
+    <script>
+      var bucketId = '4f04f386282c86c7dc8a03ce';
+      var fileId = '6cbbf72deee0f86f34c5c8ff';
+
+      var options = {
+        bridge: 'http://localhost:8080',
+        basicAuth: {
+          email: 'email',
+          password: 'pass'
+        }
+        key: 'private key'
+      };
+
+      var storj = new Storj(options);
+
+      var handleFiles = function(files) {
+        var rs = window.getFileStream(files);
+        var uploadStream = storj.upload(bucketId, files[0].name)
+        rs.pipe(uploadStream)
+
+        uploadStream.on('encrypted', () => {
+          console.log('file finished encrypting')
+        })
+
+        uploadStream.on('stored', () => {
+          console.log('encrypted file stored locally')
+        })
+
+        uploadStream.on('done', (res) => {
+          console.log('finished everything!!!')
+          console.log(res)
+        })
+      };
+    </script>
+  </body>
+</html>
