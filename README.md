@@ -202,7 +202,7 @@ storj.makePublic(bucketId, ["PULL", "PUSH"], function(e) {
 })
 ```
 
-### `storj.updateBucketById(bucketId, updateInfo, function cb(e) {})`
+### `storj.updateBucket(bucketId, updateInfo, function cb(e) {})`
 
 Update an existing bucket. `cb` will be passed an `Error` if something goes wrong, or `undefined` otherwise. `updateInfo` should be an object of updated parameter strings, currently supported parameters are:
 
@@ -213,7 +213,7 @@ Update an existing bucket. `cb` will be passed an `Error` if something goes wron
  - `PUSH` - Allow users to upload to this bucket
 
 ```js
-storj.updateBucketById(bucketId, {publicPermissions:["PULL", "PUSH"]}, function(e) {
+storj.updateBucket(bucketId, {publicPermissions:["PULL", "PUSH"]}, function(e) {
   if(e) {
     /* Handle Error */
   }

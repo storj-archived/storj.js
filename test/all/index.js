@@ -209,9 +209,15 @@ test('makePublic', function(t) {
 });
 
 test('updateBucket', function(t) {
-  var update = {publicPermissions:['PUSH', 'PULL']};
-  storj.updateBucketById(bucketId, update, function(e, res) {
-    t.equal(res.publicPermissions[1], 'PULL');
+  var update = {
+    pubkeys:
+    [
+      '032d4ae2c03550d8c9ca948f235eaa47aabc4c25ddc1e5915ee626cbed15bb916c'
+    ]
+  };
+  storj.updateBucket(bucketId, update, function(e, res) {
+    t.equal(res.pubkeys[0],
+      '032d4ae2c03550d8c9ca948f235eaa47aabc4c25ddc1e5915ee626cbed15bb916c');
     t.error(e, 'update bucket successful');
     t.end();
   })
