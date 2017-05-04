@@ -2,7 +2,10 @@
 
 The official Storj library, for **node.js** and the **browser**.
 
-> Note: This library is currently in beta. If you are building a Node.js application you plan on shipping to production soon, we recommend you use the utility libary [storj-lib](http://github.com/storj/core). For browser applications, Storj.js is the only supported option for development.
+
+## Development Status
+
+This library is currently in early beta. It is released for **testing purposes only**. Files uploaded via storj.js are **not currently compatible with the reference implementation**. If you are developing an application, we **strongly recommend that you use [libstorj](https://github.com/storj/libstorj)** via bindings.
 
 ## Table of Contents
 
