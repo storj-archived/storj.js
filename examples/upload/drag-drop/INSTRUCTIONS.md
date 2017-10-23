@@ -36,18 +36,18 @@ Since this example is using Feross drag-drop. We need to use a web server to ind
 
 Any web server will work. Just server storj.js/examples/uploads/ as the root directory and use create_file.html as your entry point index.html.
 
-## Create a pubilc bucket
+## Create a public bucket
 
 Create a public bucket (or private if not serving downloads to the browser) with the storj-cli and place the ID in the bucketId variable in create_file.html. This can be used by the api to server your downloads in the browser if public.
 
 ## Input bridge url and auth credentials
 
-Currently we need to auth with the bridge server to request file shard frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj integration for instructions on how to run a test storj netowork. 
+Currently we need to auth with the bridge server to request file shared frames for upload. The default bridge url is currently set to the storj main bridge but you can change this to a local running bridge for testing. See storj integration for instructions on how to run a test storj network. 
 
 Provide your email and password to the create_file.html basicAuth object.
 
 ## Run
 
-With create_file.html being servered, visit your webservers port in browser and try an upload! You should be able to drag and reasonably sized file into the browser. Currently encryption is a bit slow until webworkers are implemented and there is no indication that anything is happening in browser other than network traffic to the bridge and farmer you are uploading to. If the upload is succesfull an alert will display showing the farmer information that you just uploaded to. 
+With create_file.html being servered, visit your webservers port in browser and try an upload! You should be able to drag any reasonably sized file into the browser. Currently encryption is a bit slow until webworkers are implemented and there is no indication that anything is happening in browser other than network traffic to the bridge and farmer you are uploading to. If the upload is succesfull an alert will display showing the farmer information that you just uploaded to. 
 
 Happy hacking!
